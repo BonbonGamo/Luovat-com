@@ -1,6 +1,7 @@
 exports.up = function(knex, Promise) {
   
     return Promise.all([
+        knex.schema.dropTable('luovat_user'),
         knex.schema.createTable('luovat_user',function(table){
             table.increments('id').primary();
             table.string('firstName');
@@ -27,6 +28,6 @@ exports.up = function(knex, Promise) {
 
 exports.down = function(knex, Promise) {
     return Promise.all([
-        knex.schema.dropTable('users'),
+        knex.schema.dropTable('luovat_user'),
     ])
 };
