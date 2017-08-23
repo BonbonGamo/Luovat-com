@@ -5,4 +5,6 @@ var knex        = require('knex')(config[env]);
 
 module.exports = knex;
 
+console.log('DB:',process.env.DATABASE_URL)
+
 knex.migrate.latest([config]); 
