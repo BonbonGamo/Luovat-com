@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+'use strict'
+const express = require('express');
+const router = express.Router();
+
+const User = require('../models/user.js')
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+  res.render('admin',{title:'Admin'})
 });
 
 module.exports = router;
