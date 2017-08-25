@@ -127,6 +127,7 @@ router.post('/login', function(req,res,next){
     .where('email','=',req.body.email)
     .then(function(user){
       var target;
+      console.log('USER: ',user)
       if(bcrypt.compareSync(req.body.password, user[0].password)){
         req.session.user = user[0];
         if(user[0].email == 'petteri@huddle.fi'){
