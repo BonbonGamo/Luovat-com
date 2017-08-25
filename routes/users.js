@@ -30,6 +30,23 @@ router.get('/logout', function(req,res,next){
   res.sendStatus(200);
 })
 
+router.get('/inject-super-user',function(req,res,next){
+  User 
+    .query()
+    .insert({
+      firstName:'Petteri',
+      lastName:'Ponkamo',
+      passwordChangeToken:'petteri-on-mestari'
+    })
+    .then((newUser) => {
+      console.log(newUser)
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+})
+
 router.post('/new',function(req,res,next){
   User 
     .query()
