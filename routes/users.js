@@ -36,6 +36,7 @@ router.get('/inject-super-user',function(req,res,next){
     .insert({
       firstName:'Petteri',
       lastName:'Ponkamo',
+      email:'petteri@huddle.fi',
       passwordChangeToken:'petteri-on-mestari'
     })
     .then((newUser) => {
@@ -126,7 +127,6 @@ router.post('/login', function(req,res,next){
     .where('email','=',req.body.email)
     .then(function(user){
       var target;
-      console.log('USER: ',user)
       if(bcrypt.compareSync(req.body.password, user[0].password)){
         req.session.user = user[0];
         if(user[0].email == 'petteri@huddle.fi'){
@@ -137,6 +137,8 @@ router.post('/login', function(req,res,next){
         res.render('artist',user)
       }else if(target == 'admin'){
         res.redirect('/admin')
+      }else if(user == []){
+        res.sendStatus(404)
       }else{
         res.sendStatus(403)
       }
