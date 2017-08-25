@@ -144,7 +144,7 @@ router.post('/login', function(req,res,next){
       }
     })
     .catch(err => {
-      console.log(err)
+      console.log('LOGIN ERR:',err)
       res.sendStatus(500)
     })
 })
