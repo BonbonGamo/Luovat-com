@@ -8,6 +8,9 @@ const bodyParser = require('body-parser');
 const lessMiddleware = require('less-middleware');
 const constants = require('./scripts/constants.js')
 const db = require('./scripts/db.js')
+const session = require('express-session')
+const RedisStore = require('connect-redis')(session);
+
 
 
 const index = require('./routes/index');
@@ -30,6 +33,27 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node', express.static(__dirname + '/node_modules/'))
+
+var sessionStore;
+if(!constants.redis){
+  sessionStore = {
+    secret: constants.sessionSecret,
+    resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    saveUninitialized:false
+  }
+}else{
+  sessionStore = {
+    store:  new RedisStore({url:constants.redis}),
+    secret: constants.sessionSecret,
+    resave: false,
+    cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 },
+    saveUninitialized:false
+  }
+}
+app.use(session(
+  sessionStore
+));
 
 app.use('/', index);
 app.use('/artists', users);

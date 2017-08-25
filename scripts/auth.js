@@ -1,26 +1,21 @@
-var express = require('express'),
-    authentication = require('express-authentication'),
-    app = express();
+'use strict'
+const session = require('session');
+const constants = require('./constants.js')
 
-module.exports = 
-    
-app.use(function myauth(req, res, next) {
-    // provide the data that was used to authenticate the request; if this is 
-    // not set then no attempt to authenticate is registered. 
-    req.challenge = req.get('Authorization');
- 
-    req.authenticated = req.authentication === 'secret';
- 
-    // provide the result of the authentication; generally some kind of user 
-    // object on success and some kind of error as to why authentication failed 
-    // otherwise. 
-    if (req.authenticated) {
-        req.authentication = { user: 'bob' };
-    } else {
-        req.authentication = { error: 'INVALID_API_KEY' };
-    }
- 
-    // That's it! You're done! 
-    next();
-});
+module.exports = {
+        admin:function(req,res,next){
+            if( constants.admins.indexOf(req.session.user.email) != -1 ){
+                next()
+            }else{
+                res.sendStatus(403)
+            }
+        },
+        artist:function(req,res,next){
+            if( req.body.id != req.session.user.id ){
+                res.sendStatus(403)
+            }else{
+                next()
+            }
+        }
+}
 

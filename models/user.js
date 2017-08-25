@@ -42,7 +42,6 @@ class User extends Model{
             balance:{type: 'number'},
             rekryMessage:{type: 'string'},
             employee:{type:'boolean'},
-
          }   
         };
     }
