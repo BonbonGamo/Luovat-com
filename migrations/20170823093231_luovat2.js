@@ -1,11 +1,11 @@
 exports.up = function(knex, Promise) {
   
     return Promise.all([
-        knex.schema.createTableIfNotExist('luovat_user',function(table){
+        knex.schema.createTable('luovat_user',function(table){
             table.increments('id').primary();
             table.string('firstName');
             table.string('lastName');
-            table.string('email');
+            table.string('email').unique();
             table.string('phone');
             table.string('password');
             table.string('passwordChangeToken');
@@ -18,7 +18,9 @@ exports.up = function(knex, Promise) {
             table.integer('balance');
             table.string('rekryMessage')
             table.boolean('employee')
-            table.timestamps();
+            table.boolean('deleted')
+            table.boolean('admin')
+            table.timestamps(true,true);
         })
 
     ])
