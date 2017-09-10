@@ -9,22 +9,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+    <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
+    <script>var userLogged = "<%= userName %>" </script>
   </head>
   <body>
-    <div class=row>
-      <div class="col-md-12 text-center"><h2>Luovat.com Admin</h2></div>
+    <div class="row">
+      <div class="col-md-12 text-center"><h2> </h2></div>
     </div>
-    <div id="admin" class="row">
-      <div class="col-md-4 col-md-offset-2">
-          <users></users>
-      </div>
-      <div class="col-md-4">
-        <add-user></add-user>
+    <div id="admin" class="">
+      <navigation></navigation>
+      <div clas="row">
+        <div class="col-md-3 col-lg-2">
+          <side-navigation></side-navigation>
+        </div>
+        <div class="col-md-7 col-lg-10">
+          <div class="tab-content" id="admin">
+            <div id="users" class="tab-pane fade in active">
+              <div class="row">
+                <div class="col-md-6 col-lg-6">
+                  <users></users>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <add-user></add-user>
+                </div>
+              </div>
+            </div>
+            <div id="orders" class="tab-pane fade">
+              <div class="col-md-6 col-lg-6">
+                  <orders></orders>
+                </div>
+                <div class="col-md-6 col-lg-6">
+                  <add-order></add-order>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-
     <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>
     <script type="text/javascript" src="/javascripts/vueComponents.js"></script>
     <script type="text/javascript" src="/javascripts/controller/admin.js"></script>

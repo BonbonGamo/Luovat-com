@@ -4,15 +4,15 @@ const constants = require('./constants.js')
 
 module.exports = {
         admin:function(req,res,next){
-            if( constants.admins.indexOf(req.session.user.email) != -1 ){
-                next()
-            }else{
+            if(!req.session.user || constants.admins.indexOf(req.session.user.email) == -1 ){
                 res.sendStatus(403)
+            }else{
+                next()
             }
         },
         artist:function(req,res,next){
-            if( req.body.id != req.session.user.id ){
-                res.sendStatus(403)
+            if(!req.session.user){
+                res.redirect('/login')
             }else{
                 next()
             }

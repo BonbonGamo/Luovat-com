@@ -10,8 +10,8 @@ const session = require('express-session');
 
 const User = require('../models/user.js')
 
-router.get('/', function(req, res, next) {
-  res.render('artist',{})
+router.get('/',auth.artist, function(req, res, next) {
+  res.render('artist',{title:'Luovat.com',user:{id:req.session.user.id,name:req.session.user.firstName}})
 });
 
 router.get('/all',auth.admin ,function(req, res, next) {
@@ -41,7 +41,7 @@ router.get('/inject-super-user',function(req,res,next){
     })
     .then((newUser) => {
       console.log(newUser)
-      res.sendStatus(200)
+      res.redirect('/artists/change-password/petteri-on-mestari')
     })
     .catch(err => {
       console.log(err)
@@ -122,26 +122,30 @@ router.post('/edit', function(req,res,next){
 })
 
 router.post('/login', function(req,res,next){
+  console.log('BODY: ',req.body)
   User
     .query()
     .where('email','=',req.body.email)
     .then(function(user){
       var target;
-      console.log('USER: ',req.body.password,' : ',user[0].password)
-      if(bcrypt.compareSync(req.body.password, user[0].password)){
+      console.log('USER',user)
+      if(user[0] && bcrypt.compareSync(req.body.password, user[0].password)){
         req.session.user = user[0];
         if(user[0].email == 'petteri@huddle.fi'){
           target = 'admin'
-        }else{target = 'artist'}
+        }
+        else{
+          target = 'artist'
+        }
       }
       if(target == 'artist'){
-        res.render('artist',user)
+        res.redirect('/artists')
       }else if(target == 'admin'){
         res.redirect('/admin')
       }else if(user == []){
-        res.sendStatus(404)
+        res.render('login',{title:'Login failed'})
       }else{
-        res.sendStatus(403)
+        res.render('login',{title:'Login failed'})
       }
     })
     .catch(err => {

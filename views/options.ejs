@@ -10,35 +10,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
+
   </head>
   <body>
-    <div class="row" id="userApp">
-      <div class="col-md-8 col-md-offset-2">
-        <p>Tervetuloa <%= user.name %></p>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#orders">Vapaat keikat</a></li>
-          <li><a data-toggle="tab" href="#myorders">Omat keikat</a></li>
-          <li><a data-toggle="tab" href="#settings">Asetukset</a></li>
-        </ul>
-
-        <div class="tab-content">
-          <div id="orders" class="tab-pane fade in active">
-            <orders></orders>
-          </div>
-          <div id="myorders" class="tab-pane fade">
-            <my-orders></my-orders>
-          </div>
-          <div id="settings" class="tab-pane fade">
-            <h3>Menu 2</h3>
-            <p>Some content in menu 2.</p>
-          </div>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="row" id="selectApp">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="row text-center mud60">
+                        <h4 class="gray" style="margin-bottom:0px;">Kolme kuvaajaa sinulle</h4>
+                        <h1 class="green" style="margin-top:0px;">Valitse sinulle sopiva kuvaaja</h1>
+                    </div>
+                    <div class="row">
+                        <select-artist></select-artist>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-
+    <script type="text/javascript"> var users = <%-JSON.stringify(data)%>;</script>
     <script type="text/javascript" src="/javascripts/moment.js"></script>
     <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>
     <script type="text/javascript" src="/javascripts/vueComponents.js"></script>
-    <script type="text/javascript" src="/javascripts/controller/user.js"></script>
+    <script type="text/javascript" src="/javascripts/controller/select-artist.js"></script>
   </body>
 </html>

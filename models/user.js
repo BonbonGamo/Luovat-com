@@ -42,9 +42,29 @@ class User extends Model{
             balance:{type: 'number'},
             rekryMessage:{type: 'string'},
             employee:{type:'boolean'},
-         }   
+            }     
         };
     }
+
+    // static get relationMappings() {
+    //     const Order = require('./order.js')
+    //     const Order_User = require('./order_user.js')
+
+    //     return{
+    //         orders: {
+    //             relation: Model.ManyToManyRelation,
+    //             modelClass: Order,
+    //             join: {
+    //                 from: 'luovat_order.id',
+    //                 through: {
+    //                     from: 'order_user.userId',
+    //                     to: 'orded_user.orderId'
+    //                 },
+    //                 to: 'luovat_user.id'
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 module.exports = User;

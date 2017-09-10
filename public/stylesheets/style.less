@@ -1,7 +1,268 @@
 @white:#EAFDF8;
-@gray:#BBCBCB;
-@blue:#B4E1FF;
-@purple:#6665DD;
+@gray:#cececc;
+@darkgray:#324A5F;
+@blue:#7F95D1;
+@darkblue:#1B2A41;
+@green:#449b77;
+@darkgreen:#285140;
 @black:#18020C;
+@mgray:#e0e2e5;
+
+@warn:#dd6565;
+@success:#65dd8d;
+
+@import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,700');
+@roboto: 'Roboto', sans-serif;
+h1{
+    font-family: @roboto;
+}
+h2{
+    font-family: @roboto;
+}
+h3{
+    font-family: @roboto;
+}
+h4{
+    font-family: @roboto;
+}
+h5{
+    font-family: @roboto;
+    font-style: italic;
+}
+h6{
+    font-family: @roboto;
+}
+p{
+    font-family: @roboto;
+    font-weight: 100;
+    font-size: 16px;
+}
+.btn-display{
+    background: transparent;
+}
+.btn-play{
+    color:@green;
+    font-size:130px;
+}
+.btn-play:hover{
+    color:#285140;
+}
+.centered{
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%)
+}
+.company_bg{
+    background-image: url('../images/luovat_bg_3.jpg');
+    background-size: cover;
+}
+.gray{
+    color:@gray;
+}
+.green-line{
+    height:6px;
+    background: @green;
+    width:100%;
+}
+.m5{
+    margin:5px;
+}
+.m10{
+    margin:10px;
+}
+.m20{
+    margin:20px;
+}
+.m30{
+    margin:30px;
+}
+#main{
+    background-image: url('../images/luovat_bg_dark.jpg');
+    background-size:cover;
+    padding-top:70px;
+    padding-bottom:100px;
+}
+.mgray{
+    color:@mgray;
+}
+.mgray_bg{
+    background:@mgray;
+}
+.mini{
+    >h3{
+        font-size: 20px!important;
+        font-weight:bold;
+    }
+    >p{
+        font-size:14px!important;
+    }
+}
+.mud60{
+    margin-top: 60px;
+    margin-bottom: 60px !important;
+}
+.navigation-container{
+    position: fixed;
+    padding:10px;
+    color:@gray;
+}
+.package-container{
+    height:300px;
+    width:100%
+}
+.package-size-img{
+    height:100px;
+}
+.p5{
+    padding:5px !important;
+}
+.p10{
+    padding:10px !important;
+}
+.p20{
+    padding:20px !important;
+}
+.p30{
+    padding:30px !important;
+}
+.p60{
+    padding:60px !important;
+}
+.p120{
+    padding:60px !important;
+}
+.rekry_bg{
+    background-image: url('../images/luovat_bg_2.jpg');
+    background-size: cover;
+    height: inherit;
+}
+.white{
+    color:#EEE;
+}
+.green{
+    color:@green;
+}
+//BOOTSRAP
+
+.badge{
+    color:@green !important;
+    font-size: 20px !important;
+    font-family: @roboto;
+}
+.btn-checkbox{
+    background:transparent !important;
+    border: 2px solid @green !important;
+    height:28px;
+    width: 28px;
+    font-size: 26px !important;
+    color:@green !important;
+    padding:0px !important;
+    >i{
+        transform: translateY(-8px)
+    }
+}
+.btn-success{
+    background: @green !important;
+}
+.btn-danger-shallow{
+    background: transparent !important;
+    border: 2px solid @warn !important;
+    padding:15px !important;
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+    border-radius: 10px !important;
+    color:@warn;
+    font-size: 18px !important;
+    font-family: @roboto;
+    font-weight: 100px;
+    margin:10px !important;
+}
+.btn-primary-shallow{
+    background: transparent !important;
+    border: 2px solid @blue !important;
+    padding:15px !important;
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+    border-radius: 10px !important;
+    color:@blue;
+    font-size: 18px !important;
+    font-family: @roboto;
+    font-weight: 100px;
+    margin:10px !important;
+}
+.btn-success-shallow{
+    background: transparent !important;
+    border: 2px solid @green !important;
+    padding:15px !important;
+    padding-top:7px !important;
+    padding-bottom:7px !important;
+    border-radius: 10px !important;
+    color:@green;
+    font-size: 18px !important;
+    font-family: @roboto;
+    font-weight: 100px;
+    margin:10px !important;
+}
+.btn-danger-shallow:hover{
+    padding:17px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin:9px !important;
+    color:@warn !important;
+}
+.btn-primary-shallow:hover{
+    padding:17px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin:9px !important;
+    color:@blue !important;
+}
+.btn-success-shallow:hover{
+    padding:17px !important;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    margin:9px !important;
+    color:@green !important;
+}
+.edit-order{
+    >.well{
+        min-height:120px;
+    }
+}
+.form-control{
+    border: 2px solid @green !important;
+}
+.jumbotron{
+    background: transparent !important;
+    color: #EEE !important;
+    margin-top:180px;
+    margin-bottom: 60px;
+    >p{
+        font-size:18px !important;
+    };
+    >h1{
+        font-size: 56px !important;
+    }
+}
+.panel{
+    border:none !important;
+    background: #EEE !important;
+}
+.panel-primary{
+    border:none !important;
+}
+.panel-heading{
+    background: @green !important;
+    border: 2px solid @green !important;
+    border-radius: 10px !important;
+    color:#EEE !important;
+    font-size: 18px !important;
+    font-family: @roboto;
+    font-weight: 100px;
+}
+.well-white{
+    background: #FFF !important;
+}
 
 

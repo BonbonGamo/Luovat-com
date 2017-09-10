@@ -1,5 +1,4 @@
 'use strict'
-
 const objection = require('objection');
 const Model = objection.Model;
 const constants = require('../scripts/constants.js');
@@ -8,7 +7,7 @@ const env = constants.migration;
 const knex = require('knex')(config[env]);
 Model.knex(knex);
 
-class Orded extends Model{
+class Order extends Model{
     static get tableName() {
         return 'luovat_order';
     }
@@ -21,6 +20,7 @@ class Orded extends Model{
         return this.total * 0.7;
     }
 
+
     static get jsonSchema () {
         return {
         type: 'object',
@@ -28,23 +28,55 @@ class Orded extends Model{
         properties: {
             id: {type: 'integer'},
             clientName: {type: 'string'},
+            clientCompany: {type:'string'},
             clientEmail: {type: 'string'},
             clientMessage:{type:'string'},
-            clientPhone:{type:'string', minLength: 8, maxLength: 16},
-            password:{type:'string'},
-            passwordChangeToken:{type:'string'},
-            street: {type: 'string'},
-            city: {type: 'string'},
-            zipCode: {type: 'string'},
-            payment:{type: 'string'},
-            reelLink: {type: 'string'},
-            reelPassword:{type: 'string'},
+            clientPhone:{type:'string'},
+            eager:{type:'number'},
+            eagerMax:{type:'number'},
+            eagerExpires:{type:'string'},
+            artistSelection:{type:'number'},
+            eventCity: {type: 'string'},
+            eventDate:{type:'string'},
+            eventSize: {type: 'string'},
+            eventDescription: {type: 'string'},
+            extraHours:{type:'number'},
+            additional1:{type: 'boolean'},
+            additional2:{type: 'boolean'},
+            additional3:{type: 'boolean'},
             total:{type: 'number'},
-            invoice20:{type: 'string'},
-            invoice80:{type:'boolean'},
+            discountPercent:{type:'number'},
+            pending:{type:'boolean'},
+            pendingFreedBy:{type:'string'},
+            invoice20:{type:'boolean'},
+            invoice20MadeBy:{type:'string'},
+            invoice100:{type:'boolean'},
+            invoice100MadeBy:{type:'string'},
+            closed:{type:'boolean'},
+            closedBy:{type:'string'},
+            deleted:{type:'boolean'}
          }   
         };
     }
-}
 
+    static get relationMappings() {
+        const User = require('./user.js')
+        const Order_User = require('./order_user.js')
+
+        return{
+            users: {
+                relation: Model.ManyToManyRelation,
+                modelClass: User,
+                join: {
+                    from: 'luovat_user.id',
+                    through: {
+                        from: 'order_user.userId',
+                        to: 'order_user.orderId'
+                    },
+                    to: 'luovat_order.id'
+                }
+            }
+        }
+    }
+}
 module.exports = Order;
