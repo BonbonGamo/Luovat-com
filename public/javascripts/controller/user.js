@@ -4,7 +4,8 @@ Vue.component('signBtn',{
         signOrder:function(){
             $.post('/orders/pickup',{orderId:this.order.id}).then(function(response){
                 alert(response)
-            })
+                this.$parent.updateOrders();
+            }.bind(this))
         }
     },
     template:'<button v-on:click="signOrder()" class="btn btn-success-shallow">Ilmottaudu</button>'
@@ -12,23 +13,37 @@ Vue.component('signBtn',{
 
 Vue.component('orders',{
     props:['orders'],
+    created:function(){
+        this.orders = [];
+    },
+    methods:{
+        updateOrders:function(){
+            $.get('/orders/pickups').then(function(response){
+                $.each(response.open,function(key,object){
+                    object.hashId = '#order' + object.id;
+                    object.orderId = 'order' + object.id;
+                    object.moment = moment(object.date,'YYYY-MM-DD').locale('fi').format('LL')
+                    if(object.moment.indexOf('Invalid') != -1){
+                        object.moment = 'Aikaa ei sovittu'
+                    }
+                })
+                this.orders = response.open;
+            }.bind(this))
+        }
+    },
     beforeMount:function(){
-        $.get('/orders/pickups').then(function(response){
-            $.each(response,function(key,object){
-                object.hashId = '#order' + object.id;
-                object.orderId = 'order' + object.id;
-                object.moment = moment(object.date,'YYYY-MM-DD').locale('fi').format('LL')
-            })
-            this.orders = response;
-        }.bind(this))
+        this.updateOrders();
     },
     template:'<div>'+
                 '<div class="panel-group">'+
                     '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><span class="badge" style="text-transform:uppercase;">{{ order.size }}</span> <i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</div>'+
+                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
                         '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
-                            '<div>{{ order.message }}</div>'+
-                            '<signBtn v-bind:order="order"></signBtn>'+
+                            '<div>'+
+                            '<p><strong>Tilauksen viesti</strong></p>'+
+                            '<p>{{ order.message }}</p>'+
+                            '</div>'+
+                            '<signBtn style="float:right" v-bind:order="order"></signBtn>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+
@@ -36,9 +51,9 @@ Vue.component('orders',{
 })
 
 Vue.component('edit-order',({
-    props:['order'],
-    beforeMount:function(){
-            console.log('Order ',this.order)
+    props:['order','ready'],
+    created:function(){
+            this.ready = false;
     },
     methods:{
         increase:function(t){
@@ -54,6 +69,13 @@ Vue.component('edit-order',({
                 this.order[t] = true
             }else{
                 this.order[t] = false
+            }
+        },
+        readyState:function(){
+            if(!this.ready){
+                this.ready = true;
+            }else{
+                this.ready = false;
             }
         },
         postEdit:function(){
@@ -104,8 +126,18 @@ Vue.component('edit-order',({
                 '</button>'+
             '</center>'+
         '</div>'+
-        '<div class="col-xs-12">'+
-            '<button class="btn btn-success">Tallenna muutokset</button>'+
+        '<div class="col-xs-4">'+
+            '<button class="btn btn-success" v-on:click="postEdit()">Tallenna muutokset</button>'+
+        '</div>'+
+        '<div class="col-xs-5">'+
+            '<p>Työ on suoritettu loppuun'+
+            '<button class="btn btn-checkbox m5" v-on:click="readyState()">'+
+                '<i v-if="ready" class="fa fa-check" aria-hidden="true"></i>'+
+            '</button>'+
+            '</p>'+
+        '</div>'+
+        '<div class="col-xs-3">'+
+            '<button v-bind:disabled="!ready" class="btn btn-success" v-on:click="postReady()">Työ valmis</button>'+
         '</div>'+
     '</div>'
 }))

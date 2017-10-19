@@ -7,7 +7,8 @@ const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
 const session = require('express-session');
 
-const Order = require('../models/order.js')
+const Order       = require('../models/order.js')
+const Order_User  = require('../models/order_user.js')
 
 //SEND ORDER LISTING TO ADMIN PAGE
 router.get('/',auth.admin, function(req, res, next) {
@@ -22,29 +23,54 @@ router.get('/',auth.admin, function(req, res, next) {
       })
 });
 
-//SEND ORDER LISTING TO USER PAGE
+//SEND FREED ORDERS TO ARTIST PAGE
 router.get('/pickups',auth.artist, function(req, res, next) {
-    Order
+    var userOrders = [];
+    Order_User
       .query()
-      .where('pending',false)
-      .then((orders) => {
-        //FILTER DATA NOT TO BE SENT TO USER
-        var data = [];
-        console.log('ORDERS: ', orders)
-          _.forEach(orders,function(order){
-            data.push({
-              id:order.id,
-              message:order.clientMessage,
-              date:order.eventDate,
-              city:order.eventCity, 
-              size:order.eventSize
-            })
-          })
-          res.send(data)
+      .where('userId',req.session.user.id)
+      .then(relations => {
+        console.log('RELATIONS: ')
+        _.forEach(relations, (relation) => {
+          console.log(relation.orderId)
+          userOrders.push(relation.orderId)
         })
-      .catch(err => {
-        console.log(err)
-        res.sendSatus(500)
+      })
+      .then((relations)=>{
+        //VANHA ORDERS
+        Order
+        .query()
+        .where('pending',false)
+        .andWhere('artistSelection',null)
+        .then((orders) => {
+          //FILTER DATA NOT TO BE SENT TO USER
+          var data = {users:[],open:[]};
+            _.forEach(orders,function(order){
+              if(userOrders.indexOf(order.id) != -1){
+                data.users.push({
+                  id:order.id,
+                  message:order.clientMessage,
+                  date:order.eventDate,
+                  city:order.eventCity, 
+                  size:order.eventSize
+                })
+              }else{
+                data.open.push({
+                  id:order.id,
+                  message:order.clientMessage,
+                  date:order.eventDate,
+                  city:order.eventCity, 
+                  size:order.eventSize
+                })
+              }
+            })
+            res.send(data)
+          })
+        .catch(err => {
+          console.log(err)
+          res.sendSatus(500)
+        })
+        //VANHA ORDERS
       })
 });
 
@@ -54,7 +80,6 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
       .where('artistSelection',parseInt(req.session.user.id))
       .andWhere('deleted',null)
       .then((orders) => {
-        console.log('ORDERS 57: ', orders)
         res.send(orders)
       })
       .catch(err => {
@@ -67,7 +92,6 @@ router.post('/artist-edit-order',auth.artist,function(req,res,next){
   var add1 = (req.body.add1 == 'true')
   var add2 = (req.body.add2 == 'true')
   var add3 = (req.body.add3 == 'true')
-  
   Order
     .query()
     .patch({

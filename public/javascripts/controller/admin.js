@@ -59,19 +59,28 @@ Vue.component('add-order',{
                     this.add2 = ""
                     this.add3 = ""
                     alert('Tilaus lisätty')
+                    this.$parent.updateOrders();
                 }.bind(this))
             }
         }
     },
-
+    computed:{
+        validPhone:function(){
+            console.log(validatePhone(this.phone))
+            return validatePhone(this.phone);
+        },
+        validEmail:function(){
+            return validateEmail(this.email);
+        }
+    },
     template:'<div class="panel panel-default">'+
                 '<div class="panel-heading">Tee tilaus</div>'+
                 '<div class="panel-body">'+
-                    '<label for="nm">Tilaajan nimi: <span v-if="name && name.length > 2"> OK! </span></label>'+
+                    '<label for="nm">Tilaajan nimi: <span class="isOk" v-if="name && name.length > 2"> OK! </span></label>'+
                     '<input class="form-control" id="nm" type="text" v-model="name">'+
-                    '<label for="em" >Sähköpostiosoite </label>'+
+                    '<label for="em" >Sähköpostiosoite <span class="isOk" v-if="validEmail"> OK! </span></label>'+
                     '<input class="form-control" id="em" type="text" v-model="email">'+
-                    '<label for="ph" >Puhelinnumero <span v-if="email && email.length > 7"> OK! </span></label>'+
+                    '<label for="ph" >Puhelinnumero <span class="isOk" v-if="validPhone"> OK! </span></label>'+
                     '<input class="form-control" id="ph" type="text" v-model="phone">'+
                     '<label for="ms" >Viesti Luoville </label>'+
                     '<textarea class="form-control" id="ms" type="text" v-model="message" rows="5"></textarea>'+
@@ -241,7 +250,7 @@ Vue.component('users',{
     methods:{
 
     },
-    template:'<div class="panel panel-default panel700"><div class="panel-heading">Käyttäjät <span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}</span></div><div class="panel-body">'+
+    template:'<div class="panel panel-default"><div class="panel-heading">Käyttäjät <span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}</span></div><div class="panel-body  panel700">'+
                     '<div class="panel-group" v-for="user in users">'+
                         '<div class="panel panel-primary">'+
                             '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="user.hashId">'+
@@ -367,21 +376,36 @@ Vue.component('orders',{
 
         this.updateOrders();
     },
-    template:'<div class="panel panel-default panel700"><div class="panel-heading"><orders-dropdown v-bind:filter="filter"></orders-dropdown><span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}</span></div>'+
-                '<div class="panel-body">'+
-                    '<div class="panel-group" v-for="order in filteredList">'+
-                        '<div class="panel panel-primary">'+
-                            '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="order.hashId">'+
-                                '{{ order.clientName }}'+
-                                '<i v-bind:class="order.statusClass" aria-hidden="true"></i>  <i class="pull-right">{{ order.status }}</i>'+
-                            '</div>'+
-                            '<div v-bind:id="order.orderId" class="collapse">'+
-                                '<order v-bind:order="order"></order>'+
-                                '<p>/orders/artist-options/{{ order.id }}/{{ order.clientToken }}</p>'+
-                            '</div>'+
+    template:'<div class="row">'+
+                '<div class="col-md-6">'+
+                    '<div class="panel panel-default">'+
+                        '<div class="panel-heading">'+
+                            '<orders-dropdown v-bind:filter="filter"></orders-dropdown>'+
+                            '<span class="panel-heading-pull-right">'+
+                                '<i class="fa fa-user-o" aria-hidden="true"></i>'+
+                                '{{ length }}'+
+                            '</span>'+
                         '</div>'+
-                    '<div>'+              
-            '</div></div>'
+                        '<div class="panel-body  panel700">'+
+                            '<div class="panel-group" v-for="order in filteredList">'+
+                                '<div class="panel panel-primary">'+
+                                    '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="order.hashId">'+
+                                        '{{ order.clientName }}'+
+                                        '<i v-bind:class="order.statusClass" aria-hidden="true"></i>  <i class="pull-right">{{ order.status }}</i>'+
+                                    '</div>'+
+                                    '<div v-bind:id="order.orderId" class="collapse">'+
+                                        '<order v-bind:order="order"></order>'+
+                                        '<p>/orders/artist-options/{{ order.id }}/{{ order.clientToken }}</p>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+              
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="col-md-6">'+
+                    '<add-order></add-order>'+
+                '</div>'+
+            '</div>'
 });
 
 

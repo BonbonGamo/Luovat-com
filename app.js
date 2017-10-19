@@ -11,8 +11,6 @@ const db = require('./scripts/db.js')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session);
 
-
-
 const index = require('./routes/index');
 const users = require('./routes/users');
 const orders = require('./routes/orders');
@@ -35,6 +33,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node', express.static(__dirname + '/node_modules/'))
 
 var sessionStore;
+
 if(!constants.redis){
   sessionStore = {
     secret: constants.sessionSecret,
@@ -59,6 +58,10 @@ app.use('/', index);
 app.use('/artists', users);
 app.use('/orders', orders);
 app.use('/admin', admin);
+
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!')
+})
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,0 +1,47 @@
+TODO:
+    
+    ADMIN
+    -POSTMARK
+    -Tilauksen tietojen muokkaus
+    -Asetukset
+        *Hintojen muokkaus
+        *Vanhat asetusversiot
+        *Alekoodit
+        *Tilastot
+            -Avoin komissio
+            -Saatu komissio
+            -Tilausten määrä
+    
+    ARTIST
+    -POSTMARK
+    -Tilaukset, johon ilmottauduttu
+        *Status
+    -Aktiiviset Tilaukset
+        *Tilauksen saldo
+    -Tehdyt Tilaukset
+    -Saldo
+    -Asetukset
+        *Omat tiedot
+    -Rekry
+
+    ORDERS
+    -
+    
+    CLIENT (PH1.2)
+    -Asiakasrekisteri
+    
+    MUUTA
+    -Tietosuojatarkastelu
+        *Get requestit ei requestin body
+    -Asiakassivut
+        *Design
+            -Pakolliset ja lisätiedot erikseen
+            -Landing napit: Näin tilaat ja tee tilaus
+
+    HINNOITTELU
+    - Tekstitys     : 50€
+    - Ilmakuvaus    : 100€
+    - Voiceover     : Sopimuksen mukaan 
+    - Lisätunti     : 50€
+    
+    

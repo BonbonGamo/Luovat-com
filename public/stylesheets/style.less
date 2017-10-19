@@ -12,7 +12,20 @@
 @success:#65dd8d;
 
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300');
+@import url('https://fonts.googleapis.com/css?family=Reem+Kufi');
+
+@opensans: 'Open Sans', sans-serif;
 @roboto: 'Roboto', sans-serif;
+@reem: 'Reem Kufi', sans-serif;
+
+.roboto{
+    font-family: @roboto;
+}
+.opensans{
+    font-family: @opensans;
+}
+
 h1{
     font-family: @roboto;
 }
@@ -37,6 +50,15 @@ p{
     font-weight: 100;
     font-size: 16px;
 }
+body, html, #mainApp {
+    height: 100%;
+    width:100%;
+}
+input, textarea, .form-control {
+    background: rgba(255,255,255,0.3) !important;
+    border: none !important;
+    color:@white !important;
+}
 .btn-display{
     background: transparent;
 }
@@ -46,6 +68,10 @@ p{
 }
 .btn-play:hover{
     color:#285140;
+}
+.bg-black{
+    color:@white;
+    background: black;
 }
 .centered{
     position: absolute;
@@ -65,8 +91,12 @@ p{
     background: @green;
     width:100%;
 }
+#luovat-navbar{
+    background: rgba(0,0,0,0.2);
+    border:none;
+}
 .m5{
-    margin:5px;
+    margin:5px !important;
 }
 .m10{
     margin:10px;
@@ -77,11 +107,20 @@ p{
 .m30{
     margin:30px;
 }
+.p5{
+    padding: 5px !important;
+}
 #main{
+    height:100%;
     background-image: url('../images/luovat_bg_dark.jpg');
     background-size:cover;
-    padding-top:70px;
-    padding-bottom:100px;
+}
+.bg-green{
+    background: @green;
+}
+.bg-main{
+    background-image: url('../images/luovat_bg_dark.jpg');
+    background-size: cover;
 }
 .mgray{
     color:@mgray;
@@ -107,12 +146,37 @@ p{
     padding:10px;
     color:@gray;
 }
+.order-form-input{
+    border:2px solid @green !important;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    height:30px;
+    margin:0px;
+    color:@green !important;
+}
+.order-form-input-area{
+    border:2px solid @green !important;
+    border-radius: 10px;
+    margin:0px;
+    color:@green !important;
+}
+.order-form-button{
+    border:3px solid @green;
+    background: @green;
+    height:30px;
+    color:@white;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    margin:0px;
+}
 .package-container{
     height:300px;
     width:100%
 }
 .package-size-img{
     height:100px;
+    margin-top:40px;
+    margin-bottom: 30px;
 }
 .p5{
     padding:5px !important;
@@ -132,10 +196,18 @@ p{
 .p120{
     padding:60px !important;
 }
+.r-m{
+    padding-top:70px;
+    padding-bottom: 70px;
+}
 .rekry_bg{
     background-image: url('../images/luovat_bg_2.jpg');
     background-size: cover;
     height: inherit;
+}
+#slogan{
+    padding-top: 170px;
+    padding-bottom: 50px;
 }
 .white{
     color:#EEE;
@@ -161,6 +233,59 @@ p{
     >i{
         transform: translateY(-8px)
     }
+}
+.btn-luovat{
+    background: transparent;
+    border: 2px solid @green !important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px; 
+}
+.btn-luovat-green{
+    background: @green;
+    border: 2px solid @green !important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px; 
+    color: @white;
+}
+.btn-luovat-dark{
+    background: transparent;
+    border: 2px solid @black!important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px;
+    color:@black;
+}
+.btn-luovat-dark:hover{
+    background: @black;
+    color:white !important;
+}
+.btn-luovat-green:hover{
+    background: @white;
+    color:@green !important;
+}
+.btn-luovat:hover{
+    background: @green;
+    color:white !important;
+}
+@media (max-width:767px){
+    .btn-luovat{
+        width:90%;
+        margin-bottom:10px !important; 
+    }
+}
+.btn-link{
+    color:@green !important;
 }
 .btn-success{
     background: @green !important;
@@ -230,9 +355,6 @@ p{
         min-height:120px;
     }
 }
-.form-control{
-    border: 2px solid @green !important;
-}
 .jumbotron{
     background: transparent !important;
     color: #EEE !important;
@@ -244,6 +366,30 @@ p{
     >h1{
         font-size: 56px !important;
     }
+}
+.landing-h1{
+    font-size: 70px !important;
+}
+@media (max-width:767px){
+    .landing-h1{
+        font-size: 50px !important;
+    }
+}
+.navbar{
+    width:100% !important;
+}
+.navbar-brand{
+    font-family: @opensans !important;
+    text-transform: uppercase;
+    font-size:14px !important;
+}
+.navbar-nav{
+    font-family: @reem !important;
+}
+.nav-some-link{
+    color:@white;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
 }
 .panel{
     border:none !important;
@@ -261,8 +407,39 @@ p{
     font-family: @roboto;
     font-weight: 100px;
 }
+#well1{
+    background-image:url('../images/luovat_bg_dark.jpg');
+}
+#well2{
+    background-image:url('../images/luovat_bg_dark.jpg');  
+}
+#well3{
+    background-image:url('../images/luovat_bg_dark.jpg');
+}
+.well-order{
+    background-size: cover;
+    padding:20px;
+    background-image:url('../images/luovat_bg_dark.jpg');
+    border: none !important;
+    border-radius:10px;
+    color: white;
+    margin-top:5px !important;
+    min-height: 300px !important;
+}
+
+.well-order:hover{
+    margin-top:0px !important;
+    box-shadow: 7px 7px 1px rgba(0,0,0,0.2);
+}
 .well-white{
     background: #FFF !important;
+}
+@media (min-width: 768px) {
+  .navbar-nav.navbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translatex(-50%);
+  }
 }
 
 

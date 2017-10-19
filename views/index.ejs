@@ -4,7 +4,7 @@
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel='stylesheet' href='/stylesheets/style.css' />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -12,58 +12,98 @@
     <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
   </head>
   <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="luovat-navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><img class="" style="height:100%;" src="./images/luovat_l.png"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse" >       
+          <ul class="nav navbar-nav navbar-center">
+            <li><a href="#order">TILAA</a></li>
+            <li><a href="#order">ESIMERKKEJÄ</a></li>
+            <li><a href="#rekry">REKRY</a></li>
+            <li><a href="#company">YRITYS</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" style="margin:10px;">
+            <li><span>
+              <a href="#order" class="nav-some-link"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#rekry" class="nav-some-link"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-some-link"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-some-link"><i class="fa fa-vimeo" aria-hidden="true"></i></a>
+            </span></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
     <div id="mainApp">
-      <div id="main">
-        <div class="row">
-          <div class="col-md-5 col-md-offset-1 col-lg-3 col-lg-offset-1">
-            <div class="jumbotron">
-              <p class="green" style="margin-bottom:5px;text-transform:uppercase;">Edullinen, vaivaton ja kevyt</p>
-              <h1 style="margin-bottom:0px;margin-top:0px;">Videotuotanto</h1>
-              <div class="green-line"></div>
-              <p style="margin-top:10px;">Tarjoamme kevyitä Videotuotantopaketteja edullisesti. Meiltä löytyy jotain jokaiselle kevyen budjetin turvin</p> 
-            </div>
+        <div id="main" class="row bg-black">
+          <div class="col-md-12 white" style="height:100%"> 
+              <div class="centered text-center">
+                <h1 class="opensans landing-h1"> 
+                  LUOVAT.COM
+                </h1>
+                <p class="opensans" style="margin-bottom:20px">
+                  Uusi vaivaton tapa hankkia videotuotanto
+                </p>
+                <button class="btn btn-luovat btn-sm">Miten tilaan</button>
+                <button class="btn btn-luovat btn-sm">Tilaa</button>
+                <button class="btn btn-luovat btn-sm">Hae töihin</button>
+              </div>
           </div>
         </div>
-      </div>
-      <div id="order" class="row" style="padding-top:60px;margin-bottom:60px">
-        <div class="col-md-12">
+        <div id="slogan" class="row bg-black">
+          <div class="col-md-12">
+            <center>
+              <h6 class="green opensans"> 
+                LUOVAT.COM
+              </h6>
+              <h2 class="opensans">
+                NYKYAIKAINEN EDULLINEN VAIVATON<br>VIDEOTUOTANTO
+              </h2>
+              <p class="opensans">
+                Luovat.com tarjoaa edullisesti huippulaatuisia videotuotantoja.<br>
+              </p>
+              <a class="btn btn-link">
+                Lue lisää ..
+              </a>
+            </center>
+          </div>
+        </div>
+        <div id="order" class="row r-m">
           <order-form></order-form>
         </div>
-      </div>
-      <div id="rekry" class="row rekry_bg">
-        <div class="col-md-6 mgray_bg p120 mini">
-          <h3 class="white" >Rekrytoimme uusia kuvaajia</h3>
-          <h1>Haluatko mukaan Luovien kuvaaja tiimiin?</h1>
-          <br>
-          <p>Oletko luova ja innokas alan osaaja tai harrastaja? Jos videotuotantojen teko kiinnostaa opintojesi tai muiden töiden ohella, hae rohkeasti kuvaajaverkostoomme. Etsimme jatkuvasti innokkaita osaajia ympäri Suomea.Meidän kanssamme pääset ohjatusti sekä omatoimisesti kehittymään tuotantojen eri osa-alueissa. Tarjoamme erittäin joustavan sekä motivoivan tavan tienata. Lisätietoja saat ottamalla meihin yhteyttä. Hae joukkoomme täyttämällä lomake niin olemme sinuun yhteydessä.</p>
-          <br>
-          <rekry-button></rekry-button>
+        <div id="rekry" class="row r-m bg-black white">
+          <div class="col-md-12">
+            <center>
+              <h6 class="green opensans"> 
+                LUOVAT.COM
+              </h6>
+              <h2 class="opensans">
+                HALUATKO MUKAAN LUOVIEN TIIMIIN
+              </h2>
+              <p class="opensans">
+                Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
+              </p>
+              <a class="btn btn-link" data-toggle="collapse" data-target="#rekryCollapse">
+                Avaa rekry lomake tästä
+              </a>
+            </center>
+          </div>
+          <div class="bg-main collapse" id="rekryCollapse">
+          <rekry-form></rekry-form>
+          </div>
         </div>
-        <div style="min-height:200px;" class="col-md-6">
-          <p></p>
+        <div id="company" class="row">
+          
         </div>
-      </div>
-      <div id="company" class="row company_bg">
-        <div class="col-md-6">
-          <p></p>
-        </div>
-        <div class="col-md-6 mgray_bg p120 mini">
-          <h3 class="white" >Rekrytoimme uusia kuvaajia</h3>
-          <h1 class="green">Keitä ovat Luovat</h1>
-          <br>
-          <p>Videot ovat nykypäivänä yksi tärkeimmistä ja käytetyimmistä markkinoinnin muodoista. Haluamme laskea kynnystä kevyiden videotuotantojen tilaukselle ja tarjota vaivatonta tapaa tilata videoita myös pienemmällä budjetilla.
-          <br><br>Meidän kauttamme voit nopeasti ja luotettavasti tilata videotuotantoa esimerkiksi yritystapahtumiin ja sisäisen viestinnän tueksi tai yritysesittelyyn omasta yrityksestäsi.
-          <br><br>Toimintamallissamme on sivuutettu hintavat välikädet sekä muut ylimääräiset kulut. Tarjoamme kustannustehokkaampaa videotuotantoa kaikille. Asiakaskuntaamme kuuluvat niin suuret kuin pienetkin yritykset, sekä yksityishenkilöt.
-          <br><br>Missiomme on tarjota helposti ja vaivattomasti tilattavaa videotuotantoa ja visiomme on olla koko Suomen kattava videotuotantoverkosto, joka työllistää innokkaita ja luovia alan ammattilaisia.</p>
-          <br>
-          <rekry-button></rekry-button>
-        </div>
-      </div>
-      <div id="navigation">
-
-      </div>
-      <order-form></order-form>
     </div>
+    <script type="text/javascript" src="/javascripts/mainController.js"></script>
     <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>
     <script type="text/javascript" src="/javascripts/vueComponents.js"></script>
     <script type="text/javascript" src="/javascripts/controller/main.js"></script>
