@@ -197,7 +197,7 @@
 
 //VUE COMPONENTS
 Vue.component('order-form',{
-    props:['formData','errorMsg','showErrors','date'],
+    props:['formData','errorMsg','showErrors','date','tip'],
     created:function(){
         this.formData = {
             name:'',
@@ -212,6 +212,7 @@ Vue.component('order-form',{
         }
         this.errorMsg = '';
         this.showErrors = false;
+        this.tip = ''
     },
     methods:{
         validForm:function(){
@@ -266,107 +267,104 @@ Vue.component('order-form',{
                     this.formData.add1 = "";
                     this.formData.add2 = "";
                     this.formData.add3 = "";
-                    $('#ask-additional').hide()
+                    this.tip = 'Olemme nyt vastaanottaneet tilauksen ja voitte poistua sivulta. Jos sinulle kuitenkin jäi vielä kysyttävää voit olla yhteydessä meihin osoitteessa info@luovat.com'
+                    $('.hide-order-form').hide()
                     $('#ready').fadeIn()
                 }.bind(this))
             }
         },
         newOrder:function(){
-            $('#ready').hide()
+            this.tip = ''
+            $('.hide-order-form').hide()
             $('#select-size').fadeIn()
         },
         openForm:function(size){
             this.formData.size = size;
-            $('#select-size').hide()
-            $('#ask-name').fadeIn()
-        },
-        askEmail:function(){
-            if(!this.formData.name || this.formData.name.length < 3){
-                alert('Muista antaa oikea nimesi')
-                return;
-            }
-            $('#ask-name').hide()
-            $('#ask-email').fadeIn()
-        },
-        askMsg:function(){
-            if(!this.formData.email || !validateEmail(this.formData.email)){
-                alert('Sähköpostiosoitteessa on jotain kummaa!')
-                return;
-            }
-            $('#ask-email').hide()
-            $('#ask-message').fadeIn()
+            this.tip = 'Valitsit '+this.formData.size.toUpperCase() + '-kokoisen paketin. Tarvitsemme hieman tietoja tilausta varten'
+            $('.hide-order-form').hide()
+            $('#askFirst').fadeIn()
         },
         askAdditional:function(){
-            if(!this.formData.message){
-                alert('Kerro videotuotantotarpeestasi luoville')
+            if(!this.formData.message || !this.formData.name || this.formData.name.length < 3 || !this.formData.email || !validateEmail(this.formData.email)){
+                alert('Täyty tilaajan tiedot oikein')
                 return;
             }
-            $('#ask-message').hide()
+            this.tip = 'Hienoa '+ this.formData.name+'! Voit täyttää vielä valitsemasi lisätiedot tästä tai lähettää tilauksen sellaisenaan. Olet valinnut ' + this.formData.size.toUpperCase() + '-kokoisen paketin. Olemme ensisijaisesti yhteydessä sähköpostiosoitteeseen ' + this.formData.email
+            $('.hide-order-form').hide()
             $('#ask-additional').fadeIn()
         },
     },
     template:
-
         '<div class="col-md-10 col-md-offset-1">'+
-            '<div id="select-size">'+
-                '<div class="col-md-12"><span><a class="btn btn-sm green btn-luovat">Miten tilaan</a> <a class="btn green btn-sm btn-luovat">Vertaile paketteja</a></span></div>'+
-                '<order-size style="padding:5px" caption="PIENI" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
-                '<order-size style="padding:5px" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
-                '<order-size style="padding:5px" caption="ISO" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
-            '</div>'+
-            '<div id="ask-name" class="r-m"style="display:none;">'+
+            '<div class="col-sm-6 col-sm-offset-3">'+
                 '<center>'+
-                    '<h3 class="opensans">Valitsit {{ formData.size }}-kokoisen paketin.</h3>'+
-                    '<p>Tarvitsemme muutamia vielä tietoja tilauksen tekemiseen.</p>'+
-                    '<input class="order-form-input" placeholder="Nimesi" v-model="formData.name"></input><button class="order-form-button" v-on:click="askEmail()">Seuraava</button>'+
+                    '<h2 class="opensans">'+
+                        'TILAA VIDEOTUOTANTO'+
+                    '</h2>'+
+                    '<p class="opensans">'+
+                        '{{ tip }}'+
+                    '</p>'+
                 '</center>'+
             '</div>'+
-            '<div id="ask-email" class="r-m"style="display:none;">'+
+            '<div id="select-size" class="hide-order-form">'+
+                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-luovat">Miten tilaan</a> <a class="btn green btn-xs btn-luovat">Vertaile paketteja</a></span></div>'+
+                '<order-size small="Valitse" caption="SMALL" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
+                '<order-size small="Valitse" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
+                '<order-size small="Valitse" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
+            '</div>'+
+            '<div id="askFirst" class="hide-order-form green col-sm-6 col-sm-offset-3"style="display:none;">'+
                 '<center>'+
-                    '<p>Saat sähköpostiisi yhteenvedon tilauksesta</p>'+
-                    '<input class="order-form-input" placeholder="Sähköpostiosoitteesi" v-model="formData.email"></input><button class="order-form-button"  v-on:click="askMsg()">Seuraava</button>'+
+                    '<h3 class="opensans">1/2 Tilaajan tiedot </h3>'+
+                '</center>'+
+                '<input class="form-control m5 order-form-input" placeholder="Nimesi" v-model="formData.name"></input>'+
+                '<input class="form-control m5 order-form-input" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email">'+
+                '<textarea rows="10" class="form-control m5 order-form-input-area" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea>'+
+                '<center>'+
+                    '<button class="btn btn-sm btn-luovat" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-luovat" v-on:click="askAdditional()">Seuraava</button>'+
                 '</center>'+
             '</div>'+
-            '<div id="ask-message" class="col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
+            '<div id="ask-additional" class="hide-order-form green col-sm-6 col-sm-offset-3" style="display:none;">'+
                 '<center>'+
-                    '<p>Kerro viestissä lyhyesti, minkä laisesta työstä on kyse? Mitä kaikkea videotuotannossa tulisi olla?</p>'+
-                    '<textarea rows="10" class="form-control order-form-input-area" placeholder="Viesti luoville" v-model="formData.message"></textarea>'+
-                    '<button class="btn btn-sm m5 btn-luovat-green" v-on:click="askAdditional()">Seuraava</button>'+
+                    '<h3 class="opensans">2/2 Lisätiedot ja tilauksen lähetys </h3>'+
+                '</center>'+
+                '<input class="form-control m5 order-form-input-area" placeholder="Yritys" v-model="formData.company"></input>'+
+                '<input class="form-control m5 order-form-input-area" placeholder="Puhelin" v-model="formData.phone"></input>'+
+                '<input class="form-control m5 order-form-input-area" placeholder="Kaupunki" v-model="formData.eventCity"></input>'+
+                '<input class="form-control m5 order-form-input-area" placeholder="Päivä" type="date" v-model="formData.date"></input>'+ 
+                '<label class="green m10" for="12" >  Tekstitys +50€</label>'+
+                '<input type="checkbox" id="a1" v-model="formData.add1"><br>'+
+                '<label class="green m10" for="a2" >  Ilmakuvaus +100€</label>'+
+                '<input type="checkbox" id="a2" v-model="formData.add2"><br>'+
+                '<label class="green m10" for="a3" >  Voice over +100 - 300€ </label>'+
+                '<input type="checkbox" id="a3" v-model="formData.add3"><br><br>'+
+                '<center>'+
+                    '<button class="btn btn-sm btn-luovat" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-luovat" v-on:click="postOrder()">Lähetä tilaus</button>'+
                 '</center>'+
             '</div>'+
-            '<div id="ask-additional" class="col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
+            '<div id="ready" class="bg-white hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
                 '<center>'+
-                    '<h3 class="opensans">Melkein valmista {{ formData.name }}!</h3>'+
-                    '<p>Voit täyttää vielä valitsemasi lisätiedot tässä tai lähettää tilauksen.</p>'+
-                    '<input class="form-control m5 order-form-input-area" placeholder="Yritys" v-model="formData.company"></input>'+
-                    '<input class="form-control m5 order-form-input-area" placeholder="Puhelin" v-model="formData.phone"></input>'+
-                    '<input class="form-control m5 order-form-input-area" placeholder="Kaupunki" v-model="formData.eventCity"></input>'+
-                    '<input class="form-control m5 order-form-input-area" placeholder="Päivä" type="date" v-model="formData.date"></input><br>'+ 
-
-                    '<label class="green m10" for="12" >  Tekstitys +50€</label>'+
-                    '<input type="checkbox" id="a1" v-model="formData.add1">'+
-                    '<label class="green m10" for="a2" >  Ilmakuvaus +100€</label>'+
-                    '<input type="checkbox" id="a2" v-model="formData.add2">'+
-                    '<label class="green m10" for="a3" >  Voice over +100 - 300€ </label>'+
-                    '<input type="checkbox" id="a3" v-model="formData.add3">'+
-
-                    '<button class="btn btn-lg btn-luovat" v-on:click="postOrder()">Lähetä tilaus</button>'+
+                    '<button class="btn btn-lg r-m btn-luovat" v-on:click="newOrder()">Tee uusi tilaus</button>'+
                 '</center>'+
             '</div>'+
-            '<div id="ready" class="col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
+            '<div class="col-xs-12" style="margin-top:30px;">'+
                 '<center>'+
-                    '<h1 class="opensans">Olemme vastaanottaneet tilauksenne</h1>'+
-                    '<button class="btn btn-lg btn-luovat" v-on:click="newOrder()">Tee uusi tilaus</button>'+
+                    '<p>Tilaus	ei	ole	sitova	ja sen	lähettäminen on maksutonta.	Olemme	sinuun	yhteydessä vahvistaaksemme	tilauksen.</p>'+
                 '</center>'+
             '</div>'+
         '</div>'
 });
 
 Vue.component('order-size',{
-    props:['size','img','description','price','caption'],
-    created:function(){
+    props:['size','img','description','price','caption','small','bgId'],
+    mounted:function(){
         console.log(this.size)
-        this.img = '../images/luovat_'+this.size+'.png'
+        this.img = '../images/luovat_'+this.size+'.png';
+        this.bgId = 'well-'+this.size;
+    },
+    updated:function(){
+        console.log(this.size)
+        this.img = '../images/luovat_'+this.size+'.png';
+        this.bgId = 'well-'+this.size;
     },
     methods:{
         openForm:function(size){
@@ -374,17 +372,17 @@ Vue.component('order-size',{
         }
     },
     template:
-    '<div style="padding:5px;">'+
+    '<div>'+
         '<div class="well-order" v-on:click="openForm(size)">'+
-            '<center>'+
-                '<p>Valitse</p>'+
-                '<img class="package-size-img" v-bind:src="img">'+
-                '<h2 class="opensans">{{ caption }}</h2>'+
-            '</center>'+
-            '<p class="white opensans mini">{{ description }}</p>'+
-            '<center>'+
-            '<h2 class="opensans">{{ price }}€</h2>'+
-            '</center>'+
+            '<div v-bind:id="bgId" class="well-order-inner">'+
+            '</div>'+
+             '<div class="well-order-content">'+
+                '<p class="white" style="font-size:10px;transform:translateY(40px)">{{ small }}</p>'+
+                '<h2 style="line-height:50px;" class="white opensans">{{ caption }}</h2>'+
+                '<p class="white opensans" style="font-size:20px;">{{ description }}</p>'+
+                '<p class="white" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
+                '<h3 class="white opensans">{{ price }}€</h3>'+
+            '</div>'+
         '</div>'+
     '</div>'
 })
@@ -416,28 +414,27 @@ Vue.component('rekry-form',{
         }
     },
     template:
-        '<div>'+
-            '<div class="col-md-3 col-md-offset-3">'+
+        '<div class="row">'+
+            '<div class="col-md-6">'+
                 '<div class="form-group">'+
-                    '<label for="firstName">Etunimi</label>'+
-                    '<input class="form-control" type="text" id="firstName" v-model="form.firstName"></input>'+
-                    '<label for="lastName" >Sukunimi</label>'+
-                    '<input class="form-control" type="text" id="lastName" v-model="form.lastName"></input>'+
+                    '<input class="order-form-input-area form-control" type="text" placeholder="Etunimi" id="firstName" v-model="form.firstName"></input><br>'+
+                    '<input class="order-form-input-area form-control" type="text" placeholder="Sukunimi" id="lastName" v-model="form.lastName"></input>'+
                 '</div>'+
             '</div>'+
-            '<div class="col-md-3">'+
+            '<div class="col-md-6">'+
                 '<div class="form-group">'+
-                    '<label for="phone" >Puhelin</label>'+
-                    '<input class="form-control" type="text" id="phone" v-model="form.phone"></input>'+
-                    '<label for="email" >Sähköposti</label>'+
-                    '<input class="form-control" type="text" id="email" v-model="form.email"></input>'+
+                    '<input class="order-form-input-area form-control" placeholder="Puhelinnumero" type="text" id="phone" v-model="form.phone"></input><br>'+
+                    '<input class="order-form-input-area form-control" placeholder="Sähköposti" type="text" id="email" v-model="form.email"></input>'+
                 '</div>'+
             '</div>'+
-            '<div class="col-md-6 col-md-offset-3">'+
+            '<div class="col-md-12">'+
                 '<div class="form-group">'+
-                    '<label for="message" >Vapaa viesti luoville</label>'+
-                    '<textarea rows="5" class="form-control" type="text" id="message" v-model="form.message"></textarea>'+
+                    '<label class="green" for="message" >Vapaa viesti luoville</label>'+
+                    '<textarea rows="5" class="order-form-input-area form-control" placeholder="Kerro itsestäsi. Miksi sinut pitäisi rekrytoida luoviin?" type="text" id="message" v-model="form.message"></textarea>'+
                 '</div>'+
+            '</div>'+
+            '<div class="col-md-12 text-center">'+
+                '<button class="btn-luovat btn btn-sm">Lähetä</button><button class="btn-luovat btn btn-sm" data-dismiss="modal">Sulje</button>'+
             '</div>'+
         '</div>'
 })
