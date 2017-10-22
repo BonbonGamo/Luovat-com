@@ -5,14 +5,19 @@ const constants = require('./constants.js')
 module.exports = {
         admin:function(req,res,next){
             if(!req.session.user || constants.admins.indexOf(req.session.user.email) == -1 ){
-                res.sendStatus(403)
+                var err = new Error('Forbidden');
+                err.status = 403;
+                next(err);
             }else{
                 next()
             }
         },
         artist:function(req,res,next){
             if(!req.session.user){
-                res.redirect('/login')
+                console.log('Artist auth error')
+                var err = new Error('Forbidden');
+                err.status = 403;
+                next(err);
             }else{
                 next()
             }

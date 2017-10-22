@@ -8,6 +8,10 @@ function validatePhone(number){
     return re.test(number)
 }
 
+function configUrl(){
+  return window.location.origin
+}
+
 $(document).ready(function(){
   $(window).scroll(function(){
     if($(window).scrollTop() < 30){

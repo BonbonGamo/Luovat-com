@@ -9,10 +9,32 @@ const auth    = require('../scripts/auth.js');
 const session = require('express-session');
 
 const User = require('../models/user.js')
+const Order = require('../models/order.js')
 
 router.get('/',auth.artist, function(req, res, next) {
   res.render('artist',{title:'Luovat.com',user:{id:req.session.user.id,name:req.session.user.firstName}})
 });
+
+router.get('/artist-balance',(req,res,next) => {
+  console.log('BALANCE',req.session.user.id)
+  Order
+  .query()
+  .where('artistSelection',parseInt(req.session.user.id))
+  .andWhere('closed',false)
+  .then(cbOrders => {
+    console.log(cbOrders)
+    let sum = 0;
+    _.forEach(cbOrders,(order)=>{
+      sum = sum + (order.total / 100) * 70;
+    })
+    console.log('SUM:',sum)
+    res.send({sum:sum})
+  })
+  .catch(err => {
+    console.log('Err: ',err)
+    res.sendStatus(500)
+  })
+})
 
 router.get('/all',auth.admin ,function(req, res, next) {
   User
@@ -153,8 +175,6 @@ router.post('/login', function(req,res,next){
       res.sendStatus(500)
     })
 })
-
-
 
 router.get('/change-password/:token',function(req,res,next){
   User

@@ -182,13 +182,38 @@ Vue.component('order',{
     methods:{
         postForm:function(){
             var data = {
-                id:this.user.id,
-                clientName:this.clientName,
+                id:               this.order.id,
+                clientName:       this.order.clientName,
+                clientCompany:    this.order.clientCompany,
+                clientEmail:      this.order.clientEmail,
+                clientMessage:    this.order.clientMessage,
+                clientPhone:      this.order.clientPhone,
+                eventCity:        this.order.eventCity,
+                eventDate:        this.order.eventDate,
+                eventSize:        this.order.eventSize,
+                eventDescription: this.order.eventDescription,
+                extraHours:       this.order.extraHours || 0,
+                additional1:      this.order.additional1,
+                additional2:      this.order.additional2,
+                additional3:      this.order.additional3,
+                discountPercent:  this.order.discountPercent || 0,
             }
-            $.post('/artists/edit',data,function(response){
-                console.log(response)
+
+            if(!data.eagerMax) data.eagerMax = 3;
+            if(!data.extraHours) data.extraHours = 0;
+            if(!data.discountPercent) data.discountPercent = 0;
+
+
+            $.post('/orders/admin-edit-order',data).then(function(){
                 this.$parent.updateOrders();
-            })
+            }.bind(this))
+        },
+        boolean:function(t){
+            if(!this.order[t]){
+                this.order[t] = true
+            }else{
+                this.order[t] = false
+            }
         },
         freePending:function(){
             $.post('/orders/free-pending/'+this.order.id).then(function(){
@@ -197,8 +222,12 @@ Vue.component('order',{
             this.$parent.updateOrders()
         },
         didInvoice20:function(){
+            if(!this.order.invoice20Number){
+                alert('Anna laskulle numero')
+                return;
+            }
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
-                 $.post('/orders/invoice20/'+this.order.id).then(function(response){
+                 $.post('/orders/invoice20/'+this.order.id+'/'+this.order.invoice20Number).then(function(response){
                     alert('Laskutuksen status muutettu')
                 })
             }else{
@@ -207,8 +236,12 @@ Vue.component('order',{
             this.$parent.updateOrders();
         },
         didInvoice100:function(){
+            if(!this.order.invoice100Number){
+                alert('Anna laskulle numero')
+                return;
+            }
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
-                $.post('/orders/invoice100/'+this.order.id).then(function(response){
+                $.post('/orders/invoice100/'+this.order.id+'/'+this.order.invoice100Number).then(function(response){
                     alert('Laskutuksen status muutettu')
                 })
             }else{
@@ -225,12 +258,46 @@ Vue.component('order',{
     },
     template:
         '<div class="panel-body">'+
-            '<div>'+
-                '<button class="btn btn-success m5 w100" v-on:click="postForm()">Tallenna</button>'+
-                '<button class="btn btn-success m5 w100" v-on:click="freePending()">Vapauta kuvaajille</button>'+
-                '<button class="btn btn-primary m5 w100" v-bind:disabled="this.order.invoice20" v-on:click="didInvoice20()" type="text">Laskutettu 20%</button>'+
-                '<button class="btn btn-primary m5 w100" v-bind:disabled="this.order.invoice100" v-on:click="didInvoice100()" type="text">Laskutettu 100%</button>'+
-                '<button class="btn btn-danger m5  w100" v-on:click="deleteOrder()" type="text">Poista</button>'+
+            '<div class="form-group">'+
+                '<label for="clientName">Asiakas</label>'+
+                '<input class="form-control" id="clientName" v-model="order.clientName"></input>'+
+                '<label for="clientCompany">Yritys</label>'+
+                '<input class="form-control" id="clientCompany" v-model="order.clientCompany"></input>'+
+                '<label for="clientEmail">Sähköpostiosoite</label>'+
+                '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
+                '<label for="clientPhone">Puhelinnumero</label>'+
+                '<input class="form-control" id="clientPhone" v-model="order.clientPhone"></input>'+
+                '<label for="clientMessage">Viesti</label>'+
+                '<textarea rows="5" class="form-control" id="clientMessage" v-model="order.clientMessage"></textarea>'+
+                '<br>'+
+                '<label for="additional1">Tekstitys</label>'+
+                '<button id="additional1" class="btn btn-checkbox" style="float:right" v-on:click="boolean('+"'additional1'"+')">'+
+                    '<i v-if="order.additional1" class="fa fa-check" aria-hidden="true"></i>'+
+                '</button><br>'+
+                '<label for="additional2">Ilmakuvaus</label>'+
+                '<button id="additional2" class="btn btn-checkbox" style="float:right" v-on:click="boolean('+"'additional2'"+')">'+
+                    '<i v-if="order.additional2" class="fa fa-check" aria-hidden="true"></i>'+
+                '</button><br>'+
+                '<label for="additional3">Voice Over</label>'+
+                '<button id="additional3" class="btn btn-checkbox" style="float:right" v-on:click="boolean('+"'additional3'"+')">'+
+                    '<i v-if="order.additional3" class="fa fa-check" aria-hidden="true"></i>'+
+                '</button><br>'+
+                '<br>'+
+                '<p style="width:100%">Lisätyöt: <strong><span style="float:right">{{ order.extraHours || 0 }} tuntia</span></strong></p>'+
+                '<p style="width:100%">Tilauksen arvo <strong><span style="float:right">{{ order.showTotal || 0 }} €</span></strong></p>'+
+                '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showRevenue || 0 }} €</span></strong></p>'+
+                '<p style="width:100%">Komissio <strong><span style="float:right">{{ order.showComission || 0 }} €</span></strong></p>'+
+                '<button class="btn btn-success m5  w100" v-on:click="postForm()">Tallenna tilauksen tiedot</button>'+
+                '<br>'+
+                '<button class="btn btn-success m5  w100" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
+                '<label for="invoice20Number">20% laskun numero</label>'+
+                '<input v-bind:disabled="this.order.invoice20" class="form-control m5" id="invoice20Number" v-model="order.invoice20Number"></input>'+
+                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice20" v-on:click="didInvoice20()" type="text">Laskutettu 20%</button>'+
+                '<label for="invoice100Number">100% laskun numero</label>'+
+                '<input v-bind:disabled="this.order.invoice100" class="form-control m5" id="invoice100Number" v-model="order.invoice100Number"></input>'+
+                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice100" v-on:click="didInvoice100()" type="text">Laskutettu 100%</button>'+
+                '<button class="btn btn-danger m5   w100" v-on:click="deleteOrder()" type="text">Poista</button>'+
+                '<a v-bind:href="order.pickArtistLink">Kuvaajan valinta -sivulle</a>'+
             '</div>'+
         '</div>'
 })
@@ -322,6 +389,10 @@ Vue.component('orders',{
                     };
                     object.hashId = '#order' + object.id;    //MAKE "#id" + "" for bootstrap
                     object.orderId = 'order' + object.id;
+                    object.pickArtistLink = configUrl() + '/orders/artist-options/'+ object.id + '/' + object.clientToken;
+                    object.showTotal = parseInt(object.total) / 100;
+                    object.showComission = object.showTotal * 0.3;
+                    object.showRevenue = object.revenue / 100;
                 })
                 this.orders = response;
                 this.length = 0
@@ -340,7 +411,6 @@ Vue.component('orders',{
         filterList:function(){
             this.filteredList = [];
             var f = this.filter
-            //console.log('ORDERS: ',this.orders)
             $.each(this.orders, function(key,object){
                 if(f.newOrder && object.pending && !object.closed){
                     this.filteredList.push(object)
@@ -395,7 +465,6 @@ Vue.component('orders',{
                                     '</div>'+
                                     '<div v-bind:id="order.orderId" class="collapse">'+
                                         '<order v-bind:order="order"></order>'+
-                                        '<p>/orders/artist-options/{{ order.id }}/{{ order.clientToken }}</p>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+              
@@ -407,7 +476,6 @@ Vue.component('orders',{
                 '</div>'+
             '</div>'
 });
-
 
 Vue.component('navigation',{
     template:

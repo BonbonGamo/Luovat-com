@@ -2,7 +2,7 @@ TODO:
     
     ADMIN
     -POSTMARK
-    -Tilauksen tietojen muokkaus
+    -Tilauksen tietojen muokkaus //DONE
     -Asetukset
         *Hintojen muokkaus
         *Vanhat asetusversiot
@@ -10,7 +10,7 @@ TODO:
         *Tilastot
             -Avoin komissio
             -Saatu komissio
-            -Tilausten määrä
+            -Tilausten määräs
     
     ARTIST
     -POSTMARK
@@ -41,7 +41,7 @@ TODO:
     HINNOITTELU
     - Tekstitys     : 50€
     - Ilmakuvaus    : 100€
-    - Voiceover     : Sopimuksen mukaan 
+    - Voiceover     : Sopimuksen mukaan (infonappi: Hinnoittelun perustelu) 
     - Lisätunti     : 50€
     
     

@@ -45,12 +45,15 @@ exports.up = function(knex, Promise) {
             table.boolean('additional3');
             table.integer('discountPercent');
             table.integer('total');
+            table.integer('revenue');
             table.boolean('pending');
-            table.string('pendingFreeBy')
+            table.string('pendingFreeBy');
             table.boolean('invoice20');
-            table.string('invoice20MadeBy')
+            table.string('invoice20MadeBy');
+            table.string('invoice20Number');
             table.boolean('invoice100');
-            table.string('invoice100MadeBy')
+            table.string('invoice100MadeBy');
+            table.string('invoice100Number');
             table.boolean('closed');
             table.string('closedBy');
             table.boolean('deleted');

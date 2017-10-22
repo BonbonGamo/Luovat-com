@@ -20,7 +20,6 @@ class Order extends Model{
         return this.total * 0.7;
     }
 
-
     static get jsonSchema () {
         return {
         type: 'object',
@@ -45,14 +44,17 @@ class Order extends Model{
             additional2:{type: 'boolean'},
             additional3:{type: 'boolean'},
             total:{type: 'number'},
+            revenue:{type:'number'},
             discountPercent:{type:'number'},
             pending:{type:'boolean'},
             pendingFreedBy:{type:'string'},
             invoice20:{type:'boolean'},
             invoice20MadeBy:{type:'string'},
+            invoice20Number:{type:'string'},
             invoice100:{type:'boolean'},
             invoice100MadeBy:{type:'string'},
-            closed:{type:'boolean'},
+            invoice100Number:{type:'string'},
+            closed:{type:'boolean'}, //ONLY WHEN PAID TO ARTIST
             closedBy:{type:'string'},
             deleted:{type:'boolean'}
          }   

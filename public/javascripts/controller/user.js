@@ -80,6 +80,7 @@ Vue.component('edit-order',({
         },
         postEdit:function(){
             $.post('/orders/artist-edit-order',{
+                id:this.order.id,
                 artistStatus:this.order.artistStatus,
                 extraHours:this.order.extraHours,
                 add1:this.order.additional1,
@@ -142,6 +143,17 @@ Vue.component('edit-order',({
     '</div>'
 }))
 
+Vue.component('button-balance',{
+    props:['balance'],
+    created:function(){
+        $.get('/artists/artist-balance').then(function(balance){
+            this.balance = balance.sum / 100
+            console.log(this.balance)
+        }.bind(this))
+    },
+    template:'<button class="btn btn-sm btn-success" style="float:right;" >SALDO: {{ balance }} € </button>'
+})
+
 Vue.component('my-orders',{
     props:['orders','editForm'],
     beforeMount:function(){
@@ -151,6 +163,8 @@ Vue.component('my-orders',{
                 object.hashId = '#myorder' + object.id;
                 object.orderId = 'myorder' + object.id;
                 object.moment = moment(object.eventDate,'YYYY-MM-DD').locale('fi').format('LL')
+                if(object.moment.indexOf('Invalid') != -1) object.moment = 'Aikaa ei sovittu'
+                object.artistCut = object.artistCut / 100
             })
             this.orders = response;
             console.log(response)
@@ -159,7 +173,7 @@ Vue.component('my-orders',{
      template:'<div>'+
                 '<div class="panel-group">'+
                     '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><span class="badge" style="text-transform:uppercase;">{{ order.eventSize }}</span> <i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.eventCity }}</div>'+
+                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><span class="badge" style="text-transform:uppercase;">{{ order.eventSize }}</span> <span style="float:right"><p><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}</p></span>  <span style="float:right"><p> <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.eventCity }} </p></span></div>'+
                         '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
                             '<div class="col-xs-6">'+
                                 '<p><b>Asiakas</b></p>'+
@@ -176,6 +190,8 @@ Vue.component('my-orders',{
                                 '<p>{{ order.clientPhone }}</p>'+
                                 '<p><b>Päivä</b></p>'+
                                 '<p>{{ order.eventDate }}</p>'+
+                                '<p><b>Tulo</b></p>'+
+                                '<p>{{ order.artistCut }} €</p>'+
                             '</div>'+
                             '<div class="col-xs-12 p15">'+
                                 '<p><b>Viesti</b></p>'+

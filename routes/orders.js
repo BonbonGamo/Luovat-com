@@ -5,6 +5,7 @@ const uniqid  = require('uniqid');
 const emailer = require('../scripts/emailer.js');
 const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
+const helper    = require('../scripts/helper.js');
 const session = require('express-session');
 
 const Order       = require('../models/order.js')
@@ -80,6 +81,10 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
       .where('artistSelection',parseInt(req.session.user.id))
       .andWhere('deleted',null)
       .then((orders) => {
+        _.forEach(orders,function(order){
+          console.log(order)
+          order.artistCut = (order.total / 100) * 70;
+        })
         res.send(orders)
       })
       .catch(err => {
@@ -88,23 +93,57 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
       })
 })
 
+router.post('/admin-edit-order',auth.admin,function(req,res,next){
+  var data = {
+    clientName:       req.body.clientName,
+    clientCompany:    req.body.clientCompany,
+    clientEmail:      req.body.clientEmail,
+    clientMessage:    req.body.clientMessage,
+    clientPhone:      req.body.clientPhone,
+    eventCity:        req.body.eventCity,
+    eventDate:        req.body.eventDate,
+    eventSize:        req.body.eventSize,
+    eventDescription: req.body.eventDescription,
+    extraHours:       parseInt(req.body.extraHours),
+    additional1:      req.body.additional1 == 'true' ? true : false,
+    additional2:      req.body.additional2 == 'true' ? true : false,
+    additional3:      req.body.additional3 == 'true' ? true : false,
+    discountPercent:  parseInt(req.body.discountPercent),
+  }
+  Order
+  .query()
+  .patchAndFetchById(req.body.id,data)
+  .then(function(cbOrder){
+    console.log('cbOrder',cbOrder)
+    helper.updateOrderTotal(cbOrder.id)
+  })
+  .then(function(order){
+    console.log(order)
+    res.send(200)
+  })
+  .catch(function(err){
+    console.log(err)
+    res.send(400,err)
+  })
+  
+});
 router.post('/artist-edit-order',auth.artist,function(req,res,next){
-  var add1 = (req.body.add1 == 'true')
-  var add2 = (req.body.add2 == 'true')
-  var add3 = (req.body.add3 == 'true')
   Order
     .query()
     .patch({
       artistStatus:req.body.artistStatus,
-      extraHours:req.body.extraHours,
-      additional1:add1,
-      additional2:add2,
-      additional3:add3
+      extraHours:parseInt(req.body.extraHours),
+      additional1:add1 == 'true' ? true : false,
+      additional2:add2 == 'true' ? true : false,
+      additional3:add3 == 'true' ? true : false
     })
     .where('id',req.body.id)
     .andWhere('artistSelection',parseInt(req.session.user.id))
-    .then((newUser) => {
-      console.log(newUser)
+    .then( (cbOrder) => {
+      console.log(cbOrder)
+      helper.updateOrderTotal(cbOrder.id)
+    })
+    .then((cbOrder) => {
       res.sendStatus(200)
     })
     .catch(err => {
@@ -191,6 +230,10 @@ router.post('/new',function(req,res,next){
       eventDate:req.body.date || 'Päivämäärää ei määrätty',
       eventCity:req.body.city || 'Kaupunkia ei valittu',
       eventSize:req.body.size,
+      total:0,
+      revenue:0,
+      eagerMax:3,
+      discountPercent:0,
       additional1:add1,
       additional2:add2,
       additional3:add3,
@@ -199,8 +242,11 @@ router.post('/new',function(req,res,next){
       invoice100:false,
       closed:false,
     })
-    .then((newUser) => {
-      console.log(newUser)
+    .then((newOrder) => {
+      console.log(newOrder)
+      helper.updateOrderTotal(newOrder.id)
+    })
+    .then(function(_newOrder){
       res.sendStatus(200)
     })
     .catch(err => {
@@ -208,7 +254,7 @@ router.post('/new',function(req,res,next){
     })
 })
 
-router.post('/free-pending/:id',auth.admin,function(req,res,next){
+router.post('/free-pending/:id',auth.admin,(req,res,next) => {
     Order
     .query()
     .patch({
@@ -225,16 +271,22 @@ router.post('/free-pending/:id',auth.admin,function(req,res,next){
     })
 })
 
-router.post('/invoice20/:id',auth.admin,function(req,res,next){
+router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
+    if(!req.params.invoiceNumber) throw new err('No invoice number');
     Order
     .query()
-    .patch({
+    .patchAndFetchById(req.params.id,{
+      invoice20Number:req.params.invoiceNumber,
       invoice20:true,
       invoice20MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName
     })
-    .where('id',req.params.id)
-    .then( updated => {
-      console.log('Invoice 20% made by:', updated.invoice20MadeBy,'. For client: ',updated.clientName)
+    .then( (cbOrder) => {
+      var total = (cbOrder.total / 100) * 20;
+      helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
+    })
+    .then( cbOrder => {
+      console.log('Callback',cbOrder)
+      //console.log('Invoice 20% made by:', cbOrder.invoice20MadeBy,'. For client: ',cbOrder.clientName)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -243,16 +295,24 @@ router.post('/invoice20/:id',auth.admin,function(req,res,next){
     })
 })
 
-router.post('/invoice100/:id',auth.admin,function(req,res,next){
+router.post('/invoice100/:id/:invoiceNumber',auth.admin,function(req,res,next){
+    if(!req.params.invoiceNumber) throw new err('No invoice number');
+    //TODO: CHECK IF THE JOB IS DONE!!
+
     Order
     .query()
-    .patch({
+    .patchAndFetchById(req.params.id,{
+      invoice100Number:req.params.invoiceNumber,
       invoice100:true,
       invoice100MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName
     })
-    .where('id',req.params.id)
-    .then( updated => {
-      console.log('Invoice 100% made by:', updated.invoice100MadeBy,'. For client: ',updated.clientName)
+    .then(cbOrder => {
+      var total = cbOrder.total - cbOrder.revenue;
+      console.log(total)
+      helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
+    })
+    .then( (cbOrder) => {
+      console.log('Callback',cbOrder)
       res.sendStatus(200)
     })
     .catch(err => {

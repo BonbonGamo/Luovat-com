@@ -13,24 +13,27 @@
   </head>
   <body>
     <div class="row" id="userApp">
-      <div class="col-md-8 col-md-offset-2">
-        <p>Tervetuloa <%= user.name %></p>
-        <ul class="nav nav-tabs">
-          <li class="active"><a data-toggle="tab" href="#orders">Vapaat keikat</a></li>
-          <li><a data-toggle="tab" href="#myorders">Omat keikat</a></li>
-          <li><a data-toggle="tab" href="#settings">Asetukset</a></li>
-        </ul>
+      <div class="m5">
+        <div class="col-md-8 col-md-offset-2">
+          <p>Tervetuloa <%= user.name %> <button-balance></button-balance></p>
+          
+          <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#orders">Vapaat keikat</a></li>
+            <li><a data-toggle="tab" href="#myorders">Omat keikat</a></li>
+            <li><a data-toggle="tab" href="#settings">Asetukset</a></li>
+          </ul>
 
-        <div class="tab-content">
-          <div id="orders" class="tab-pane fade in active">
-            <orders></orders>
-          </div>
-          <div id="myorders" class="tab-pane fade">
-            <my-orders></my-orders>
-          </div>
-          <div id="settings" class="tab-pane fade">
-            <h3>Menu 2</h3>
-            <p>Some content in menu 2.</p>
+          <div class="tab-content">
+            <div id="orders" class="tab-pane fade in active">
+              <orders></orders>
+            </div>
+            <div id="myorders" class="tab-pane fade">
+              <my-orders></my-orders>
+            </div>
+            <div id="settings" class="tab-pane fade">
+              <h3>Menu 2</h3>
+              <p>Some content in menu 2.</p>
+            </div>
           </div>
         </div>
       </div>
