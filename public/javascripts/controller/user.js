@@ -11,8 +11,58 @@ Vue.component('signBtn',{
     template:'<button v-on:click="signOrder()" class="btn btn-success-shallow">Ilmottaudu</button>'
 })
 
+Vue.component('edit-artist',{
+    props:['user'],
+    created:function(){
+        this.loadData();
+    },
+    methods:{
+        loadData:function(){
+            $.get('/artists/data').then(function(cbUser){
+                this.user = cbUser;
+                console.log(cbUser)
+            }.bind(this))
+        },
+        postEdit:function(){
+            $.post('/artists/artist-self-edit',this.user).then(function(userEdited){
+                alert('Tiedot muutettu')
+            }.bind(this))
+            .fail(function(response){
+                alert('Jotain meni pieleen')
+            })
+        }
+    },
+    template:
+    '<div class="form-group">'+
+        '<div class="col-md-12"><p class="green"><strong>Kuvaajan tiedot</strong></p></div>'+
+        '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
+            '<label for="firstName">Etunimi</label>'+
+            '<input class="form-control order-form-input" id="firstName" v-model="user.firstName"></input>'+
+            '<label for="lastName">Sukunimi</label>'+
+            '<input class="form-control order-form-input" id="lastName" v-model="user.lastName"></input>'+
+            '<label for="email">Sähköposti</label>'+
+            '<input class="form-control order-form-input" id="email" v-model="user.email"></input>'+
+            '<label for="phone">Puhelinnumero</label>'+
+            '<input class="form-control order-form-input" id="phone" v-model="user.phone"></input><br>'+
+        '</div>'+
+        '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
+            '<label for="street">Katuosoite</label>'+
+            '<input class="form-control order-form-input" id="street" v-model="user.street"></input>'+
+            '<label for="zipCode">Postinumero</label>'+
+            '<input class="form-control order-form-input" id="zipCode" v-model="user.zipCode"></input>'+
+            '<label for="city">Kaupunki</label>'+
+            '<input class="form-control order-form-input" id="city" v-model="user.city"></input>'+
+            '<label for="payment">Laskutustapa</label>'+
+            '<select class="form-control order-form-input" id="payment" v-model="user.payment"><option>Yrittäjä</option><option>Ukko.fi</option></select>'+
+        '</div>'+
+        '<div class="col-md-12">'+
+            '<button class="btn btn-success btn-sm" style="float:right" v-on:click="postEdit()" >Tallenna muutokset</button>'+
+        '</div>'+
+    '</div>'
+})
+
 Vue.component('orders',{
-    props:['orders'],
+    props:['orders','eagers'],
     created:function(){
         this.orders = [];
     },
@@ -29,6 +79,17 @@ Vue.component('orders',{
                 })
                 this.orders = response.open;
             }.bind(this))
+            $.get('/orders/orders-progres').then(function(response){
+                $.each(response,function(key,object){
+                    object.hashId = '#eager' + object.id;
+                    object.orderId = 'eager' + object.id;
+                    object.moment = moment(object.date,'YYYY-MM-DD').locale('fi').format('LL')
+                    if(object.moment.indexOf('Invalid') != -1){
+                        object.moment = 'Aikaa ei sovittu'
+                    }
+                })
+                this.eagers = response;
+            }.bind(this))
         }
     },
     beforeMount:function(){
@@ -36,6 +97,7 @@ Vue.component('orders',{
     },
     template:'<div>'+
                 '<div class="panel-group">'+
+                    '<p class="green"><strong>Uudet keikat</strong></p>'+
                     '<div  class="panel m5 panel-primary" v-for="order in orders">'+
                         '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
                         '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
@@ -44,6 +106,16 @@ Vue.component('orders',{
                             '<p>{{ order.message }}</p>'+
                             '</div>'+
                             '<signBtn style="float:right" v-bind:order="order"></signBtn>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+                '<div class="panel-group">'+
+                    '<p class="green"><strong>Keikat johon olet ilmottautunut</strong></p>'+
+                    '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
+                        '<div data-toggle="collapse" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
+                        '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
+                            '<p><strong>Tilauksen viesti</strong></p>'+
+                            '<p>{{ eager.message }}</p>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+

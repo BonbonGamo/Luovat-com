@@ -31,7 +31,6 @@ router.get('/pickups',auth.artist, function(req, res, next) {
       .query()
       .where('userId',req.session.user.id)
       .then(relations => {
-        console.log('RELATIONS: ')
         _.forEach(relations, (relation) => {
           console.log(relation.orderId)
           userOrders.push(relation.orderId)
@@ -46,27 +45,27 @@ router.get('/pickups',auth.artist, function(req, res, next) {
         .then((orders) => {
           //FILTER DATA NOT TO BE SENT TO USER
           var data = {users:[],open:[]};
-            _.forEach(orders,function(order){
-              if(userOrders.indexOf(order.id) != -1){
-                data.users.push({
-                  id:order.id,
-                  message:order.clientMessage,
-                  date:order.eventDate,
-                  city:order.eventCity, 
-                  size:order.eventSize
-                })
-              }else{
-                data.open.push({
-                  id:order.id,
-                  message:order.clientMessage,
-                  date:order.eventDate,
-                  city:order.eventCity, 
-                  size:order.eventSize
-                })
-              }
-            })
-            res.send(data)
+          _.forEach(orders,function(order){
+            if(userOrders.indexOf(order.id) != -1){
+              data.users.push({
+                id:order.id,
+                message:order.clientMessage,
+                date:order.eventDate,
+                city:order.eventCity, 
+                size:order.eventSize
+              })
+            }else{
+              data.open.push({
+                id:order.id,
+                message:order.clientMessage,
+                date:order.eventDate,
+                city:order.eventCity, 
+                size:order.eventSize
+              })
+            }
           })
+          res.send(data)
+        })
         .catch(err => {
           console.log(err)
           res.sendSatus(500)
@@ -82,7 +81,6 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
       .andWhere('deleted',null)
       .then((orders) => {
         _.forEach(orders,function(order){
-          console.log(order)
           order.artistCut = (order.total / 100) * 70;
         })
         res.send(orders)
@@ -114,11 +112,9 @@ router.post('/admin-edit-order',auth.admin,function(req,res,next){
   .query()
   .patchAndFetchById(req.body.id,data)
   .then(function(cbOrder){
-    console.log('cbOrder',cbOrder)
     helper.updateOrderTotal(cbOrder.id)
   })
   .then(function(order){
-    console.log(order)
     res.send(200)
   })
   .catch(function(err){
@@ -140,7 +136,6 @@ router.post('/artist-edit-order',auth.artist,function(req,res,next){
     .where('id',req.body.id)
     .andWhere('artistSelection',parseInt(req.session.user.id))
     .then( (cbOrder) => {
-      console.log(cbOrder)
       helper.updateOrderTotal(cbOrder.id)
     })
     .then((cbOrder) => {
@@ -162,7 +157,6 @@ router.post('/pickup',auth.artist,function(req,res,next){
       return order.$relatedQuery('users').relate(req.session.user.id);
     })
     .then(() => {
-      console.log('Pickup Done')
       res.sendStatus(200)
     });
 })
@@ -176,7 +170,7 @@ router.get('/artist-options/:id/:token',function(req,res,next){
           res.sendStatus(403)
       }
       else{
-          order.$relatedQuery('users').then(function(users){
+          order.$relatedQuery('users').then(users => {
           let data = [];
           _.forEach(users,function(user){
             data.push({
@@ -194,8 +188,44 @@ router.get('/artist-options/:id/:token',function(req,res,next){
     })
 })
 
+router.get('/orders-progres',function(req,res,next){
+  var user = req.session.user;
+  var ordersIds = [];
+  var orders = [];
+
+  Order_User
+  .query()
+  .where('userId',user.id)
+  .then(cbOrderIds => {
+    _.forEach(cbOrderIds,orderId => {
+      console.log(orderId)
+      ordersIds.push(orderId.orderId)
+    })
+
+    return Order
+    .query()
+    .where('artistSelection',null)
+  })
+  .then(orders => {
+      var data = []
+      _.forEach(orders,function(order){
+        data.push({
+          id:order.id,
+          message:order.clientMessage,
+          date:order.eventDate,
+          city:order.eventCity, 
+          size:order.eventSize
+        })
+    })
+    res.send(data)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+})
+
 router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
-  console.log(req.params.userId)
   Order
     .query()
     .patch({
@@ -204,7 +234,6 @@ router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
     .where('id',req.params.orderId)
     .andWhere('clientToken',req.params.token)
     .then((updated) => {
-      console.log(updated)
       res.redirect('/')
     })
     .catch(err => {
@@ -243,7 +272,6 @@ router.post('/new',function(req,res,next){
       closed:false,
     })
     .then((newOrder) => {
-      console.log(newOrder)
       helper.updateOrderTotal(newOrder.id)
     })
     .then(function(_newOrder){
@@ -262,7 +290,6 @@ router.post('/free-pending/:id',auth.admin,(req,res,next) => {
     })
     .where('id',req.params.id)
     .then( updated => {
-      console.log('Order freed to pickups:', updated.clientName)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -285,8 +312,6 @@ router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
       helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
     })
     .then( cbOrder => {
-      console.log('Callback',cbOrder)
-      //console.log('Invoice 20% made by:', cbOrder.invoice20MadeBy,'. For client: ',cbOrder.clientName)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -308,11 +333,9 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,function(req,res,next){
     })
     .then(cbOrder => {
       var total = cbOrder.total - cbOrder.revenue;
-      console.log(total)
       helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
     })
     .then( (cbOrder) => {
-      console.log('Callback',cbOrder)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -337,4 +360,6 @@ router.post('/delete/:id',function(req,res,next){
       res.sendSatus(500)
     });
 })
+
+
 module.exports = router;

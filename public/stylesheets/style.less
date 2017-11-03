@@ -1,12 +1,16 @@
 @white:#EAFDF8;
 @gray:#cececc;
 @darkgray:#324A5F;
-@blue:#7F95D1;
+//@blue:#7F95D1;
 @darkblue:#1B2A41;
-@green:#449b77;
+//@green:#449b77;
 @darkgreen:#285140;
 @black:#18020C;
 @mgray:#e0e2e5;
+
+@green:#5B9879;
+@blue: #7AD2D9;
+@beige:#F3D69B;
 
 @warn:#dd6565;
 @success:#65dd8d;
@@ -14,36 +18,48 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
 @import url('https://fonts.googleapis.com/css?family=Reem+Kufi');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
+
 
 @opensans: 'Open Sans Condensed', sans-serif;
 @roboto: 'Roboto', sans-serif;
 @reem: 'Reem Kufi', sans-serif;
+@amatic:'Amatic SC', cursive;
 
+
+
+.amaticR{
+    font-family: @amatic;
+}
+.amaticB{
+    font-family: @amatic;
+    font-weight:700;
+}
 .roboto{
     font-family: @roboto;
 }
 .opensans{
     font-family: @opensans;
 }
-
 h1{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h2{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h3{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h4{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h5{
     font-family: @roboto;
     font-style: italic;
 }
 h6{
-    font-family: @roboto;
+    font-family: @amatic !important;
+    font-size: 15px !important;
 }
 p{
     font-family: @roboto;
@@ -55,9 +71,8 @@ body, html, #mainApp {
     width:100%;
 }
 input, textarea, .form-control {
-    background: rgba(255,255,255,0.3) !important;
     border: none !important;
-    color:@white !important;
+    background: transparent !important;
 }
 .btn-display{
     background: transparent;
@@ -68,7 +83,7 @@ input, textarea, .form-control {
     border-radius: 20px;
 }
 .btn-play{
-    color:@green;
+    color:@blue;
     font-size:130px;
 }
 .btn-play:hover{
@@ -101,12 +116,19 @@ input, textarea, .form-control {
   left:0px;
   background-color: rgba(68, 155, 119, 0.45);
 }
+.gradient {
+    background: black; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(black, @beige); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(black, @beige); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(black, @beige); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(black, @beige); /* Standard syntax */
+}
 .gray{
     color:@gray;
 }
 .green-line{
     height:6px;
-    background: @green;
+    background: @blue;
     width:100%;
 }
 #luovat-navbar{
@@ -134,7 +156,7 @@ input, textarea, .form-control {
     background-size:cover;
 }
 .bg-green{
-    background: @green !important;
+    background: @blue !important;
 }
 .bg-main{
     background-image: url('../images/luovat_bg_dark.jpg');
@@ -165,22 +187,22 @@ input, textarea, .form-control {
     color:@gray;
 }
 .order-form-input{
-    border:2px solid @green !important;
+    border:2px solid @blue !important;
     height:30px;
     margin:0px;
-    color:@green !important;
+    color:@blue !important;
     text-align: left;
 }
 .order-form-input-area{
-    border:2px solid @green !important;
+    border:2px solid @blue !important;
     border-radius: 10px;
     margin:0px;
-    color:@green !important;
+    color:@blue !important;
     text-align: left;
 }
 .order-form-button{
-    border:3px solid @green;
-    background: @green;
+    border:3px solid @blue;
+    background: @blue;
     height:30px;
     color:@white;
     border-top-right-radius: 10px;
@@ -188,8 +210,8 @@ input, textarea, .form-control {
     margin:0px;
 }
 .order-form-button-left{
-    border:3px solid @green;
-    background: @green;
+    border:3px solid @blue;
+    background: @blue;
     height:30px;
     color:@white;
     border-top-left-radius: 10px;
@@ -223,6 +245,9 @@ input, textarea, .form-control {
 .p120{
     padding:60px !important;
 }
+.price{
+    font-size: 40px !important;
+}
 .r-m{
     padding-top:70px;
     padding-bottom: 70px;
@@ -240,26 +265,52 @@ input, textarea, .form-control {
     padding-top: 170px;
     padding-bottom: 50px;
 }
+.video-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 400px; 
+  overflow: hidden;
+}
+.video-container video {
+  /* Make video to at least 100% wide and tall */
+  min-width: 100%; 
+  min-height: 100%; 
+
+  /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+  width: auto;
+  height: auto;
+
+  /* Center the video */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.video-row{
+    height:400px;
+}
 .white{
     color:#EEE;
 }
 .green{
-    color:@green;
+    color:@blue;
 }
 //BOOTSRAP
 
 .badge{
-    color:@green !important;
+    color:@blue !important;
     font-size: 20px !important;
     font-family: @roboto;
 }
 .btn-checkbox{
     background:transparent !important;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     height:28px;
     width: 28px;
     font-size: 26px !important;
-    color:@green !important;
+    color:@blue !important;
     padding:0px !important;
     >i{
         transform: translateY(-8px)
@@ -281,7 +332,7 @@ input, textarea, .form-control {
 }
 .btn-luovat{
     background: transparent;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     border-radius: 200px !important;
     min-width:110px;
     text-transform: uppercase;
@@ -290,8 +341,8 @@ input, textarea, .form-control {
     margin-right: 6px; 
 }
 .btn-luovat-green{
-    background: @green;
-    border: 2px solid @green !important;
+    background: @blue;
+    border: 2px solid @blue !important;
     border-radius: 200px !important;
     min-width:110px;
     text-transform: uppercase;
@@ -317,10 +368,10 @@ input, textarea, .form-control {
 }
 .btn-luovat-green:hover{
     background: @white;
-    color:@green !important;
+    color:@blue !important;
 }
 .btn-luovat:hover{
-    background: @green;
+    background: @blue;
     color:white !important;
 }
 @media (max-width:767px){
@@ -330,10 +381,10 @@ input, textarea, .form-control {
     }
 }
 .btn-link{
-    color:@green !important;
+    color:@blue !important;
 }
 .btn-success{
-    background: @green !important;
+    background: @blue !important;
 }
 .btn-danger-shallow{
     background: transparent !important;
@@ -363,12 +414,12 @@ input, textarea, .form-control {
 }
 .btn-success-shallow{
     background: transparent !important;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     padding:15px !important;
     padding-top:7px !important;
     padding-bottom:7px !important;
     border-radius: 10px !important;
-    color:@green;
+    color:@blue;
     font-size: 18px !important;
     font-family: @roboto;
     font-weight: 100px;
@@ -393,7 +444,7 @@ input, textarea, .form-control {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     margin:9px !important;
-    color:@green !important;
+    color:@blue !important;
 }
 .edit-order{
     >.well{
@@ -444,8 +495,8 @@ input, textarea, .form-control {
     border:none !important;
 }
 .panel-heading{
-    background: @green !important;
-    border: 2px solid @green !important;
+    background: @blue !important;
+    border: 2px solid @blue !important;
     border-radius: 10px !important;
     color:#EEE !important;
     font-size: 18px !important;

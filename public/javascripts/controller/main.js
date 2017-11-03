@@ -184,7 +184,7 @@ Vue.component('order-size',{
                 '<h2 style="line-height:50px;" class="white opensans">{{ caption }}</h2>'+
                 '<p class="white opensans" style="font-size:20px;">{{ description }}</p>'+
                 '<p class="white" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
-                '<h3 class="white opensans">{{ price }}€</h3>'+
+                '<h3 class="white price">{{ price }}€</h3>'+
             '</div>'+
         '</div>'+
     '</div>'
@@ -246,6 +246,31 @@ new Vue({
     el:'#mainApp'
 })
 
+$(document).ready(function(){
+    $('#video-modal').on('hidden', function () {
+        document.getElementById("videoPlayer").get(0).stop();
+    })
+
+    $('#play-sample-video').click(function(){
+        console.log('sample')
+        $('#videoSource').attr('src','./video/order.mp4');
+        $("#video-modal").modal(function(){
+            document.getElementById("videoPlayer").get(0).play();
+        });
+    })
+
+    $('#play-rekry-video').click(function(){
+        console.log('rekry')
+        $('#videoSource').attr('src','./video/rekry.mp4');
+        $("#video-modal").modal(function(){
+            document.getElementById("videoPlayer").get(0).play();
+        });
+    })
+})
+
+
+
+//SMOOTH SCROLL
 // Select all links with hashes
 $('a[href*="#"]')
   // Remove links that don't actually link to anything
