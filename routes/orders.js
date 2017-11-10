@@ -132,8 +132,9 @@ router.post('/artist-edit-order',auth.artist, (req,res,next) => {
       additional2:req.body.add2 == 'true' ? true : false,
       additional3:req.body.add3 == 'true' ? true : false
     })
-    .then( cbOrder => {
-      console.log('CB:',cbOrder)
+    .where('id',req.body.id)
+    .andWhere('artistSelection',parseInt(req.session.user.id))
+    .then( (cbOrder) => {
       helper.updateOrderTotal(cbOrder.id)
     })
     .then( cbOrder => {
@@ -164,8 +165,7 @@ router.post('/pickup',auth.artist,function(req,res,next){
       console.log('ADDED ONE EAGER',cbOrder)
       return cbOrder.$relatedQuery('users').relate(req.session.user.id);
     })
-    .then(cbOrder => {
-      console.log('Related query:',cbOrder)
+    .then(() => {
       res.sendStatus(200)
     });
 })

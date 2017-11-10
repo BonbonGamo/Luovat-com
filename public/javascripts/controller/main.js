@@ -123,7 +123,7 @@ Vue.component('order-form',{
                 '<input class="form-control m5 order-form-input" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email">'+
                 '<textarea rows="10" class="form-control m5 order-form-input-area" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea>'+
                 '<center>'+
-                    '<button class="btn btn-sm btn-luovat" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-luovat" v-on:click="askAdditional()">Seuraava</button>'+
+                    '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="askAdditional()">Seuraava</button>'+
                 '</center>'+
             '</div>'+
             '<div id="ask-additional" class="hide-order-form green col-sm-6 col-sm-offset-3" style="display:none;">'+
@@ -141,12 +141,12 @@ Vue.component('order-form',{
                 '<label class="green m10" for="a3" >  Voice over +100 - 300€ </label>'+
                 '<input type="checkbox" id="a3" v-model="formData.add3"><br><br>'+
                 '<center>'+
-                    '<button class="btn btn-sm btn-luovat" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-luovat" v-on:click="postOrder()">Lähetä tilaus</button>'+
+                    '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="postOrder()">Lähetä tilaus</button>'+
                 '</center>'+
             '</div>'+
             '<div id="ready" class=" hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
                 '<center>'+
-                    '<button class="btn btn-lg r-m btn-luovat" v-on:click="newOrder()">Tee uusi tilaus</button>'+
+                    '<button class="btn btn-lg r-m btn-white" v-on:click="newOrder()">Tee uusi tilaus</button>'+
                 '</center>'+
             '</div>'+
             '<div class="col-xs-12" style="margin-top:30px;">'+
