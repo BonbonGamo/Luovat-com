@@ -1,12 +1,16 @@
 @white:#EAFDF8;
 @gray:#cececc;
 @darkgray:#324A5F;
-@blue:#7F95D1;
+//@blue:#7F95D1;
 @darkblue:#1B2A41;
-@green:#449b77;
+//@green:#449b77;
 @darkgreen:#285140;
 @black:#18020C;
 @mgray:#e0e2e5;
+
+@green:#5B9879;
+@blue: #7AD2D9;
+@beige:#F3D69B;
 
 @warn:#dd6565;
 @success:#65dd8d;
@@ -14,36 +18,53 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,700');
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
 @import url('https://fonts.googleapis.com/css?family=Reem+Kufi');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
+@import url('https://fonts.googleapis.com/css?family=Plaster');
+
 
 @opensans: 'Open Sans Condensed', sans-serif;
 @roboto: 'Roboto', sans-serif;
 @reem: 'Reem Kufi', sans-serif;
+@amatic:'Amatic SC', cursive;
+@plaster:'Plaster', cursive;
 
+
+
+.amaticR{
+    font-family: @amatic;
+}
+.amaticB{
+    font-family: @amatic;
+    font-weight:700;
+}
 .roboto{
     font-family: @roboto;
 }
 .opensans{
     font-family: @opensans;
 }
-
+.plaster{
+    font-family: @plaster !important;
+}
 h1{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h2{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h3{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h4{
-    font-family: @roboto;
+    font-family: @amatic !important;
 }
 h5{
     font-family: @roboto;
     font-style: italic;
 }
 h6{
-    font-family: @roboto;
+    font-family: @amatic !important;
+    font-size: 15px !important;
 }
 p{
     font-family: @roboto;
@@ -55,9 +76,8 @@ body, html, #mainApp {
     width:100%;
 }
 input, textarea, .form-control {
-    background: rgba(255,255,255,0.3) !important;
     border: none !important;
-    color:@white !important;
+    background: transparent !important;
 }
 .btn-display{
     background: transparent;
@@ -68,19 +88,41 @@ input, textarea, .form-control {
     border-radius: 20px;
 }
 .btn-play{
-    color:@green;
+    color:@blue;
     font-size:130px;
 }
 .btn-play:hover{
     color:#285140;
 }
+.bg-beige{
+    background: @beige;
+}
 .bg-black{
     color:@white;
     background:black;
 }
+.bg-blue{
+    background: @blue;
+    color: white;
+}
 .bg-white{
     color:@black;
     background: @white;
+}
+.black{
+    color:@black !important;
+}
+.blue{
+    color:@blue !important;
+}
+.blue-curtain{
+  display: block;
+  position: absolute;
+  height: 120%;
+  width: 120%;
+  top:0px;
+  left:0px;
+  background-color: rgba(122, 210, 217, 0.6);
 }
 .centered{
     position: absolute;
@@ -94,6 +136,7 @@ input, textarea, .form-control {
 }
 .green-curtain{
   display: block;
+  color:white;
   position: absolute;
   height: 100%;
   width: 100%;
@@ -101,16 +144,40 @@ input, textarea, .form-control {
   left:0px;
   background-color: rgba(68, 155, 119, 0.45);
 }
+.gradient {
+    background: black; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(black, @beige); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(black, @beige); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(black, @beige); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(black, @beige); /* Standard syntax */
+}
 .gray{
     color:@gray;
 }
+.giant{
+    font-family: @plaster !important;
+    font-size: 90px !important;
+    padding-top:40px;
+    text-transform: uppercase !important;
+    color: white;
+    margin-bottom: 40px;
+    margin-top: 40px;
+    background-image: url('../images/luovat_bg_l.jpg');
+    background-size: cover;
+    background-position: center;
+    width:130px;
+    height:130px;
+    border-radius: 100px;
+
+}
 .green-line{
     height:6px;
-    background: @green;
+    background: @blue;
     width:100%;
 }
 #luovat-navbar{
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.0);
+    color:white;
     border:none;
 }
 .m5{
@@ -130,15 +197,28 @@ input, textarea, .form-control {
 }
 #main{
     height:100%;
-    background-image: url('../images/luovat_bg_dark.jpg');
+    background-image: url('../images/luovat_bg_4.jpg');
     background-size:cover;
 }
 .bg-green{
-    background: @green !important;
+    background: @blue !important;
 }
 .bg-main{
-    background-image: url('../images/luovat_bg_dark.jpg');
+    background-image: url('../images/luovat_bg_4.jpg');
     background-size: cover;
+}
+.bg-team{
+    background-image: url('../images/team2.jpg');
+    background-size: cover;
+    background-position: center;
+}
+.gray-curtain{
+    background: rgba(110,110,130,0.4);
+    position:absolute;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
 }
 .mgray{
     color:@mgray;
@@ -165,22 +245,25 @@ input, textarea, .form-control {
     color:@gray;
 }
 .order-form-input{
-    border:2px solid @green !important;
+    background: #FFF !important;
+    border:2px solid rgba(0,0,0,0.16) !important;
     height:30px;
     margin:0px;
-    color:@green !important;
+    color:@blue !important;
     text-align: left;
+    border-radius: 14px !important;
 }
 .order-form-input-area{
-    border:2px solid @green !important;
-    border-radius: 10px;
+    background: #FFF !important;
+    border:1px solid rgba(0,0,0,0.1) !important;
+    border-radius: 14px !important;
     margin:0px;
-    color:@green !important;
+    color:@blue !important;
     text-align: left;
 }
 .order-form-button{
-    border:3px solid @green;
-    background: @green;
+    border:3px solid @blue;
+    background: @blue;
     height:30px;
     color:@white;
     border-top-right-radius: 10px;
@@ -188,8 +271,8 @@ input, textarea, .form-control {
     margin:0px;
 }
 .order-form-button-left{
-    border:3px solid @green;
-    background: @green;
+    border:3px solid @blue;
+    background: @blue;
     height:30px;
     color:@white;
     border-top-left-radius: 10px;
@@ -223,6 +306,9 @@ input, textarea, .form-control {
 .p120{
     padding:60px !important;
 }
+.price{
+    font-size: 40px !important;
+}
 .r-m{
     padding-top:70px;
     padding-bottom: 70px;
@@ -240,26 +326,53 @@ input, textarea, .form-control {
     padding-top: 170px;
     padding-bottom: 50px;
 }
+.video-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 400px; 
+  overflow: hidden;
+}
+.video-container video {
+  /* Make video to at least 100% wide and tall */
+  min-width: 100%; 
+  min-height: 100%; 
+
+  /* Setting width & height to auto prevents the browser from stretching or squishing the video */
+  width: auto;
+  height: auto;
+
+  /* Center the video */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+.video-row{
+    height:400px;
+}
 .white{
     color:#EEE;
 }
 .green{
-    color:@green;
+    color:@blue;
 }
 //BOOTSRAP
 
 .badge{
-    color:@green !important;
-    font-size: 20px !important;
-    font-family: @roboto;
+    font-size: 30px !important;
+    color:@darkblue !important;
+    border:1px solid rgba(0,0,0,0.2);
+    background: #FFF;
 }
 .btn-checkbox{
     background:transparent !important;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     height:28px;
     width: 28px;
     font-size: 26px !important;
-    color:@green !important;
+    color:@blue !important;
     padding:0px !important;
     >i{
         transform: translateY(-8px)
@@ -281,7 +394,7 @@ input, textarea, .form-control {
 }
 .btn-luovat{
     background: transparent;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     border-radius: 200px !important;
     min-width:110px;
     text-transform: uppercase;
@@ -290,8 +403,8 @@ input, textarea, .form-control {
     margin-right: 6px; 
 }
 .btn-luovat-green{
-    background: @green;
-    border: 2px solid @green !important;
+    background: @blue;
+    border: 2px solid @blue !important;
     border-radius: 200px !important;
     min-width:110px;
     text-transform: uppercase;
@@ -299,6 +412,28 @@ input, textarea, .form-control {
     margin-left: 6px;
     margin-right: 6px; 
     color: @white;
+}
+.btn-white{
+    background: transparent;
+    border: 2px solid @white !important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px; 
+    color: @white;
+}
+.btn-white:hover{
+    background: @white;
+    border: 2px solid @white !important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px; 
+    color: @blue;
 }
 .btn-luovat-dark{
     background: transparent;
@@ -317,10 +452,10 @@ input, textarea, .form-control {
 }
 .btn-luovat-green:hover{
     background: @white;
-    color:@green !important;
+    color:@blue !important;
 }
 .btn-luovat:hover{
-    background: @green;
+    background: @blue;
     color:white !important;
 }
 @media (max-width:767px){
@@ -329,11 +464,34 @@ input, textarea, .form-control {
         margin-bottom:10px !important; 
     }
 }
+.btn-page-link{
+    background: transparent !important;
+    border: 2px solid @blue !important;
+    border-radius: 10px !important;
+    color:@blue;
+    font-size: 14px !important;
+    font-family: @roboto;
+    margin:10px !important;
+}
+.btn-page-link:hover{
+    background: @blue !important;
+    border: 2px solid @white !important;
+    border-radius: 10px !important;
+    color:@white !important;
+    font-size: 14px !important;
+    font-family: @roboto;
+    margin:10px !important;
+}
 .btn-link{
-    color:@green !important;
+    color:@blue !important;
 }
 .btn-success{
     background: @green !important;
+}
+.btn-blue{
+    background: @blue !important;
+    color:#eee;
+    font-weight: 700;
 }
 .btn-danger-shallow{
     background: transparent !important;
@@ -363,12 +521,12 @@ input, textarea, .form-control {
 }
 .btn-success-shallow{
     background: transparent !important;
-    border: 2px solid @green !important;
+    border: 2px solid @blue !important;
     padding:15px !important;
     padding-top:7px !important;
     padding-bottom:7px !important;
     border-radius: 10px !important;
-    color:@green;
+    color:@blue;
     font-size: 18px !important;
     font-family: @roboto;
     font-weight: 100px;
@@ -393,11 +551,12 @@ input, textarea, .form-control {
     padding-top: 8px !important;
     padding-bottom: 8px !important;
     margin:9px !important;
-    color:@green !important;
+    color:@blue !important;
 }
 .edit-order{
     >.well{
         min-height:120px;
+        border-radius: 15px !important;
     }
 }
 .jumbotron{
@@ -430,9 +589,29 @@ input, textarea, .form-control {
 }
 .navbar-nav{
     font-family: @reem !important;
+    padding: 12px !important;
+}
+.nav-page-link{
+    padding: 6px !important;
+    color:white;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin-top:5px;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+.nav-page-link:hover{
+    padding: 6px !important;
+    color:white;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    margin-top:5px;
+    margin-bottom: 5px;
+    font-size: 18px;
 }
 .nav-some-link{
-    color:@white;
+    color:@blue;
+    font-size: 16px !important;
     padding-left: 6px !important;
     padding-right: 6px !important;
 }
@@ -444,8 +623,8 @@ input, textarea, .form-control {
     border:none !important;
 }
 .panel-heading{
-    background: @green !important;
-    border: 2px solid @green !important;
+    background: @blue !important;
+    border: 2px solid @blue !important;
     border-radius: 10px !important;
     color:#EEE !important;
     font-size: 18px !important;
@@ -453,35 +632,41 @@ input, textarea, .form-control {
     font-weight: 100px;
 }
 #well-s{
-    background-image:url('../images/luovat_bg_s.jpg');
+    background: @white;
+    //background-image:url('../images/luovat_bg_s.jpg');
 }
 #well-m{
-    background-image:url('../images/luovat_bg_m.jpg');  
+    background: @white;
+    //background-image:url('../images/luovat_bg_m.jpg');  
 }
 #well-l{
-    background-image:url('../images/luovat_bg_l.jpg');
+    background: @white;
+    //background-image:url('../images/luovat_bg_l.jpg');
 }
 .well-order{
     width:100%;
-    height:550px;
+    height:500px;
     overflow: hidden;
     margin-top:20px;
+    border-radius: 15px !important;
     cursor: pointer;
 }
 .well-order-inner{
     width: 100%;
     height: 100%;
-    color:@white !important;
-    background-color: black; /* fallback color */
+    color:@black !important;
+    border-radius: 15px !important;
+    background-color: @white; /* fallback color */
     // background-image: url("../images/luovat_bg_3.jpg");
     background-position: center;
     background-size: cover;
     transition: all .5s;
 }
 .well-order-content{
-    padding:50px;
+    padding:20px;
     position: absolute;
     top:10px;
+    border-radius: 15px !important;
     line-height: 240%;
 }
 .well-order-inner::before {
@@ -489,9 +674,10 @@ input, textarea, .form-control {
   display: block;
   height: 100%;
   width: 100%;
+  border-radius: 15px !important;
   top:0px;
   left:0px;
-  background-color: rgba(0, 0, 0, 0.45);
+  background-color: rgba(0,0,0, 0.0);
 }
 
 .well-order:hover .well-order-inner:before,

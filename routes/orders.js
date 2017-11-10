@@ -31,7 +31,6 @@ router.get('/pickups',auth.artist, function(req, res, next) {
       .query()
       .where('userId',req.session.user.id)
       .then(relations => {
-        console.log('RELATIONS: ')
         _.forEach(relations, (relation) => {
           console.log(relation.orderId)
           userOrders.push(relation.orderId)
@@ -46,27 +45,27 @@ router.get('/pickups',auth.artist, function(req, res, next) {
         .then((orders) => {
           //FILTER DATA NOT TO BE SENT TO USER
           var data = {users:[],open:[]};
-            _.forEach(orders,function(order){
-              if(userOrders.indexOf(order.id) != -1){
-                data.users.push({
-                  id:order.id,
-                  message:order.clientMessage,
-                  date:order.eventDate,
-                  city:order.eventCity, 
-                  size:order.eventSize
-                })
-              }else{
-                data.open.push({
-                  id:order.id,
-                  message:order.clientMessage,
-                  date:order.eventDate,
-                  city:order.eventCity, 
-                  size:order.eventSize
-                })
-              }
-            })
-            res.send(data)
+          _.forEach(orders,function(order){
+            if(userOrders.indexOf(order.id) != -1){
+              data.users.push({
+                id:order.id,
+                message:order.clientMessage,
+                date:order.eventDate,
+                city:order.eventCity, 
+                size:order.eventSize
+              })
+            }else{
+              data.open.push({
+                id:order.id,
+                message:order.clientMessage,
+                date:order.eventDate,
+                city:order.eventCity, 
+                size:order.eventSize
+              })
+            }
           })
+          res.send(data)
+        })
         .catch(err => {
           console.log(err)
           res.sendSatus(500)
@@ -82,7 +81,6 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
       .andWhere('deleted',null)
       .then((orders) => {
         _.forEach(orders,function(order){
-          console.log(order)
           order.artistCut = (order.total / 100) * 70;
         })
         res.send(orders)
@@ -111,39 +109,34 @@ router.post('/admin-edit-order',auth.admin,function(req,res,next){
     discountPercent:  parseInt(req.body.discountPercent),
   }
   Order
-  .query()
-  .patchAndFetchById(req.body.id,data)
-  .then(function(cbOrder){
-    console.log('cbOrder',cbOrder)
-    helper.updateOrderTotal(cbOrder.id)
-  })
-  .then(function(order){
-    console.log(order)
-    res.send(200)
-  })
-  .catch(function(err){
-    console.log(err)
-    res.send(400,err)
-  })
-  
-});
-router.post('/artist-edit-order',auth.artist,function(req,res,next){
-  Order
     .query()
-    .patch({
-      artistStatus:req.body.artistStatus,
-      extraHours:parseInt(req.body.extraHours),
-      additional1:add1 == 'true' ? true : false,
-      additional2:add2 == 'true' ? true : false,
-      additional3:add3 == 'true' ? true : false
-    })
-    .where('id',req.body.id)
-    .andWhere('artistSelection',parseInt(req.session.user.id))
-    .then( (cbOrder) => {
-      console.log(cbOrder)
+    .patchAndFetchById(req.body.id,data)
+    .then(function(cbOrder){
       helper.updateOrderTotal(cbOrder.id)
     })
-    .then((cbOrder) => {
+    .then(function(order){
+      res.send(200)
+    })
+    .catch(function(err){
+      console.log(err)
+      res.send(400,err)
+    })
+})
+router.post('/artist-edit-order',auth.artist, (req,res,next) => {
+  console.log('EDIT:',req.body.id)
+  Order
+    .query()
+    .patchAndFetchById(req.body.id,{
+      extraHours:parseInt(req.body.extraHours),
+      additional1:req.body.add1 == 'true' ? true : false,
+      additional2:req.body.add2 == 'true' ? true : false,
+      additional3:req.body.add3 == 'true' ? true : false
+    })
+    .then( cbOrder => {
+      console.log('CB:',cbOrder)
+      helper.updateOrderTotal(cbOrder.id)
+    })
+    .then( cbOrder => {
       res.sendStatus(200)
     })
     .catch(err => {
@@ -154,15 +147,25 @@ router.post('/artist-edit-order',auth.artist,function(req,res,next){
 
 //USER PICKS UP A ORDER
 router.post('/pickup',auth.artist,function(req,res,next){
+  let id,eager;
   Order
     .query()
     .where('id',req.body.orderId)
     .first()
-    .then(order => {
-      return order.$relatedQuery('users').relate(req.session.user.id);
+    .then(cbOrder => {
+      console.log('Original order',cbOrder)
+      return Order
+      .query()
+      .patchAndFetchById(cbOrder.id,{
+        eager: cbOrder.eager == null ? 1 : cbOrder.eager + 1
+      })
     })
-    .then(() => {
-      console.log('Pickup Done')
+    .then(cbOrder => {
+      console.log('ADDED ONE EAGER',cbOrder)
+      return cbOrder.$relatedQuery('users').relate(req.session.user.id);
+    })
+    .then(cbOrder => {
+      console.log('Related query:',cbOrder)
       res.sendStatus(200)
     });
 })
@@ -176,7 +179,7 @@ router.get('/artist-options/:id/:token',function(req,res,next){
           res.sendStatus(403)
       }
       else{
-          order.$relatedQuery('users').then(function(users){
+          order.$relatedQuery('users').then(users => {
           let data = [];
           _.forEach(users,function(user){
             data.push({
@@ -194,8 +197,46 @@ router.get('/artist-options/:id/:token',function(req,res,next){
     })
 })
 
+router.get('/orders-progres',function(req,res,next){
+  var user = req.session.user;
+  var ordersIds = [];
+  var orders = [];
+
+  Order_User
+  .query()
+  .where('userId',user.id)
+  .then(cbOrderIds => {
+    _.forEach(cbOrderIds,orderId => {
+      console.log(orderId)
+      ordersIds.push(orderId.orderId)
+    })
+    return Order
+    .query()
+    .where('artistSelection',null)
+  })
+  .then(orders => {
+    var data = []
+    _.forEach(orders, order =>{
+      if(ordersIds.indexOf(order.id) != -1){
+        data.push({
+          id:order.id,
+          message:order.clientMessage,
+          date:order.eventDate,
+          city:order.eventCity, 
+          size:order.eventSize
+        })
+      }
+    })
+    console.log('EAGER ORDERS FOR THIS USER:',data)
+    res.send(data)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+
+})
+
 router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
-  console.log(req.params.userId)
   Order
     .query()
     .patch({
@@ -204,7 +245,6 @@ router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
     .where('id',req.params.orderId)
     .andWhere('clientToken',req.params.token)
     .then((updated) => {
-      console.log(updated)
       res.redirect('/')
     })
     .catch(err => {
@@ -233,6 +273,7 @@ router.post('/new',function(req,res,next){
       total:0,
       revenue:0,
       eagerMax:3,
+      ready:false,
       discountPercent:0,
       additional1:add1,
       additional2:add2,
@@ -243,7 +284,6 @@ router.post('/new',function(req,res,next){
       closed:false,
     })
     .then((newOrder) => {
-      console.log(newOrder)
       helper.updateOrderTotal(newOrder.id)
     })
     .then(function(_newOrder){
@@ -262,7 +302,6 @@ router.post('/free-pending/:id',auth.admin,(req,res,next) => {
     })
     .where('id',req.params.id)
     .then( updated => {
-      console.log('Order freed to pickups:', updated.clientName)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -285,8 +324,6 @@ router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
       helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
     })
     .then( cbOrder => {
-      console.log('Callback',cbOrder)
-      //console.log('Invoice 20% made by:', cbOrder.invoice20MadeBy,'. For client: ',cbOrder.clientName)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -295,7 +332,9 @@ router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
     })
 })
 
-router.post('/invoice100/:id/:invoiceNumber',auth.admin,function(req,res,next){
+
+
+router.post('/invoice100/:id/:invoiceNumber',auth.admin,(req,res,next) => {
     if(!req.params.invoiceNumber) throw new err('No invoice number');
     //TODO: CHECK IF THE JOB IS DONE!!
 
@@ -308,11 +347,9 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,function(req,res,next){
     })
     .then(cbOrder => {
       var total = cbOrder.total - cbOrder.revenue;
-      console.log(total)
       helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
     })
     .then( (cbOrder) => {
-      console.log('Callback',cbOrder)
       res.sendStatus(200)
     })
     .catch(err => {
@@ -321,7 +358,38 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,function(req,res,next){
     })
 })
 
-router.post('/delete/:id',function(req,res,next){
+router.post('/artist-order-ready/:id',auth.admin,(req,res,next) => {
+    console.log('READY',req.params.id)
+    Order
+    .query()
+    .patchAndFetchById(req.params.id,{
+      ready:true
+    })
+    .then(cbOrder => {
+      console.log(cbOrder)
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      console.log(err.stack)
+      res.sendStatus(500)
+    })
+})
+
+router.post('/close-order/:id',auth.admin,(req,res,next) => {
+    Order
+    .query()
+    .patchAndFetchById(req.params.id,{
+      closed:true
+    })
+    .then(cbOrder => {
+      console.log('Closed order: ',cbOrder)
+    })
+    .catch(err => {
+      console.log(err)
+    })
+})
+
+router.post('/delete/:id',(req,res,next) => {
   Order
     .query()
     .patch(
@@ -337,4 +405,6 @@ router.post('/delete/:id',function(req,res,next){
       res.sendSatus(500)
     });
 })
+
+
 module.exports = router;

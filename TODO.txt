@@ -14,18 +14,18 @@ TODO:
     
     ARTIST
     -POSTMARK
-    -Tilaukset, johon ilmottauduttu
+    -Tilaukset, johon ilmottauduttu //DONE
         *Status
-    -Aktiiviset Tilaukset
+    -Aktiiviset Tilaukset           
         *Tilauksen saldo
     -Tehdyt Tilaukset
-    -Saldo
-    -Asetukset
+    -Saldo //DONE
+    -Asetukset //DONE
         *Omat tiedot
     -Rekry
 
     ORDERS
-    -
+    - 
     
     CLIENT (PH1.2)
     -Asiakasrekisteri

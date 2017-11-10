@@ -179,6 +179,11 @@ Vue.component('user',{
 
 Vue.component('order',{
     props:['order'],
+    created:function(){
+        console.log(this.order)
+        this.order.selectedByUser = false;
+        if(this.order.artistSelection) this.order.selectedByUser = true;
+    },
     methods:{
         postForm:function(){
             var data = {
@@ -249,6 +254,15 @@ Vue.component('order',{
             }
             this.$parent.updateOrders();
         },
+        closeOrder:function(){
+            if(confirm('Varmista, että asiaks on maksanut koko tilauksen ja kuvaajalle on maksettu palkkio kokonaisuudessaan')){
+                $.post('/close-order/'+this.order.id,function(response){
+                    console.log(response)
+                })
+            }else{
+                alert('Tilausta ei suljettu')
+            }
+        },
         deleteOrder:function(){
             $.post('/orders/delete/'+this.order.id,function(response){
                 console.log(response)
@@ -292,11 +306,16 @@ Vue.component('order',{
                 '<button class="btn btn-success m5  w100" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
                 '<label for="invoice20Number">20% laskun numero</label>'+
                 '<input v-bind:disabled="this.order.invoice20" class="form-control m5" id="invoice20Number" v-model="order.invoice20Number"></input>'+
-                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice20" v-on:click="didInvoice20()" type="text">Laskutettu 20%</button>'+
-                '<label for="invoice100Number">100% laskun numero</label>'+
+                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice20 || !this.order.selectedByUser" v-on:click="didInvoice20()" type="text"><strong v-if="this.order.selectedByUser">Laskuta 20%</strong><strong v-if="!this.order.selectedByUser">Ei saa laskuttaa 20%</strong></button>'+
+                '<p class="m5">Alkulaskutus voidaan tehdä kun tilaukselle on valittu kuvaaja</p>'+
+                '<label for="invoice100Number">100% laskun numero:</label>'+
                 '<input v-bind:disabled="this.order.invoice100" class="form-control m5" id="invoice100Number" v-model="order.invoice100Number"></input>'+
-                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice100" v-on:click="didInvoice100()" type="text">Laskutettu 100%</button>'+
+                '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice100 || !this.order.ready" v-on:click="didInvoice100()" type="text"><strong v-if="this.order.ready">Laskuta 100%</strong><strong v-if="!this.order.ready">Ei saa laskuttaa 100%</strong></button>'+
+                '<p class="m5">Loppulaskutus voidaan tehdä kun kuvaaja on tehnyt työn loppuun!</p>'+
+                '<br>'+
+                '<button class="btn btn-primary m5   w100" v-on:click="closeOrder()" type="text">Tilaus maksettu kuvaajalle</button>'+
                 '<button class="btn btn-danger m5   w100" v-on:click="deleteOrder()" type="text">Poista</button>'+
+                '<br>'+
                 '<a v-bind:href="order.pickArtistLink">Kuvaajan valinta -sivulle</a>'+
             '</div>'+
         '</div>'
@@ -351,6 +370,7 @@ Vue.component('orders-dropdown',{
             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> 20% laskutettu</button></li>'+
+            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
         '</ul>'+
@@ -368,7 +388,7 @@ Vue.component('orders',{
                         object.statusClass  = 'fa fa-circle pull-right new-order'
                     };
                     if(!object.pending){
-                        object.status = 'Tilaus vapaututettu kuvaajille'
+                        object.status = 'Vapaututettu kuvaajille'
                         object.statusClass  = 'fa fa-circle pull-right free-order'
                     };
                     if(object.artistSelection != null) {
@@ -378,6 +398,10 @@ Vue.component('orders',{
                     if(object.invoice20) {
                         object.status = 'Osalaskutettu'
                         object.statusClass = 'fa fa-circle pull-right i20-order'
+                    };
+                    if(object.ready){
+                        object.status = 'Saa laskuttaa'
+                        object.statusClass = 'fa fa-circle pull-right i100-order'
                     };
                     if(object.invoice100){
                         object.status = 'Laskutettu'
@@ -421,7 +445,10 @@ Vue.component('orders',{
                 if(f.production && object.artistSelection != null  && !object.closed){
                     this.filteredList.push(object)
                 }
-                if(f.invoice20 && object.invoice20 && !object.closed){
+                if(f.invoice20 && object.invoice20 && !object.closed && !object.ready){
+                    this.filteredList.push(object)
+                }
+                if(f.ready && object.ready && !object.invoice100){
                     this.filteredList.push(object)
                 }
                 if(f.invoice100 && object.invoice100 && !object.closed){
@@ -440,6 +467,7 @@ Vue.component('orders',{
             pickups:false,
             production:false,
             invoice20:false,
+            ready:false,
             invoice100:false,
             closed:false
         }
@@ -452,7 +480,7 @@ Vue.component('orders',{
                         '<div class="panel-heading">'+
                             '<orders-dropdown v-bind:filter="filter"></orders-dropdown>'+
                             '<span class="panel-heading-pull-right">'+
-                                '<i class="fa fa-user-o" aria-hidden="true"></i>'+
+                                '<i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right:5px;"></i>'+
                                 '{{ length }}'+
                             '</span>'+
                         '</div>'+

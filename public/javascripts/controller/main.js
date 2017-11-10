@@ -110,7 +110,7 @@ Vue.component('order-form',{
                 '</center>'+
             '</div>'+
             '<div id="select-size" class="hide-order-form">'+
-                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-luovat">Miten tilaan</a> <a class="btn green btn-xs btn-luovat">Vertaile paketteja</a></span></div>'+
+                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-white">Miten tilaan</a> <a class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
                 '<order-size small="Valitse" caption="SMALL" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
                 '<order-size small="Valitse" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
                 '<order-size small="Valitse" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
@@ -144,7 +144,7 @@ Vue.component('order-form',{
                     '<button class="btn btn-sm btn-luovat" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-luovat" v-on:click="postOrder()">Lähetä tilaus</button>'+
                 '</center>'+
             '</div>'+
-            '<div id="ready" class="bg-white hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
+            '<div id="ready" class=" hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
                 '<center>'+
                     '<button class="btn btn-lg r-m btn-luovat" v-on:click="newOrder()">Tee uusi tilaus</button>'+
                 '</center>'+
@@ -160,12 +160,10 @@ Vue.component('order-form',{
 Vue.component('order-size',{
     props:['size','img','description','price','caption','small','bgId'],
     mounted:function(){
-        console.log(this.size)
         this.img = '../images/luovat_'+this.size+'.png';
         this.bgId = 'well-'+this.size;
     },
     updated:function(){
-        console.log(this.size)
         this.img = '../images/luovat_'+this.size+'.png';
         this.bgId = 'well-'+this.size;
     },
@@ -176,17 +174,23 @@ Vue.component('order-size',{
     },
     template:
     '<div>'+
-        '<div class="well-order" v-on:click="openForm(size)">'+
-            '<div v-bind:id="bgId" class="well-order-inner">'+
+        '<center>'+
+            '<div class="well-order" v-on:click="openForm(size)">'+
+                '<div v-bind:id="bgId" class="well-order-inner">'+
+                '</div>'+
+                '<div class="well-order-content">'+
+                '<center>'+
+                        //'<p class="white" style="font-size:10px;transform:translateY(0px)">{{ small }}</p>'+
+                        '<h1 style="line-height:50px;" class="giant">{{ size }}</h1>'+     
+                        '<p class="black opensans" style="font-size:16px;">{{ description }}</p>'+
+                        '<p class="black" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
+                        '<h3 class="black price">{{ price }}€</h3>'+
+                    '</center>'+
+                '</div>'+
             '</div>'+
-             '<div class="well-order-content">'+
-                '<p class="white" style="font-size:10px;transform:translateY(40px)">{{ small }}</p>'+
-                '<h2 style="line-height:50px;" class="white opensans">{{ caption }}</h2>'+
-                '<p class="white opensans" style="font-size:20px;">{{ description }}</p>'+
-                '<p class="white" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
-                '<h3 class="white opensans">{{ price }}€</h3>'+
-            '</div>'+
-        '</div>'+
+            '<br>'+
+            '<button class="btn btn-xs btn-white">Vertaile paketteja</button>'+
+        '</center>'+
     '</div>'
 })
 
@@ -246,6 +250,33 @@ new Vue({
     el:'#mainApp'
 })
 
+ $(document).on('click', '#play-sample-video', function(){
+        console.log('as')
+        $('#video-source').attr('src',"https://player.vimeo.com/video/223754130?autoplay=1&loop=1&autopause=0");
+        $("#video-modal").modal();
+    });
+
+$(document).ready(function(){
+    // $('#play-sample-video').click(function(){
+    //     console.log('as')
+    //     $('#video-source').attr('src',"https://player.vimeo.com/video/223754130?autoplay=0&loop=1&autopause=0");
+    //     $("#video-modal").modal();
+    // });
+
+    $('#play-rekry-video').click(function(){
+        console.log(' asd')
+        $('#video-source').attr('src',"https://player.vimeo.com/video/223740472?autoplay=1&loop=1&autopause=0");
+        $("#video-modal").modal();
+    });
+
+    $('#video-modal').on('hidden.bs.modal', function () {
+       $('#video-source').attr('src','');
+    });
+})
+
+
+
+//SMOOTH SCROLL
 // Select all links with hashes
 $('a[href*="#"]')
   // Remove links that don't actually link to anything

@@ -11,7 +11,7 @@ const session = require('express-session');
 const User = require('../models/user.js')
 const Order = require('../models/order.js')
 
-router.get('/',auth.artist, function(req, res, next) {
+router.get('/',auth.artist, (req, res, next) => {
   res.render('artist',{title:'Luovat.com',user:{id:req.session.user.id,name:req.session.user.firstName}})
 });
 
@@ -20,6 +20,7 @@ router.get('/artist-balance',(req,res,next) => {
   Order
   .query()
   .where('artistSelection',parseInt(req.session.user.id))
+  .andWhere('invoice100',false)
   .andWhere('closed',false)
   .then(cbOrders => {
     console.log(cbOrders)
@@ -36,7 +37,7 @@ router.get('/artist-balance',(req,res,next) => {
   })
 })
 
-router.get('/all',auth.admin ,function(req, res, next) {
+router.get('/all',auth.admin ,(req, res, next) => {
   User
     .query()
     .then((users) => {
@@ -47,12 +48,12 @@ router.get('/all',auth.admin ,function(req, res, next) {
     })
 });
 
-router.get('/logout', function(req,res,next){
+router.get('/logout', (req,res,next) => {
   req.session.destroy();
   res.sendStatus(200);
 })
 
-router.get('/inject-super-user',function(req,res,next){
+router.get('/inject-super-user',(req,res,next) => {
   User 
     .query()
     .insert({
@@ -70,7 +71,7 @@ router.get('/inject-super-user',function(req,res,next){
     })
 })
 
-router.post('/new',function(req,res,next){
+router.post('/new',(req,res,next) => {
   User 
     .query()
     .insert({
@@ -87,11 +88,25 @@ router.post('/new',function(req,res,next){
     })
 })
 
-router.get('/:id', function(req, res, next) {
+router.get('/data', (req, res, next) => {
+  console.log('ID',req.session.user.id)
+  User
+    .query()
+    .where('id',parseInt(req.session.user.id))
+    .first()
+    .then((user) => {
+      res.send(_.pick(user,['id','firstName','lastName','email','phone','street','city','zipCode','payment']))
+    })
+    .catch(err => {
+      console.log(err)
+    })
+});
+
+router.get('/:id',auth.admin, (req, res, next) => {
   User
     .query()
     .where('id','=',req.params.id)
-    .then((users) => {
+    .then((user) => {
       res.send(users)
     })
     .catch(err => {
@@ -99,7 +114,7 @@ router.get('/:id', function(req, res, next) {
     })
 });
 
-router.post('/delete/:id',function(req,res,next){
+router.post('/delete/:id',(req,res,next) => {
   User
     .query()
     .patch(
@@ -114,7 +129,7 @@ router.post('/delete/:id',function(req,res,next){
     });
 })
 
-router.post('/edit', function(req,res,next){
+router.post('/edit', auth.admin,(req,res,next) =>{
   let o = req.body;
   console.log('Editing user with data: ',o)
   User
@@ -132,7 +147,7 @@ router.post('/edit', function(req,res,next){
       reelPassword: o.reelPassword,
       employee:     o.employee
     })
-    .where('id','=',o.id)
+    .findById(o.id)
     .then( updated => {
       console.log('User updated')
       res.sendStatus(200)
@@ -143,12 +158,39 @@ router.post('/edit', function(req,res,next){
     })
 })
 
-router.post('/login', function(req,res,next){
+router.post('/artist-self-edit', auth.admin,(req,res,next) => {
+  let editedDataInputs = ['firstName','lastName','email','phone','street','city','zipCode','payment'];
+  console.log('INPUTS',editedDataInputs)
+  _.forEach(editedDataInputs, (input,key) => {
+    if(req.body[input] && req.body[input].length > 0){
+      return;
+    }
+    editedDataInputs.splice(key,1);
+    return;
+  })
+  console.log('FILTERED',editedDataInputs)
+  let editedData = _.pick(req.body, editedDataInputs)
+  console.log('Editing user with data: ',editedData)
+  User
+    .query()
+    .patch(editedData)
+    .findById(req.body.id)
+    .then( updated => {
+      console.log('User updated')
+      res.sendStatus(200)
+    })
+    .catch(err => {
+      console.log(err)
+      res.sendStatus(500)
+    })
+})
+
+router.post('/login', (req,res,next) => {
   console.log('BODY: ',req.body)
   User
     .query()
     .where('email','=',req.body.email)
-    .then(function(user){
+    .then((user) => {
       var target;
       console.log('USER',user)
       if(user[0] && bcrypt.compareSync(req.body.password, user[0].password)){
@@ -176,11 +218,11 @@ router.post('/login', function(req,res,next){
     })
 })
 
-router.get('/change-password/:token',function(req,res,next){
+router.get('/change-password/:token',(req,res,next) => {
   User
     .query()
     .where('passwordChangeToken','=',req.params.token)
-    .then(function(user){
+    .then((user) => {
       res.render('changePass',{
         title:'Vaihda salasana',
         token:req.params.token
@@ -192,7 +234,7 @@ router.get('/change-password/:token',function(req,res,next){
     })
 })
 
-router.post('/change-password',function(req,res,next){
+router.post('/change-password',(req,res,next) => {
   console.log(req.body)
   User
     .query()

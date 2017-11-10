@@ -21,55 +21,56 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand"><img class="" style="height:100%;" src="./images/luovat_l.png"></a>
+          <a class="navbar-brand" style="position:fixed"><img class="plaster" style="height:40px;display:inline-block;margin-right:5px;margin-top:-10px" src="./images/logo.png"><span style="color:white;font-size:24px;display:inline-block;padding-top:10px;" class="amaticB nav-logo-text">LUOVAT.COM</span></a>
         </div>
         <div class="collapse navbar-collapse" id="navbarCollapse" >       
           <ul class="nav navbar-nav navbar-center">
-            <li><a href="#company">YRITYS</a></li>
-            <li><a href="#sample">TÖITÄMME</a></li>
-            <li><a href="#order">TILAA VIDEO</a></li>
-            <li><a href="#rekry">REKRY</a></li>
+            <li><a class="nav-page-link" style="color:white;" href="#company">YRITYS</a></li>
+            <li><a class="nav-page-link" style="color:white;" href="#sample">TÖITÄMME</a></li>
+            <li><a class="nav-page-link" style="color:white;" href="#order">TILAA VIDEO</a></li>
+            <li><a class="nav-page-link" style="color:white;" href="#rekry">REKRY</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" style="margin:10px;">
             <li><span>
-              <a href="#order" class="nav-some-link"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-              <a href="#rekry" class="nav-some-link"><i class="fa fa-instagram" aria-hidden="true"></i></a>
-              <a href="#company" class="nav-some-link"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
-              <a href="#company" class="nav-some-link"><i class="fa fa-vimeo" aria-hidden="true"></i></a>
+              <a href="#order" class="nav-page-link"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#rekry" class="nav-page-link"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-page-link"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-page-link"><i class="fa fa-vimeo" aria-hidden="true"></i></a>
             </span></li>
           </ul>
         </div>
       </div>
     </nav>
     <div id="mainApp">
-        <div id="main" class="row bg-black">
+        <div id="main" class="row">
+          <div class="gray-curtain"></div>
           <div class="col-md-12 white" style="height:100%"> 
-              <div class="centered text-center">
-                <h1 class="opensans landing-h1"> 
-                  LUOVAT.COM
-                </h1>
-                <p class="opensans" style="margin-bottom:20px">
-                  Uusi vaivaton tapa hankkia videotuotanto
-                </p>
-                <button class="btn btn-luovat btn-sm">Miten tilaan</button>
-                <button class="btn btn-luovat btn-sm">Tilaa video</button>
-                <button class="btn btn-luovat btn-sm">Rekry</button>
-              </div>
+            <div class="centered text-center">
+              <h1 class="amaticR landing-h1"> 
+                LUOVAT.COM
+              </h1>
+              <p class="opensans" style="margin-bottom:20px">
+                Uusi vaivaton tapa hankkia videotuotanto
+              </p>
+              <a style="color:white;" class="btn btn-luovat btn-sm" id="play-sample-video">Miten tilaan</a>
+              <a style="color:white;" class="btn btn-luovat btn-sm" href="#order">Tilaa video</a>
+              <a style="color:white;" class="btn btn-luovat btn-sm" id="play-rekry-video" href="#rekry">Rekry</a>
+            </div>
           </div>
         </div>
-        <div id="company" class="row r-mm bg-black">
-          <div class="col-md-12 r-m">
+        <div id="company" class="row bg-white r-mm">
+          <div class="col-md-12"> 
             <center>
-              <h6 class="green opensans"> 
+               <h3 class="green amaticR"> 
                 LUOVAT.COM
-              </h6>
-              <h2 class="opensans">
+              </h3> 
+              <h1 class="">
                 KUSTANNUSTEHOKKAAMPAA VIDEOTUOTANTOA
-              </h2>
+              </h1>
               <p class="opensans">
-                Luovat.com tarjoaa kevyitä ja laadukkaita videotuotantopaketteja. Meiltä löytyy jokaiselle jotakin pienemmänkin budjetin turvin.<br>
+                Luovat.com tarjoaa kevyitä ja laadukkaita videotuotantopaketteja.<br>Meiltä löytyy jokaiselle jotakin pienemmänkin budjetin turvin.<br>
               </p>
-              <a class="btn btn-link" data-toggle="modal" data-target="#infoModal">
+              <a class="btn btn-page-link btn-sm" data-toggle="modal" data-target="#infoModal">
                 Lue lisää ..
               </a>
             </center>
@@ -78,25 +79,23 @@
         <div id="sample" class="row company_bg">
           <div class="col-md-12 r-m">
             <center class="r-mm">
-              <div class="green-curtain">
                 <div class="centered">
                   <h1 class="white">Katso esittelyvideo</h1>
-                  <button class="btn btn-play white"><i class="fa fa-play"></i></button>
+                  <button id="play-sample-video" class="btn btn-play white"><i class="fa fa-play"></i></button>
                 </div>
-              </div>
             </center>
           </div>
         </div>
-        <div id="order" class="row bg-black r-mm">
+        <div id="order" class="row bg-blue r-m">
           <order-form></order-form>
         </div>
-        <div id="rekry" class="row r-m bg-black white">
+        <div id="rekry" class="row r-m bg-team white">
           <div class="col-md-12">
             <center>
-              <h6 class="green opensans"> 
+              <h6 class="green amaticR"> 
                 LUOVAT.COM
               </h6>
-              <h2 class="opensans">
+              <h2 class="">
                 HALUATKO MUKAAN LUOVIEN TIIMIIN
               </h2>
               <p class="opensans">
@@ -118,6 +117,12 @@
           </div>
         </div>
 
+        <div id="video-modal" class="modal fade" role="dialog">
+          <div class="centered">
+            <iframe id="video-source" src="" width="1000" height="562" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          </div>
+        </div>
+
         <div id="infoModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -126,6 +131,9 @@
                 <h4 class="modal-title opensans green">TIETOA MEISTÄ</h4>
               </div>
               <div class="modal-body">
+                <center>
+                  <img src="./images/logo.png" style="width:10%">
+                </center>
                 <p class="m20">
                   Videot ovat nykypäivänä yksi tärkeimmistä ja käytetyimmistä markkinoinnin muodoista.
                   Haluamme laskea kynnystä kevyiden videotuotantojen tilaukselle ja tarjota vaivatonta tapaa
@@ -156,6 +164,9 @@
                 <h4 class="modal-title opensans green">REKRY</h4>
               </div>
               <div class="modal-body">
+                <center>
+                  <img src="./images/logo.png" style="width:10%;margin-bottom:25px;">
+                </center>
                 <rekry-form></rekry-form>
               </div>
             </div>

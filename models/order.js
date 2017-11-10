@@ -45,6 +45,7 @@ class Order extends Model{
             additional3:{type: 'boolean'},
             total:{type: 'number'},
             revenue:{type:'number'},
+            ready:{type:'boolean'},
             discountPercent:{type:'number'},
             pending:{type:'boolean'},
             pendingFreedBy:{type:'string'},

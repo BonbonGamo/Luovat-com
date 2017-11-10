@@ -8,6 +8,7 @@ const auth    = require('../scripts/auth.js');
 const session = require('express-session');
 
 const Order       = require('../models/order.js')
+const Order_User  = require('../models/order_user.js')
 
 module.exports = {
     updateOrderTotal: function(id){
@@ -54,5 +55,13 @@ module.exports = {
             .query()
             .patchAndFetchById(cbOrder.id,{revenue:revenue})
         })
+    },
+    checkForOrdersToRelease: function(){
+        let orders = [];
+        let pairs = [];
+        //RELEASE
+        Order
+        .query()
+        .where('eager','<',4)
     }
 }

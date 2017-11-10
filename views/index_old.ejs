@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="luovat-navbar">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand"><img class="" style="height:100%;" src="./images/luovat_l.png"></a>
+        </div>
+        <div class="collapse navbar-collapse" id="navbarCollapse" >       
+          <ul class="nav navbar-nav navbar-center">
+            <li><a href="#company">YRITYS</a></li>
+            <li><a href="#sample">TÖITÄMME</a></li>
+            <li><a href="#order">TILAA VIDEO</a></li>
+            <li><a href="#rekry">REKRY</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right" style="margin:10px;">
+            <li><span>
+              <a href="#order" class="nav-some-link"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+              <a href="#rekry" class="nav-some-link"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-some-link"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+              <a href="#company" class="nav-some-link"><i class="fa fa-vimeo" aria-hidden="true"></i></a>
+            </span></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div id="mainApp">
+        <div id="main" class="row bg-black">
+          <div class="col-md-12 white" style="height:100%"> 
+              <div class="centered text-center">
+                <h1 class="opensans landing-h1"> 
+                  LUOVAT.COM
+                </h1>
+                <p class="opensans" style="margin-bottom:20px">
+                  Uusi vaivaton tapa hankkia videotuotanto
+                </p>
+                <button class="btn btn-luovat btn-sm">Miten tilaan</button>
+                <button class="btn btn-luovat btn-sm">Tilaa video</button>
+                <button class="btn btn-luovat btn-sm">Rekry</button>
+              </div>
+          </div>
+        </div>
+        <div id="company" class="row r-mm bg-black">
+          <img src="./images/LuovaUkkeli.png" style="position:absolute;top:0px;left:20px;width:10%"> 
+          <div class="col-md-12 r-m">
+            <center>
+              <h6 class="green opensans"> 
+                LUOVAT.COM
+              </h6>
+              <h2 class="opensans">
+                KUSTANNUSTEHOKKAAMPAA VIDEOTUOTANTOA
+              </h2>
+              <p class="opensans">
+                Luovat.com tarjoaa kevyitä ja laadukkaita videotuotantopaketteja. Meiltä löytyy jokaiselle jotakin pienemmänkin budjetin turvin.<br>
+              </p>
+              <a class="btn btn-link" data-toggle="modal" data-target="#infoModal">
+                Lue lisää ..
+              </a>
+            </center>
+          </div>
+        </div>
+        <div id="sample" class="row company_bg">
+          <div class="col-md-12 r-m">
+            <center class="r-mm">
+              <div class="green-curtain">
+                <div class="centered">
+                  <h1 class="white">Katso esittelyvideo</h1>
+                  <button class="btn btn-play white" data-toggle="modal" data-target="#video-modal"><i class="fa fa-play"></i></button>
+                </div>
+              </div>
+            </center>
+          </div>
+        </div>
+        <div id="order" class="row bg-black r-mm">
+          <order-form></order-form>
+        </div>
+        <div id="rekry" class="row r-m bg-black white">
+          <div class="col-md-12">
+            <center>
+              <h6 class="green opensans"> 
+                LUOVAT.COM
+              </h6>
+              <h2 class="opensans">
+                HALUATKO MUKAAN LUOVIEN TIIMIIN
+              </h2>
+              <p class="opensans">
+                Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
+              </p>
+              <a class="btn btn-link" data-toggle="modal" data-target="#rekryModal">
+                Avaa rekry lomake tästä
+              </a>
+            </center>
+          </div>
+          <div class="bg-main collapse" id="rekryCollapse">
+          
+          </div>
+        </div>
+        <div id="footer" class="row bg-black r-m">
+          <div class="col-md-12 text-center">
+            <p>Tähän tulee some ja yhteystiedot</p><br>
+            <p>Copyright Creative Nordic 2017</p>
+          </div>
+        </div>
+
+        <div class="modal fade" role="dialog" id="video-modal" video-url="./video/order.mp4">
+          <div class="modal-dialog centered">
+            <div class="modal-content centered">
+              <video class="centered" height="380">
+                <source src="./video/order.mp4" type="video/mp4">
+              </video>
+            </div>
+          </div>
+        </div>
+
+        <div id="infoModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title opensans green">TIETOA MEISTÄ</h4>
+              </div>
+              <div class="modal-body">
+                <p class="m20">
+                  Videot ovat nykypäivänä yksi tärkeimmistä ja käytetyimmistä markkinoinnin muodoista.
+                  Haluamme laskea kynnystä kevyiden videotuotantojen tilaukselle ja tarjota vaivatonta tapaa
+                  tilata videoita myös pienemmällä budjetilla.
+                  Meidän kauttamme voit nopeasti ja luotettavasti tilata videotuotantoa esimerkiksi
+                  yritystapahtumiin ja sisäisen viestinnän tueksi tai yritysesittelyyn omasta yrityksestäsi.
+                  Toimintamallissamme on sivuutettu hintavat välikädet sekä muut ylimääräiset
+                  kulut. Tarjoamme kustannustehokkaampaa videotuotantoa kaikille. Asiakaskuntaamme
+                  kuuluvat niin suuret kuin pienetkin yritykset, sekä yksityishenkilöt.
+                  Missiomme on tarjota helposti ja vaivattomasti tilattavaa videotuotantoa ja visiomme on olla
+                  koko Suomen kattava videotuotantoverkosto, joka työllistää innokkaita ja luovia alan
+                  ammattilaisia.
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div id="rekryModal" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title opensans green">REKRY</h4>
+              </div>
+              <div class="modal-body">
+                <rekry-form></rekry-form>
+              </div>
+            </div>
+
+          </div>
+        </div>
+     </div>
+
+
+    <script type="text/javascript" src="/javascripts/mainController.js"></script>
+    <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>
+    <script type="text/javascript" src="/javascripts/vueComponents.js"></script>
+    <script type="text/javascript" src="/javascripts/controller/main.js"></script>
+  </body>
+</html>

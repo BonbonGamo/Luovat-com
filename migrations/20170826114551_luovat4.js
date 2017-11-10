@@ -46,6 +46,7 @@ exports.up = function(knex, Promise) {
             table.integer('discountPercent');
             table.integer('total');
             table.integer('revenue');
+            table.boolean('ready');
             table.boolean('pending');
             table.string('pendingFreeBy');
             table.boolean('invoice20');

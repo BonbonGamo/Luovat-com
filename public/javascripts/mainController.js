@@ -15,9 +15,13 @@ function configUrl(){
 $(document).ready(function(){
   $(window).scroll(function(){
     if($(window).scrollTop() < 30){
-      $('#luovat-navbar').css('background','rgba(0,0,0,0.2)');
+      $('#luovat-navbar').css('background','rgba(0,0,0,0.0)');
+      $('.nav-page-link').css('color','white');
+      $('.nav-logo-text').css('color','white');
     }else{
-      $('#luovat-navbar').css('background','black');
+      $('#luovat-navbar').css('background','rgba(255,255,255,0.9)');
+      $('.nav-page-link').css('color','black');
+      $('.nav-logo-text').css('color','black');
     }
   })  
 })
