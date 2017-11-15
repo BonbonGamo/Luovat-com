@@ -1,5 +1,5 @@
 'use strict'
-const session = require('session');
+const session = require('express-session');
 const constants = require('./constants.js')
 
 module.exports = {
