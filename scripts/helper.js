@@ -55,13 +55,5 @@ module.exports = {
             .query()
             .patchAndFetchById(cbOrder.id,{revenue:revenue})
         })
-    },
-    checkForOrdersToRelease: function(){
-        let orders = [];
-        let pairs = [];
-        //RELEASE
-        Order
-        .query()
-        .where('eager','<',4)
     }
 }
