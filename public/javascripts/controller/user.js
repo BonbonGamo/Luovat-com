@@ -97,11 +97,7 @@ Vue.component('orders',{
     },
     template:'<div>'+
                 '<div class="panel-group">'+
-<<<<<<< HEAD
                     '<p class="green m5"><strong>Uudet keikat</strong> - kerro asiakkaalle, että haluaisit ottaa työn vastaan</p>'+
-=======
-                    '<p class="green"><strong>Uudet keikat</strong></p>'+
->>>>>>> dda05346585cce3630b0df5bd4dfe862dbe04051
                     '<div  class="panel m5 panel-primary" v-for="order in orders">'+
                         '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
                         '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
