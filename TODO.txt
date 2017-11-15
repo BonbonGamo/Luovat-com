@@ -18,7 +18,7 @@ TODO:
         *Status
     -Aktiiviset Tilaukset           
         *Tilauksen saldo
-    -Tehdyt Tilaukset
+    -Tehdyt Tilaukset 
     -Saldo //DONE
     -Asetukset //DONE
         *Omat tiedot
