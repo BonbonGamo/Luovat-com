@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const lessMiddleware = require('less-middleware');
 const constants = require('./scripts/constants.js')
 const db = require('./scripts/db.js')
-const CronJob = require('cron').CronJob;
+//const CronJob = require('cron').CronJob;
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session);
 
