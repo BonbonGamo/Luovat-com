@@ -103,7 +103,7 @@ input, textarea, .form-control {
 }
 .bg-blue{
     background: @blue;
-    color: white;
+    color: white !important;
 }
 .bg-white{
     color:@black;
@@ -130,6 +130,21 @@ input, textarea, .form-control {
     left:50%;
     transform: translate(-50%,-50%)
 }
+.centered-ud{
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+    margin-left: 100px;
+}
+@media (max-width:767px){
+    .centered-ud{
+        margin-left: 100px;
+        top:50%;
+        transform: translateY(-50%);
+        margin-left: auto;
+        text-align: center;
+    }
+}
 .company_bg{
     background-image: url('../images/luovat_bg_2.jpg');
     background-size: cover;
@@ -150,6 +165,9 @@ input, textarea, .form-control {
     background: -o-linear-gradient(black, @beige); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(black, @beige); /* For Firefox 3.6 to 15 */
     background: linear-gradient(black, @beige); /* Standard syntax */
+}
+.row100{
+    min-height:100%;
 }
 .gray{
     color:@gray;
@@ -198,6 +216,7 @@ input, textarea, .form-control {
 #main{
     height:100%;
     background-image: url('../images/luovat_bg_4s.jpg');
+    background-attachment: fixed;
     background-size:cover;
 }
 .bg-green{
@@ -214,6 +233,14 @@ input, textarea, .form-control {
 }
 .gray-curtain{
     background: rgba(110,110,130,0.4);
+    position:absolute;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+}
+.gray-curtain2{
+    background: rgba(110,110,130,0.9);
     position:absolute;
     top:0px;
     left:0px;
@@ -317,6 +344,7 @@ input, textarea, .form-control {
     padding-top:140px;
     padding-bottom: 140px;
 }
+
 .rekry_bg{
     background-image: url('../images/luovat_bg_2.jpg');
     background-size: cover;
@@ -382,15 +410,19 @@ input, textarea, .form-control {
     height:80px;
     width: 80px;
     margin-top: 30px;
-    font-size: 26px !important;
-    border: 3px solid @white !important;
+    font-size: 30px !important;
+    border: 4px solid @white !important;
     border-radius: 200px !important;
     background: transparent !important;
 }
 .btn-play:hover{
-    color: @white !important;
-    font-size: 27px !important;
-    border: 5px solid rgba(255,2555,255,0.6) !important;
+    height:100px;
+    width: 100px;
+    font-size: 40px !important;
+    color:@blue !important;
+    margin-top: 10px;
+    transform: translateY(10px);
+    border: 15px double @blue!important;
 }
 .btn-luovat{
     background: transparent;

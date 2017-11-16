@@ -134,11 +134,11 @@ Vue.component('order-form',{
                 '<input class="form-control m5 order-form-input-area" placeholder="Puhelin" v-model="formData.phone"></input>'+
                 '<input class="form-control m5 order-form-input-area" placeholder="Kaupunki" v-model="formData.eventCity"></input>'+
                 '<input class="form-control m5 order-form-input-area" placeholder="Päivä" type="date" v-model="formData.date"></input>'+ 
-                '<label class="green m10" for="12" >  Tekstitys +50€</label>'+
+                '<label class="white m10" for="12" >  Tekstitys +50€</label>'+
                 '<input type="checkbox" id="a1" v-model="formData.add1"><br>'+
-                '<label class="green m10" for="a2" >  Ilmakuvaus +100€</label>'+
+                '<label class="white m10" for="a2" >  Ilmakuvaus +100€</label>'+
                 '<input type="checkbox" id="a2" v-model="formData.add2"><br>'+
-                '<label class="green m10" for="a3" >  Voice over +100 - 300€ </label>'+
+                '<label class="white m10" for="a3" >  Voice over +100 - 300€ </label>'+
                 '<input type="checkbox" id="a3" v-model="formData.add3"><br><br>'+
                 '<center>'+
                     '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="postOrder()">Lähetä tilaus</button>'+
