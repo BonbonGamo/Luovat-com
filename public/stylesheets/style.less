@@ -215,7 +215,7 @@ input, textarea, .form-control {
 }
 #main{
     height:100%;
-    background-image: url('../images/luovat_bg_4s.jpg');
+    background-image: url('../images/main-bg.jpg');
     background-attachment: fixed;
     background-size:cover;
 }
@@ -630,17 +630,41 @@ input, textarea, .form-control {
     padding-right: 10px !important;
     margin-top:5px;
     margin-bottom: 5px;
-    font-size: 18px;
+    font-size: 14px;
 }
 .nav-page-link:hover{
-    padding: 6px !important;
+    padding: 2px !important;
+    border-bottom: 3px solid @blue;
     color:white;
     padding-left: 10px !important;
     padding-right: 10px !important;
     margin-top:5px;
     margin-bottom: 5px;
-    font-size: 18px;
+    background: transparent !important;
 }
+.active{
+    >.nav-page-link{
+        padding: 2px !important;
+        border-bottom: 3px solid @blue;
+        color:white;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-top:5px;
+        margin-bottom: 5px;
+        background: transparent !important;
+    }
+    >.nav-page-link:hover{
+        padding: 2px !important;
+        border-bottom: 3px solid @blue;
+        color:white;
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+        margin-top:5px;
+        margin-bottom: 5px;
+        background: transparent !important;
+    }
+}
+
 .nav-some-link{
     color:@blue;
     font-size: 16px !important;
