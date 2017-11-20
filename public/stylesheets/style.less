@@ -1,5 +1,5 @@
-@white:#EAFDF8;
-@gray:#cececc;
+@white:#FFF;
+@gray:#3F3F3F;
 @darkgray:#324A5F;
 //@blue:#7F95D1;
 @darkblue:#1B2A41;
@@ -11,6 +11,7 @@
 @green:#5B9879;
 @blue: #7AD2D9;
 @beige:#F3D69B;
+@yellow:#F6DA83;
 
 @warn:#dd6565;
 @success:#65dd8d;
@@ -20,23 +21,17 @@
 @import url('https://fonts.googleapis.com/css?family=Reem+Kufi');
 @import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
 @import url('https://fonts.googleapis.com/css?family=Plaster');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400,700,800,900');
 
 
 @opensans: 'Open Sans Condensed', sans-serif;
 @roboto: 'Roboto', sans-serif;
 @reem: 'Reem Kufi', sans-serif;
-@amatic:'Amatic SC', cursive;
+@montserrat:'Amatic SC', cursive;
 @plaster:'Plaster', cursive;
+@montserrat: 'Montserrat', sans-serif !important;
 
 
-
-.amaticR{
-    font-family: @amatic;
-}
-.amaticB{
-    font-family: @amatic;
-    font-weight:700;
-}
 .roboto{
     font-family: @roboto;
 }
@@ -46,24 +41,45 @@
 .plaster{
     font-family: @plaster !important;
 }
+.montserrat{
+    font-family: @montserrat ;
+}
+.fw100{
+    font-weight: 100 !important;
+}
+.fw300{
+    font-weight: 300 !important;
+}
+.fw400{
+    font-weight: 400 !important;
+}
+.fw700{
+    font-weight: 700 !important;
+}
+.fw800{
+    font-weight: 800 !important;
+}
+.fw900{
+    font-weight: 900 !important;
+}
 h1{
-    font-family: @amatic !important;
+    font-family: @montserrat !important;
 }
 h2{
-    font-family: @amatic !important;
+    font-family: @montserrat !important;
 }
 h3{
-    font-family: @amatic !important;
+    font-family: @montserrat !important;
 }
 h4{
-    font-family: @amatic !important;
+    font-family: @montserrat !important;
 }
 h5{
     font-family: @roboto;
     font-style: italic;
 }
 h6{
-    font-family: @amatic !important;
+    font-family: @montserrat !important;
     font-size: 15px !important;
 }
 p{
@@ -105,9 +121,17 @@ input, textarea, .form-control {
     background: @blue;
     color: white !important;
 }
+.bg-yellow{
+    background: @yellow;
+    color:@black !important;
+}
 .bg-white{
     color:@black;
     background: @white;
+}
+.bg-paper{
+    background-image:url('../images/paper-blue.jpg');
+    background-size: cover;
 }
 .black{
     color:@black !important;
@@ -494,6 +518,11 @@ input, textarea, .form-control {
     .btn-luovat{
         width:90%;
         margin-bottom:10px !important; 
+    }
+}
+@media (max-width:1010px){
+    .hide1010{
+        display: none;
     }
 }
 .btn-page-link{

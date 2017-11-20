@@ -110,7 +110,7 @@ Vue.component('order-form',{
                 '</center>'+
             '</div>'+
             '<div id="select-size" class="hide-order-form">'+
-                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-white">Miten tilaan</a> <a class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
+                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-white">Miten tilaan</a> <a data-toggle="modal" data-target="#compare" class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
                 '<order-size small="Valitse" caption="SMALL" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
                 '<order-size small="Valitse" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
                 '<order-size small="Valitse" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
@@ -189,7 +189,7 @@ Vue.component('order-size',{
                 '</div>'+
             '</div>'+
             '<br>'+
-            '<button class="btn btn-xs btn-white">Vertaile paketteja</button>'+
+            //'<button class="btn btn-xs btn-white" data-toggle="modal" data-target="#compare">Vertaile paketteja</button>'+
         '</center>'+
     '</div>'
 })

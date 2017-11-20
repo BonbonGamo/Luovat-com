@@ -21,7 +21,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" style="position:fixed"><img class="plaster" style="height:40px;display:inline-block;margin-right:5px;margin-top:-10px" src="./images/logo.png"><span style="color:white;font-size:24px;display:inline-block;padding-top:10px;" class="amaticB nav-logo-text">LUOVAT.COM</span></a>
+          <a class="navbar-brand" style="position:fixed"><img class="plaster" style="height:40px;display:inline-block;margin-right:5px;margin-top:-10px" src="./images/logo.png"><span style="color:white;font-size:24px;display:inline-block;padding-top:10px;" class="montserrat nav-logo-text">LUOVAT.COM</span></a>
         </div>
         <div class="collapse navbar-collapse" id="navbarCollapse" >       
           <ul class="nav navbar-nav navbar-center">
@@ -46,10 +46,10 @@
           <div class="gray-curtain"></div>
           <div class="col-md-12 white" style="height:100%"> 
             <div class="centered-ud">
-              <h1 class="amaticR landing-h1"> 
+              <h1 class="montserrat fw900"> 
                 LUOVAT.COM
               </h1>
-              <p class="opensans" style="margin-bottom:10px">
+              <p class="opensans" style="margin-bottom:15px">
                 Uusi vaivaton tapa hankkia videotuotanto
               </p>
               <a style="color:white;margin-left:0px;" class="btn btn-luovat btn-xs" id="play-sample-video">Miten tilaan</a>
@@ -58,25 +58,26 @@
             </div>
           </div>
         </div>
-        <div id="company" class="row bg-white r-mm">
-          <div class="col-md-12"> 
-            <center>
-               <h3 class="green amaticR"> 
-                LUOVAT.COM
-              </h3> 
-              <h1 class="">
-                KUSTANNUSTEHOKKAAMPAA VIDEOTUOTANTOA
-              </h1>
-              <p class="opensans">
-                Luovat.com tarjoaa kevyitä ja laadukkaita videotuotantopaketteja.<br>Meiltä löytyy jokaiselle jotakin pienemmänkin budjetin turvin.<br>
-              </p>
+        <div id="company" class="row bg-white">
+          <img src="../images/lamppu-R.png" class="hide1010" style="position:absolute;height:700px;left:-100px;;z-index:1">
+          <img src="../images/lamppu-L.png" class="hide1010" style="position:absolute;height:700px;right:-100px;;z-index:1">
+          <div class="col-md-8 col-md-offset-2 r-mm" style="height:100%"> 
+            <center class="cente">
+               <h2 class="green montserrat fw400"> 
+                LUOVAT YRITYKSENÄ
+              </h2> 
+              <h3 class="montserrat">
+                Olemme luotettava videotuotantokumppanisi.<br>
+                Tarjoamme videotuotantopaketteja, jotka ovat räätälöityjä helpottamaan tilausta.<br>
+                <span class="montserrat fw200" style="font-size:14px">Ei yllätyskuluja eikä hankalia tuotantoja.</span>
+              </h3>
               <a class="btn btn-page-link btn-sm" data-toggle="modal" data-target="#infoModal">
                 Lue lisää ..
               </a>
             </center>
           </div>
         </div>
-        <div id="sample" class="row company_bg">
+        <!-- <div id="sample" class="row company_bg">
           <div class="col-md-12" style="height:400px;">
             <center>
                 <div class="gray-curtain"></div>
@@ -87,17 +88,19 @@
                 </div>
             </center>
           </div>
-        </div>
-        <div id="order" class="row row100 bg-blue r-m">
+        </div> -->
+        <div id="order" class="row bg-blue r-m bg-paper" style="z-index:5">
           <order-form></order-form>
         </div>
-        <div id="rekry" class="row bg-team white">
-          <div class="col-md-12" style="height:400px"> 
-            <div class="gray-curtain"></div>
-            <div class="gray-curtain"></div>
-            <div class="centered">
-              <center>
-                <h6 class="green amaticR"> 
+        <div id="rekry" class="row bg-yellow white">
+          <div class="col-md-6">
+            <center>
+              <img src="../images/LuovaUkkeli2.png" width="80%">
+            </center>
+          </div>
+          <div class="col-md-6 text-center"> 
+            <div class="r-mm">
+                <h6 class="green montserrat"> 
                   LUOVAT.COM
                 </h6>
                 <h2 class="">
@@ -106,10 +109,12 @@
                 <p class="opensans">
                   Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
                 </p>
-                <a class="btn btn-link" data-toggle="modal" data-target="#rekryModal">
+                <a class="btn btn-luovat blue" data-toggle="modal" data-target="#rekryInstruction">
+                    Hakuohje
+                  </a>
+                <a class="btn btn-luovat blue" data-toggle="modal" data-target="#rekryModal">
                   Avaa rekry lomake tästä
                 </a>
-              </center>
             </div>
           </div>
           <div class="bg-main collapse" id="rekryCollapse">
@@ -117,9 +122,19 @@
           </div>
         </div>
         <div id="footer" class="row bg-black r-m">
-          <div class="col-md-12 text-center">
-            <p>Tähän tulee some ja yhteystiedot</p><br>
-            <p>Copyright Creative Nordic 2017</p>
+          <div class="col-md-3 col-md-offset-1">
+            <p class="montserrat fw400">LUOVAT.COM</p><br>
+            <p class="montserrat fw100">info@luova.com</p>
+            <p class="montserrat fw100">0405602141</p>
+            <p class="montserrat fw100">2345667-0</p>
+          </div>
+          <div class="col-md-3 col-md-offset-4">
+            <p style="float:right;">
+                <a href="#order" class="white m10"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                <a href="#rekry" class="white m10"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                <a href="#company" class="white m10"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                <a href="#company" class="white m10"><i class="fa fa-vimeo" aria-hidden="true"></i></a>  
+            </p>      
           </div>
         </div>
 
@@ -158,9 +173,70 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
               </div>
             </div>
-
           </div>
         </div>
+
+        <div id="rekryInstruction" class="modal fade" role="dialog">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title opensans green">TIETOA MEISTÄ</h4>
+              </div>
+              <div class="modal-body">
+                <center>
+                  <img src="./images/logo.png" style="width:10%">
+                </center>
+                <p class="m20">
+                  Hae mukaan täyttämällä oheinen hakulomake
+                </p>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="compare" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title opensans green">Vertaile paketteja</h4>
+                </div>
+                <div class="modal-body">
+                  <center>
+                    <img src="./images/logo.png" class="m20"style="width:10%">
+                  </center>
+                  <table class="table">
+                    <tr>
+                      <th>Paketti:</th>
+                      <td>SMALL</td>
+                      <td>MEDIUM</td>
+                      <td>LARGE</td>
+                    </tr>
+                    <tr>
+                      <th>Ominaisuus:</th>
+                      <td>JUU</td>
+                      <td>JAA</td>
+                      <td>JÖÖ</td>
+                    </tr>
+                    <tr>
+                      <th>Hinta:</th>
+                      <td>790€</td>
+                      <td>990€</td>
+                      <td>1390€</td>
+                    </tr>
+                  </table>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
+                </div>
+              </div>
+            </div>
+          </div>
 
         <div id="rekryModal" class="modal fade" role="dialog">
           <div class="modal-dialog">
