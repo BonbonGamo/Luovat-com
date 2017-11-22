@@ -110,30 +110,30 @@ Vue.component('order-form',{
                 '</center>'+
             '</div>'+
             '<div id="select-size" class="hide-order-form">'+
-                '<div class="col-md-12 text-center m10"><span><a class="btn btn-xs green btn-white">Miten tilaan</a> <a data-toggle="modal" data-target="#compare" class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
+                '<div class="col-md-12 text-center m10"><span><a id="play-sample-video" class="btn btn-xs green btn-white">Miten tilaan</a> <a data-toggle="modal" data-target="#compare" class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
                 '<order-size small="Valitse" caption="SMALL" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
                 '<order-size small="Valitse" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
                 '<order-size small="Valitse" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
             '</div>'+
-            '<div id="askFirst" class="hide-order-form green col-sm-6 col-sm-offset-3"style="display:none;">'+
+            '<div id="askFirst" class="hide-order-form blue col-sm-6 col-sm-offset-3"style="display:none;">'+
                 '<center>'+
                     '<h3 class="opensans">1/2 Tilaajan tiedot </h3>'+
                 '</center>'+
-                '<input class="form-control m5 order-form-input" placeholder="Nimesi" v-model="formData.name"></input>'+
-                '<input class="form-control m5 order-form-input" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email">'+
-                '<textarea rows="10" class="form-control m5 order-form-input-area" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea>'+
+                '<input class="form-control m20 order-form-input" placeholder="Nimesi" v-model="formData.name"></input>'+
+                '<input class="form-control m20 order-form-input" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email">'+
+                '<textarea rows="10" class="form-control m20 order-form-input-area" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea>'+
                 '<center>'+
                     '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="askAdditional()">Seuraava</button>'+
                 '</center>'+
             '</div>'+
-            '<div id="ask-additional" class="hide-order-form green col-sm-6 col-sm-offset-3" style="display:none;">'+
+            '<div id="ask-additional" class="hide-order-form blue col-sm-6 col-sm-offset-3" style="display:none;">'+
                 '<center>'+
                     '<h3 class="opensans">2/2 Lisätiedot ja tilauksen lähetys </h3>'+
                 '</center>'+
-                '<input class="form-control m5 order-form-input-area" placeholder="Yritys" v-model="formData.company"></input>'+
-                '<input class="form-control m5 order-form-input-area" placeholder="Puhelin" v-model="formData.phone"></input>'+
-                '<input class="form-control m5 order-form-input-area" placeholder="Kaupunki" v-model="formData.eventCity"></input>'+
-                '<input class="form-control m5 order-form-input-area" placeholder="Päivä" type="date" v-model="formData.date"></input>'+ 
+                '<input class="form-control m20 order-form-input-area" placeholder="Yritys" v-model="formData.company"></input>'+
+                '<input class="form-control m20 order-form-input-area" placeholder="Puhelin" v-model="formData.phone"></input>'+
+                '<input class="form-control m20 order-form-input-area" placeholder="Kaupunki" v-model="formData.eventCity"></input>'+
+                '<input class="form-control m20 order-form-input-area" placeholder="Päivä" type="date" v-model="formData.date"></input>'+ 
                 '<label class="white m10" for="12" >  Tekstitys +50€</label>'+
                 '<input type="checkbox" id="a1" v-model="formData.add1"><br>'+
                 '<label class="white m10" for="a2" >  Ilmakuvaus +100€</label>'+
