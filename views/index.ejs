@@ -26,8 +26,8 @@
         <div class="collapse navbar-collapse" id="navbarCollapse" >       
           <ul class="nav navbar-nav navbar-center">
             <li><a class="nav-page-link" style="color:white;" href="#company">YRITYS</a></li>
-            <li><a class="nav-page-link" style="color:white;" href="#sample">TÖITÄMME</a></li>
-            <li><a class="nav-page-link" style="color:white;" href="#order">TILAA VIDEO</a></li>
+            <!-- <li><a class="nav-page-link" style="color:white;" href="#sample">TÖITÄMME</a></li> -->
+            <li><a class="nav-page-link" style="color:white;" href="#order"><span>TILAA VIDEO</span></a></li>
             <li><a class="nav-page-link" style="color:white;" href="#rekry">REKRY</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right" style="margin:10px;">
@@ -45,36 +45,39 @@
         <div id="main" class="row">
           <div class="gray-curtain"></div>
           <div class="col-md-12 white" style="height:100%"> 
-            <div class="centered-ud">
+            <div class="centered text-center">
               <h1 class="montserrat fw700"> 
                 LUOVAT.COM
               </h1>
-              <p class="opensans" style="margin-bottom:15px">
-                Uusi vaivaton tapa hankkia videotuotanto
-              </p>
-              <a style="color:white;margin-left:0px;" class="btn btn-luovat btn-xs" id="play-sample-video">Miten tilaan</a>
-              <a style="color:white;" class="btn btn-luovat btn-xs" href="#order">Tilaa video</a>
-              <a style="color:white;" class="btn btn-luovat btn-xs" id="play-rekry-video" href="#rekry">Rekry</a>
+              <h2 class="montserrat fw200" style="margin-bottom:15px;text-transform:uppercase;">
+                Uusi vaivaton tapa tilata videoita
+              </h2>
+              <a style="color:white;margin-left:0px;" class="btn btn-luovat btn-sm" id="play-sample-video">Näin tilaat</a>
+              <a style="color:white;" class="btn btn-luovat btn-sm" href="#order">Tilaa video</a>
+              <a style="color:white;" class="btn btn-luovat btn-sm" id="play-rekry-video" href="#rekry">Rekry</a>
             </div>
           </div>
         </div>
-        <div id="company" class="row bg-white">
-          <img src="../images/lamppu-R.png" class="hide1010" style="position:absolute;height:700px;left:-100px;;z-index:1">
-          <img src="../images/lamppu-L.png" class="hide1010" style="position:absolute;height:700px;right:-100px;;z-index:1">
-          <div class="col-md-8 col-md-offset-2 r-mm" style="height:100%"> 
-            <center class="cente">
+        <div id="company" class="row bg-white" style="height:500px;">
+          <div class="col-md-6 hide1010" style="height:100%">
+            <div class="container-fluid" style="height:100%">
+                <img src="../images/LuovaUkkeli2.png" width="60%" style="position:absolute;bottom:0px;left:50%;transform:translateX(-50%)">
+            </div> 
+          </div>
+          <div class="col-md-5  col-sm-12 r-mm" style="height:100%;"> 
+            <div class="centered text-center">
                <h2 class="green montserrat"> 
                 LUOVAT YRITYKSENÄ
               </h2> 
               <h3 class="montserrat fw200">
-                Olemme luotettava videotuotantokumppanisi.<br>
+                Olemme luotettava videotuotantokumppanisi.
                 Tarjoamme videotuotantopaketteja, jotka ovat räätälöityjä helpottamaan tilausta.<br><br>
                 <span class="montserrat fw200" style="font-size:14px">Ei yllätyskuluja eikä hankalia tuotantoja.</span>
               </h3>
-              <a class="btn btn-page-link btn-sm" data-toggle="modal" data-target="#infoModal">
+              <a class="btn btn-luovat btn-sm black" data-toggle="modal" data-target="#infoModal">
                 Lue lisää ..
               </a>
-            </center>
+            </div>
           </div>
         </div>
         <!-- <div id="sample" class="row company_bg">
@@ -92,33 +95,33 @@
         <div id="order" class="row bg-blue r-m bg-paper" style="z-index:5">
           <order-form></order-form>
         </div>
-        <div id="rekry" class="row bg-yellow white">
-          <div class="col-md-6">
-            <center>
-              <img src="../images/LuovaUkkeli2.png" width="80%">
-            </center>
-          </div>
-          <div class="col-md-6 text-center"> 
-            <div class="r-mm">
-                <h6 class="green montserrat"> 
-                  LUOVAT.COM
-                </h6>
-                <h2 class="">
-                  HALUATKO MUKAAN LUOVIEN TIIMIIN
-                </h2>
-                <p class="opensans">
-                  Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
-                </p>
-                <a class="btn btn-luovat blue" data-toggle="modal" data-target="#rekryInstruction">
-                    Hakuohje
-                  </a>
-                <a class="btn btn-luovat blue" data-toggle="modal" data-target="#rekryModal">
-                  Avaa rekry lomake tästä
-                </a>
-            </div>
-          </div>
-          <div class="bg-main collapse" id="rekryCollapse">
-          
+        <div id="rekry" class="row bg-rekry white" style="height:500px;">
+          <div style="height:100%">    
+              <div class="col-md-12 text-center" style="height:100%"> 
+                <div class="gray-curtain" style="height:100%">
+                    
+                </div>'
+                <div class="centered">
+                    <h6 class="green montserrat"> 
+                      LUOVAT.COM
+                    </h6>
+                    <h2 class="">
+                      HALUATKO MUKAAN LUOVIEN TIIMIIN
+                    </h2>
+                    <p class="opensans">
+                      Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
+                    </p>
+                    <a class="btn btn-luovat white" data-toggle="modal" data-target="#rekryInstruction">
+                        Hakuohje
+                      </a>
+                    <a class="btn btn-luovat white" data-toggle="modal" data-target="#rekryModal">
+                      Avaa rekry lomake tästä
+                    </a>
+                </div>
+              </div>
+              <div class="bg-main collapse" id="rekryCollapse">
+              
+              </div>          
           </div>
         </div>
         <div id="footer" class="row bg-black r-m">
