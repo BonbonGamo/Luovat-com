@@ -98,7 +98,7 @@ Vue.component('order-form',{
         },
     },
     template:
-        '<div class="col-md-10 col-md-offset-1 col-lg-8 col-lg-offset-2">'+
+        '<div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">'+
             '<div class="col-sm-6 col-sm-offset-3">'+
                 '<center>'+
                     '<h2 class="opensans">'+
