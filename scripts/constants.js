@@ -7,7 +7,9 @@ module.exports = {
     
     //USER SETTINGS
     admins:[
-        'petteri@huddle.fi'
+        'petteri@huddle.fi',
+        'ville@huddle.fi',
+        'jasu@siitarinen.fi'
     ],
 
     //DATABASE SETTINGS

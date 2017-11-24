@@ -69,8 +69,6 @@ app.listen(3000, function () {
 //LAUNCH TIMED EVENTS
 timed()
 
-helper.checkForOrdersToRelease();
-
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
@@ -94,9 +92,11 @@ app.use(function(err, req, res, next) {
   if(err.status == 403){
     res.status(err.status)
     res.redirect('/login')
+  }else if(err.status == 404){
+    res.render('404',{title:'Sivua ei löydy!'})
   }else{
     res.status(err.status || 500);
-    res.render('error');
+    res.render('500',{title:'Palvelinvirhe'});
   } 
 });
 

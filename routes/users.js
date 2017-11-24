@@ -50,7 +50,7 @@ router.get('/all',auth.admin ,(req, res, next) => {
 
 router.get('/logout', (req,res,next) => {
   req.session.destroy();
-  res.sendStatus(200);
+  res.redirect('/');
 })
 
 router.get('/inject-super-user',(req,res,next) => {

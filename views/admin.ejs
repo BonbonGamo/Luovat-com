@@ -13,15 +13,19 @@
     <script type="text/javascript" src="/javascripts/mainController.js"></script>
     <script>var userLogged = "<%= userName %>" </script>
   </head>
-  <body>
-    <div class="row">
-      <div class="col-md-12 text-center"><h2> </h2></div>
-    </div>
+  <body class="bg-gray">
     <div id="admin" class="">
       <navigation></navigation>
       <div clas="row">
         <div class="col-md-3 col-lg-2">
-          <side-navigation></side-navigation>
+            <div class="side-navigation">
+              <ul style="padding:5px">
+                  <li class="side-nav-list"><a data-toggle="pill" class="side-navigation-element darkblue montserrat fw400"  href="#users">Käyttäjät</i></a></li>
+                  <li class="side-nav-list"><a data-toggle="pill" class=" side-navigation-element darkblue montserrat fw400"  href="#orders">Tilaukset</i></a></li>
+                  <li class="side-nav-list"><a href="/artists" class="darkblue montserrat side-navigation-element fw400" >Oma sivu</i></a></li>
+                  <li class="side-nav-list"><a href="/logout" class="darkblue montserrat side-navigation-element fw400" >Kirjaudu ulos</i></a></li>
+              <ul>
+          </div>
         </div>
         <div class="col-md-9 col-lg-10">
           <div class="tab-content" id="admin">

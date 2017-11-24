@@ -33,30 +33,32 @@ Vue.component('edit-artist',{
         }
     },
     template:
-    '<div class="form-group">'+
-        '<div class="col-md-12"><p class="green"><strong>Kuvaajan tiedot</strong></p></div>'+
-        '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
-            '<label for="firstName">Etunimi</label>'+
-            '<input class="form-control order-form-input" id="firstName" v-model="user.firstName"></input>'+
-            '<label for="lastName">Sukunimi</label>'+
-            '<input class="form-control order-form-input" id="lastName" v-model="user.lastName"></input>'+
-            '<label for="email">Sähköposti</label>'+
-            '<input class="form-control order-form-input" id="email" v-model="user.email"></input>'+
-            '<label for="phone">Puhelinnumero</label>'+
-            '<input class="form-control order-form-input" id="phone" v-model="user.phone"></input><br>'+
-        '</div>'+
-        '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
-            '<label for="street">Katuosoite</label>'+
-            '<input class="form-control order-form-input" id="street" v-model="user.street"></input>'+
-            '<label for="zipCode">Postinumero</label>'+
-            '<input class="form-control order-form-input" id="zipCode" v-model="user.zipCode"></input>'+
-            '<label for="city">Kaupunki</label>'+
-            '<input class="form-control order-form-input" id="city" v-model="user.city"></input>'+
-            '<label for="payment">Laskutustapa</label>'+
-            '<select class="form-control order-form-input" id="payment" v-model="user.payment"><option>Yrittäjä</option><option>Ukko.fi</option></select>'+
-        '</div>'+
-        '<div class="col-md-12">'+
-            '<button class="btn btn-success btn-sm" style="float:right" v-on:click="postEdit()" >Tallenna muutokset</button>'+
+    '<div class="row">'+
+        '<div class="form-group">'+
+            '<div class="col-md-12"><h2 class="darkblue montserrat">Kuvaajan tiedot</h2></div>'+
+            '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
+                '<label for="firstName">Etunimi</label>'+
+                '<input class="form-control order-form-input" id="firstName" v-model="user.firstName"></input>'+
+                '<label for="lastName">Sukunimi</label>'+
+                '<input class="form-control order-form-input" id="lastName" v-model="user.lastName"></input>'+
+                '<label for="email">Sähköposti</label>'+
+                '<input class="form-control order-form-input" id="email" v-model="user.email"></input>'+
+                '<label for="phone">Puhelinnumero</label>'+
+                '<input class="form-control order-form-input" id="phone" v-model="user.phone"></input><br>'+
+            '</div>'+
+            '<div class="col-md-6 col-md-offset-0 col-xs-10 col-xs-offset-1" style="padding:30px">'+
+                '<label for="street">Katuosoite</label>'+
+                '<input class="form-control order-form-input" id="street" v-model="user.street"></input>'+
+                '<label for="zipCode">Postinumero</label>'+
+                '<input class="form-control order-form-input" id="zipCode" v-model="user.zipCode"></input>'+
+                '<label for="city">Kaupunki</label>'+
+                '<input class="form-control order-form-input" id="city" v-model="user.city"></input>'+
+                '<label for="payment">Laskutustapa</label>'+
+                '<select class="form-control order-form-input" id="payment" v-model="user.payment"><option>Yrittäjä</option><option>Ukko.fi</option></select>'+
+            '</div>'+
+            '<div class="col-md-12">'+
+                '<button class="btn btn-luovat btn-sm" style="float:right" v-on:click="postEdit()" >Tallenna muutokset</button>'+
+            '</div>'+
         '</div>'+
     '</div>'
 })
@@ -95,38 +97,30 @@ Vue.component('orders',{
     beforeMount:function(){
         this.updateOrders();
     },
-    template:'<div>'+
-                '<div class="panel-group">'+
-                    '<p class="green m5"><strong>Uudet keikat</strong> - kerro asiakkaalle, että haluaisit ottaa työn vastaan</p>'+
-                    '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
-                        '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
-                            '<div>'+
-                            '<p><strong>Tilauksen viesti</strong></p>'+
-                            '<p>{{ order.message }}</p>'+
+    template:'<div class="row">'+
+                '<div class="col-md-12">'+    
+                    '<div class="panel-group">'+
+                        '<h2 class="darkblue m5 montserrat m20">Uudet keikat</h2>'+
+                        '<div  class="panel m5 panel-primary" v-for="order in orders">'+
+                            '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
+                            '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
+                                '<div>'+
+                                '<p><strong>Tilauksen viesti</strong></p>'+
+                                '<p>{{ order.message }}</p>'+
+                                '</div>'+
+                                '<signBtn style="float:right" v-bind:order="order"></signBtn>'+
                             '</div>'+
-                            '<signBtn style="float:right" v-bind:order="order"></signBtn>'+
                         '</div>'+
+                        '<center><h1 v-if="orders.length == 0" class="m20" style="color:#EEE">Ei uusia keikkoja</h1></center>'+
                     '</div>'+
-                    '<center><h1 v-if="orders.length == 0" class="m20 gray">Ei uusia keikkoja</h1></center>'+
-                '</div>'+
-                '<div class="panel-group">'+
-                    '<p class="green m5"><strong>Keikat johon olet ilmottautunut</strong> - tilaukset, joihin olet ilmottautunut, mutta mihin ei ole vielä kuvaajaa valittu</p>'+
-                    '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
-                        '<div data-toggle="collapse" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
-                        '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
-                            '<p><strong>Tilauksen viesti</strong></p>'+
-                            '<p>{{ eager.message }}</p>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'+
-                '<div class="panel-group">'+
-                    '<p class="green"><strong>Keikat johon olet ilmottautunut</strong></p>'+
-                    '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
-                        '<div data-toggle="collapse" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
-                        '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
-                            '<p><strong>Tilauksen viesti</strong></p>'+
-                            '<p>{{ eager.message }}</p>'+
+                    '<div class="panel-group">'+
+                        '<h2 class="darkblue m5 montserrat m20">Ilmoittautumiset</h2>'+
+                        '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
+                            '<div data-toggle="collapse" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
+                            '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
+                                '<p><strong>Tilauksen viesti</strong></p>'+
+                                '<p>{{ eager.message }}</p>'+
+                            '</div>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+
@@ -244,7 +238,7 @@ Vue.component('button-balance',{
             console.log(this.balance)
         }.bind(this))
     },
-    template:'<button class="btn btn-sm btn-success" style="float:right;" >SALDO: {{ balance }} € </button>'
+    template:'<a class="btn btn-sm montserrat fw700 btn-luovat" style="float:right;" >SALDO: {{ balance }} € </a>'
 })
 
 Vue.component('my-orders',{
@@ -263,35 +257,45 @@ Vue.component('my-orders',{
             console.log(response)
         }.bind(this))
     },
-     template:'<div>'+
-                '<div class="panel-group">'+
-                    '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                        '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.eventSize }}</span>  {{ order.clientName }} <span style="float:right;margin-right:10px"><p><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  </p></span>  <span style="float:right;margin-right:10px"><p> <i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.eventCity }} </p></span></div>'+
-                        '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
-                            '<div class="col-xs-6">'+
-                                '<p><b>Asiakas</b></p>'+
-                                '<p>{{ order.clientName }}</p>'+
-                                '<p><b>Sähköposti</b></p>'+
-                                '<p>{{ order.clientEmail }}</p>'+
-                                '<p><b>Paikka</b></p>'+
-                                '<p>{{ order.eventCity }}</p>'+
+     template:'<div class="row">'+
+                '<div class="col-md-12">'+
+                    '<h2 class="montserrat m20 darkblue">Omat keikat</h2>'+
+                    '<div class="panel-group">'+
+                        '<div  class="panel m5 panel-primary" v-for="order in orders">'+
+                            '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading" style="margin:0px;">'+
+                                //'<span class="badge plaster black" style="text-transform:uppercase;">{{ order.eventSize }}</span>'+
+                                '{{ order.clientName }}'+
+                                '<p style="float:right;margin-right:10px">'+
+                                    '<i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }} <br>  '+
+                                    '<i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.eventCity }}'+
+                                '</p>'+
                             '</div>'+
-                            '<div class="col-xs-6">'+
-                                '<p><b>Yritys</b></p>'+
-                                '<p>{{ order.clientCompany }}</p>'+
-                                '<p><b>Puhelinnumero</b></p>'+
-                                '<p>{{ order.clientPhone }}</p>'+
-                                '<p><b>Päivä</b></p>'+
-                                '<p>{{ order.eventDate }}</p>'+
-                                '<p><b>Tulo</b></p>'+
-                                '<p>{{ order.artistCut }} €</p>'+
+                            '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
+                                '<div class="col-xs-6">'+
+                                    '<p><b>Asiakas</b></p>'+
+                                    '<p>{{ order.clientName }}</p>'+
+                                    '<p><b>Sähköposti</b></p>'+
+                                    '<p>{{ order.clientEmail }}</p>'+
+                                    '<p><b>Paikka</b></p>'+
+                                    '<p>{{ order.eventCity }}</p>'+
+                                '</div>'+
+                                '<div class="col-xs-6">'+
+                                    '<p><b>Yritys</b></p>'+
+                                    '<p>{{ order.clientCompany }}</p>'+
+                                    '<p><b>Puhelinnumero</b></p>'+
+                                    '<p>{{ order.clientPhone }}</p>'+
+                                    '<p><b>Päivä</b></p>'+
+                                    '<p>{{ order.eventDate }}</p>'+
+                                    '<p><b>Tulo</b></p>'+
+                                    '<p>{{ order.artistCut }} €</p>'+
+                                '</div>'+
+                                '<div class="col-xs-12 p15">'+
+                                    '<p><b>Viesti</b></p>'+
+                                    '<p>{{ order.clientMessage }}</p>'+
+                                    '<p><b>Lisätilaukset</b></p>'+
+                                '</div>'+
+                                '<edit-order v-bind:order="order"></edit-order>'+
                             '</div>'+
-                            '<div class="col-xs-12 p15">'+
-                                '<p><b>Viesti</b></p>'+
-                                '<p>{{ order.clientMessage }}</p>'+
-                                '<p><b>Lisätilaukset</b></p>'+
-                            '</div>'+
-                            '<edit-order v-bind:order="order"></edit-order>'+
                         '</div>'+
                     '</div>'+
                 '</div>'+

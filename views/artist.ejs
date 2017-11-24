@@ -11,11 +11,11 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
   </head>
-  <body>
+  <body class="bg-main">
     <div class="row" id="userApp">
       <div class="m5">
-        <div class="col-md-8 col-md-offset-2">
-          <p>Tervetuloa <%= user.name %> <button-balance></button-balance></p>
+        <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2 bg-white artist-main">
+          <h2 class="montserrat fw700 darkblue" style="margin-top:2px"><img src="../images/logo.png" height="38px">  Tervetuloa <%= user.name %> <button-balance></button-balance><a href="/logout" style="float:right;" class="btn btn-luovat btn-sm">Kirjaudu ulos</a></h2>
           
           <ul class="nav nav-tabs">
             <li class="active"><a data-toggle="tab" href="#orders">Vapaat keikat</a></li>
