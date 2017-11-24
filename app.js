@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 const lessMiddleware = require('less-middleware');
 const constants = require('./scripts/constants.js')
 const db = require('./scripts/db.js')
-//const CronJob = require('cron').CronJob;
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
 
@@ -16,6 +15,9 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const orders = require('./routes/orders');
 const admin = require('./routes/admin');
+
+const timed = require('./scripts/timed')
+const helper = require('./scripts/helper')
 
 const app = express();
 
@@ -60,25 +62,14 @@ app.use('/artists', users);
 app.use('/orders', orders);
 app.use('/admin', admin);
 
-//timed events here!
-// var job = new CronJob('00 30 11 * * 1-5', function() {
-//   /*
-//    * Runs every weekday (Monday through Friday)
-//    * at 11:30:00 AM. It does not run on Saturday
-//    * or Sunday.
-//    */
-//     console.log('Timed event: Check for old orders to release')
-//   }, function () {
-    
-//     /* This function is executed when the job stops */
-//   },
-//   true, /* Start the job right now */
-//   timeZone /* Time zone of this job. */
-// );
-
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')
 })
+
+//LAUNCH TIMED EVENTS
+timed()
+
+helper.checkForOrdersToRelease();
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

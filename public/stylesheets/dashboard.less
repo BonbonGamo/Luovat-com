@@ -1,17 +1,37 @@
-@white:#EAFDF8;
-@gray:#cececc;
+@white:#FFF;
+@gray:#3F3F3F;
 @darkgray:#324A5F;
-@blue:#7F95D1;
-@darkblue:#1B2A41;
-@green:#449b77;
+//@blue:#7F95D1;
+@darkblue:#0098f2;
+//@green:#449b77;
 @darkgreen:#285140;
 @black:#18020C;
+@mgray:#e0e2e5;
+
+@green:#5B9879;
+@blue: #7AD2D9;
+@beige:#F3D69B;
+@yellow:#F6DA83;
 
 @warn:#dd6565;
 @success:#65dd8d;
 
+
 @import url('https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Reem+Kufi');
+@import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
+@import url('https://fonts.googleapis.com/css?family=Plaster');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400,700,800,900');
+
+
+@opensans: 'Open Sans Condensed', sans-serif;
 @roboto: 'Roboto', sans-serif;
+@reem: 'Reem Kufi', sans-serif;
+@montserrat:'Amatic SC', cursive;
+@plaster:'Plaster', cursive;
+@montserrat: 'Montserrat', sans-serif !important;
+
 
 a{
     color:inherit;
@@ -21,41 +41,77 @@ a:hover{
     color:@green !important;
     cursor: pointer;
 }
+html{
+    height:100%;
+}
 body{
-    background: @darkblue !important;
-    padding-top:50px; 
+    background: @white;
+    height:100%;
+}
+.roboto{
+    font-family: @roboto;
+}
+.opensans{
+    font-family: @opensans;
+}
+.plaster{
+    font-family: @plaster !important;
+}
+.montserrat{
+    font-family: @montserrat ;
+}
+.fw100{
+    font-weight: 100 !important;
+}
+.fw300{
+    font-weight: 300 !important;
+}
+.fw400{
+    font-weight: 400 !important;
+}
+.fw700{
+    font-weight: 700 !important;
+}
+.fw800{
+    font-weight: 800 !important;
+}
+.fw900{
+    font-weight: 900 !important;
 }
 h1{
-    font-family: @roboto;
+    font-family: @montserrat !important;
 }
 h2{
-    font-family: @roboto;
+    font-size:24px !important;
+    font-family: @montserrat !important;
 }
 h3{
-    font-family: @roboto;
+    font-size:20px !important;
+    font-family: @montserrat !important;
 }
 h4{
-    font-family: @roboto;
+    font-family: @montserrat !important;
 }
 h5{
     font-family: @roboto;
     font-style: italic;
 }
 h6{
-    font-family: @roboto;
+    font-family: @montserrat !important;
+    font-size: 15px !important;
 }
 p{
     font-family: @roboto;
     font-weight: 100;
+    font-size: 16px;
 }
 label{
     margin-left:3%;
     margin-bottom: 0px !important;
     margin-top:8px;
     font-size: 16px;
-    color:@darkgray;
-    font-weight: 100 !important;
-    font-family: @roboto;
+    font-weight: 400 !important;
+    font-family: @montserrat;
 }
 input{
     color:@black !important;
@@ -87,6 +143,15 @@ p{
 .closed-order{
     color:@gray;
     font-size: 10px;
+}
+.blue{
+    color:@blue !important;
+}
+.darkblue{
+    color:@darkblue !important; 
+}
+.white{
+    color:@white !important;
 }
 /* STATUS SIGNS */
 .link-fa{
@@ -167,6 +232,20 @@ p{
     >i{
         transform: translateY(-8px)
     }
+}
+.btn-luovat{
+    background: transparent;
+    border: 2px solid @blue !important;
+    border-radius: 200px !important;
+    min-width:110px;
+    text-transform: uppercase;
+    font-family: @reem;
+    margin-left: 6px;
+    margin-right: 6px; 
+}
+.btn-luovat:hover{
+    background: @blue;
+    color:white !important;
 }
 .form-control{
     color:black !important;

@@ -56,13 +56,36 @@ module.exports = {
             .patchAndFetchById(cbOrder.id,{revenue:revenue})
         })
     },
-    // checkForOrdersToRelease: function(){
-    //     let orders = [];
-    //     let pairs = [];
-    //     //RELEASE
-    //     Order
-    //     .query()
-    //     .where('eager','<',4)
-    //     .
-    // }
+    checkForOrdersToRelease: function(){
+        let orders = {};
+        let orderIds = [];
+        let hasOneOrMore = [];
+        let hasNone = [];
+
+        Order
+        .query()
+        .where('artistSelection',null)
+        .then(function(cbOrders){
+            _.forEach(cbOrders,(order) => {
+                orderIds.push(order.id)
+                orders[order.id] = order
+            });
+            return Order_User
+            .query()
+        })
+        .then((cbOrder_Users) => {
+            _.forEach(cbOrder_Users,(order_user) => {
+                //CHECK IF ORDER HAS AT LEAST ONE ARTIST
+                if(orderIds.indexOf(order_user.orderId) != -1){
+                    hasOneOrMore.push(orders[order_user.orderId])
+                }else{
+                    hasNone.push(orders[order_user.orderId])
+                }
+            })
+            console.log(hasNone)
+            //TODO: SEND EMAIL TO CLIENT
+        })
+
+   
+    }
 }
