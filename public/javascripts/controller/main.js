@@ -210,12 +210,32 @@ Vue.component('rekry-button',{
 Vue.component('rekry-form',{
     props:['form'],
     created:function(){
-        this.form = {
-            firstName:'',
-            lastName:'',
-            phone:'',
-            email:'',
-            message:''
+        this.resetForm()
+    },
+    methods:{
+        resetForm:function(){
+            this.form = {
+                firstName:'',
+                lastName:'',
+                phone:'',
+                email:'',
+                rekryMessage:''
+            }
+        },
+        postForm:function(){
+            console.log(this.form)
+            var emptyField = false;
+            $.each(this.form, function(key,value){
+                if(!value || value.length < 2) emptyField = true;
+            })
+            if(emptyField)  alert('Täytä kaikki kentät');
+            $.post('/artists/new',this.form)
+            .then(function(response){
+                console.log(response)
+                this.resetForm()
+                alert('Hakemus vastaanotettu')
+                $('#rekryModal').modal('hide')
+            }.bind(this))
         }
     },
     template:
@@ -235,11 +255,11 @@ Vue.component('rekry-form',{
             '<div class="col-md-12">'+
                 '<div class="form-group">'+
                     '<label class="green" for="message" >Vapaa viesti luoville</label>'+
-                    '<textarea rows="5" class="order-form-input-area form-control" placeholder="Kerro itsestäsi. Miksi sinut pitäisi rekrytoida luoviin?" type="text" id="message" v-model="form.message"></textarea>'+
+                    '<textarea rows="5" class="order-form-input-area form-control" placeholder="Kerro itsestäsi. Miksi sinut pitäisi rekrytoida luoviin?" type="text" id="message" v-model="form.rekryMessage"></textarea>'+
                 '</div>'+
             '</div>'+
             '<div class="col-md-12 text-center">'+
-                '<button class="btn-luovat btn btn-sm">Lähetä</button><button class="btn-luovat btn btn-sm" data-dismiss="modal">Sulje</button>'+
+                '<button class="btn-luovat btn btn-sm" v-on:click="postForm()">Lähetä</button><button class="btn-luovat btn btn-sm" data-dismiss="modal">Sulje</button>'+
             '</div>'+
         '</div>'
 })

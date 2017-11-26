@@ -281,6 +281,10 @@ Vue.component('order',{
                 '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
                 '<label for="clientPhone">Puhelinnumero</label>'+
                 '<input class="form-control" id="clientPhone" v-model="order.clientPhone"></input>'+
+                '<label for="eventCity">Paikka</label>'+
+                '<input class="form-control" id="eventCity" v-model="order.eventCity"></input>'+
+                '<label for="eventDate">Aika</label>'+
+                '<input class="form-control" id="eventDate" v-model="order.eventDate"></input>'+
                 '<label for="clientMessage">Viesti</label>'+
                 '<textarea rows="5" class="form-control" id="clientMessage" v-model="order.clientMessage"></textarea>'+
                 '<br>'+
@@ -327,6 +331,9 @@ Vue.component('users',{
         $.get('/artists/all').then(function(response){
             $.each(response,function(key,object){
                 object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
+                if(!object.street || !object.zipCode|| !object.city || object.street.length < 1 || object.zipCode.length < 1 || object.city.length < 1  ){
+                    object.isNew = true;
+                }
             })
             this.users = response;
             this.length = 0
@@ -340,7 +347,7 @@ Vue.component('users',{
                     '<div class="panel-group" v-for="user in users">'+
                         '<div class="panel panel-primary">'+
                             '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="user.hashId">'+
-                                '{{ user.firstName }}  {{ user.lastName }}'+
+                                '<span class="montserrat blue fw200" v-if=" user.isNew ">Uusi</span> {{ user.firstName }}  {{ user.lastName }}'+
                             '</div>'+
                             '<div v-bind:id="user.id" class="collapse">'+
                                 '<user v-bind:user="user"></user>'+
@@ -362,7 +369,7 @@ Vue.component('orders-dropdown',{
     },
     template:
     '<div class="dropdown">'+
-        'Tilaukset  <button class="btn btn-default btn-success btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Näytä '+
+        'Tilaukset  <button class="btn btn-default btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Näytä '+
         '<span class="caret"></span></button>'+
         '<ul class="dropdown-menu">'+
             '<li class="dropdown-header">Näytä:</li>'+
@@ -378,14 +385,16 @@ Vue.component('orders-dropdown',{
 })
 
 Vue.component('orders',{
-    props:['orders','order','length','filter','filteredList'],
+    props:['orders','order','length','filter','filteredList','newOrders'],
     methods:{
         updateOrders:function(){
+            var newOrders = 0;
             $.get('/orders').then(function(response){
                 $.each(response,function(key,object){
                     if(object.pending){
                         object.status = 'Uusi tilaus'
                         object.statusClass  = 'fa fa-circle pull-right new-order'
+                        newOrders++;
                     };
                     if(!object.pending){
                         object.status = 'Vapaututettu kuvaajille'
@@ -419,7 +428,14 @@ Vue.component('orders',{
                     object.showRevenue = object.revenue / 100;
                 })
                 this.orders = response;
-                this.length = 0
+                this.length = 0;
+                if(newOrders == 0){
+                    this.newOrders = "Ei uusia";
+                }else if(newOrders == 1){
+                    this.newOrders = newOrders + " uusi";
+                }else{
+                    this.newOrders = newOrders + " uutta";
+                }
                 if(this.orders && this.orders.length > 0) this.length = this.orders.length;
                 this.filterList()
             }.bind(this))
@@ -480,8 +496,7 @@ Vue.component('orders',{
                         '<div class="panel-heading">'+
                             '<orders-dropdown v-bind:filter="filter"></orders-dropdown>'+
                             '<span class="panel-heading-pull-right">'+
-                                '<i class="fa fa-shopping-cart" aria-hidden="true" style="margin-right:5px;"></i>'+
-                                '{{ length }}'+
+                                '<p class="montserrat fw200 white" style="font-size:14px    ">{{ newOrders }} {{ orders.length }} tilauksesta</p>'+
                             '</span>'+
                         '</div>'+
                         '<div class="panel-body  panel700">'+

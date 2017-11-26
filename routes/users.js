@@ -77,6 +77,9 @@ router.post('/new',(req,res,next) => {
     .insert({
       firstName:req.body.firstName,
       lastName:req.body.lastName,
+      phone:req.body.phone ? req.body.phone : '',
+      email:req.body.email ? req.body.email : '',
+      rekryMessage:req.body.rekryMessage ? req.body.rekryMessage : '',
       passwordChangeToken:uniqid()
     })
     .then((newUser) => {
@@ -87,6 +90,7 @@ router.post('/new',(req,res,next) => {
       console.log(err)
     })
 })
+
 
 router.get('/data', (req, res, next) => {
   console.log('ID',req.session.user.id)
