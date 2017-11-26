@@ -37,6 +37,20 @@ router.get('/artist-balance',(req,res,next) => {
   })
 })
 
+router.get('/rekry',auth.admin, (req,res,next) => {
+  User
+  .query()
+  .where('activeUser',false)
+  .then(users => {
+    console.log(users)
+    res.send(users)
+  })
+  .catch(err => {
+    console.log(err)
+    res.send(500)
+  })
+})
+
 router.get('/all',auth.admin ,(req, res, next) => {
   User
     .query()
@@ -57,6 +71,7 @@ router.get('/inject-super-user',(req,res,next) => {
   User 
     .query()
     .insert({
+      activeUser:true,
       firstName:'Petteri',
       lastName:'Ponkamo',
       email:'petteri@huddle.fi',
@@ -75,6 +90,7 @@ router.post('/new',(req,res,next) => {
   User 
     .query()
     .insert({
+      activeUser:false,
       firstName:req.body.firstName,
       lastName:req.body.lastName,
       phone:req.body.phone ? req.body.phone : '',
@@ -91,6 +107,18 @@ router.post('/new',(req,res,next) => {
     })
 })
 
+router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
+  User
+  .query()
+  .patchAndFetchById(req.params.id,{activeUser:true})
+  .then((cbUser) => {
+    res.sendStatus(200)
+    //TODO: Lähetä käyttäjälle salasanalinkki
+  })
+  .catch(err => {
+    res.sendStatus(500)
+  })
+})
 
 router.get('/data', (req, res, next) => {
   console.log('ID',req.session.user.id)
@@ -139,6 +167,7 @@ router.post('/edit', auth.admin,(req,res,next) =>{
   User
     .query()
     .patch({
+      activeUser:   o.activeUser ? o.activeUser : false,
       firstName:    o.firstName,
       lastName:     o.lastName,
       email:        o.email,

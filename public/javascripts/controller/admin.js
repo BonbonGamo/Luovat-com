@@ -110,6 +110,75 @@ Vue.component('add-order',{
             '</div>'
 })
 
+
+Vue.component('rekry-button',{
+    props:['userid'],
+    methods:{
+        activateUser:function(){
+            console.log(this.userid)
+            $.post('/artists/activate-user/'+this.userid)
+            .then(function(response){
+                console.log(response)
+            })
+        },
+    },
+    template:'<button class="btn btn-success m5 w100" v-on:click="activateUser()">Rekrytoi</button>'
+})
+
+Vue.component('rekry',{
+    props:['users','length'],
+    created:function(){
+        this.loadUsers();
+    },
+    methods:{
+        loadUsers:function(){
+            $.get('/artists/rekry')
+            .then(function(response){
+                $.each(response,function(key,object){
+                    object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
+                    if(object.activeUser){
+                        users.push(object)
+                    }
+                    return;
+                })
+                this.length = response.length;
+                this.users = response;
+            }.bind(this))
+        }
+    },
+    template:
+    '<div class="panel panel-default">'+
+        '<div class="panel-heading">Rekry<span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}  <a class="btn btn-xs btn-success" v-on:click="loadUsers()">Päivitä</a></span></div><div class="panel-body  panel700">'+
+            '<div class="panel-group" v-for="user in users">'+
+                '<div class="panel panel-primary">'+
+                    '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="user.hashId">'+
+                        '{{ user.firstName }}  {{ user.lastName }}'+
+                    '</div>'+
+                    '<div v-bind:id="user.id" class="collapse">'+       
+                        '<div class="panel-body">'+
+                            '<div>'+
+                                '<p type="hidden" name="id" v-bind:value="user.id"                  ></p>'+
+                                '<label>Etunimi</label>'+
+                                '<p class="pp-form-control m5" > {{ user.firstName }}</p>'+
+                                '<label>Sukunimi</label>'+
+                                '<p class="pp-form-control m5" > {{ user.lastName  }}</p>'+
+                                '<label>Sähköposti</label>'+
+                                '<p class="pp-form-control m5" > {{ user.email     }}</p>'+
+                                '<label>Puhelin</label>'+
+                                '<p class="pp-form-control m5" > {{ user.phone     }}</p>'+
+                                '<label>Viesti</label>'+
+                                '<p class="pp-form-control m5" > {{ user.rekryMessage     }}</p>'+
+                                '<br>'+
+                                '<rekry-button v-bind:userid="user.id"></rekry-button>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                '</div>'+
+            '<div>'+              
+        '</div>'+
+    '</div>'
+})
+
 Vue.component('user',{
     props:['user'],
     methods:{
@@ -126,8 +195,10 @@ Vue.component('user',{
                 reelLink:this.user.reelLink,    
                 reelPassword:this.user.reelPassword
             }
-            $.post('/artists/edit',data,function(response){
+            $.post('/artists/edit',data) 
+            .then(function(response){
                 console.log(response)
+                this.$parent.updateUsers()
             })
         },
         requestPass:function(){
@@ -147,6 +218,8 @@ Vue.component('user',{
                 '<input class="pp-form-control m5" type="text" v-model="user.firstName"    >'+
                 '<label>Sukunimi</label>'+
                 '<input class="pp-form-control m5" type="text" v-model="user.lastName"     >'+
+                '<label>Aktiivinen</label>'+
+                '<p class="pp-form-control m5"><span v-if="user.activeUser">Kyllä</span><span v-if="!user.activeUser">Ei</span></p>'+
                 '<br>'+
                 '<label>Sähköposti</label>'+
                 '<input class="pp-form-control m5" type="text" v-model="user.email"        >'+
@@ -326,24 +399,30 @@ Vue.component('order',{
 })
 
 Vue.component('users',{
-    props:['users','user','length'],
+    props:['users','user','rekry','length'],
     beforeMount:function(){
-        $.get('/artists/all').then(function(response){
-            $.each(response,function(key,object){
-                object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
-                if(!object.street || !object.zipCode|| !object.city || object.street.length < 1 || object.zipCode.length < 1 || object.city.length < 1  ){
-                    object.isNew = true;
-                }
-            })
-            this.users = response;
-            this.length = 0
-            if(this.users && this.users.length > 0) this.length = this.users.length;
-        }.bind(this))
+        this.updateUsers()
     },
     methods:{
-
+        updateUsers:function(){
+            $.get('/artists/all').then(function(response){
+                var users = [];
+                $.each(response,function(key,object){
+                    object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
+                    if(object.activeUser){
+                        users.push(object)
+                    }
+                    return;
+                })
+                this.users = users;
+                this.length = 0
+                if(this.users && this.users.length > 0) this.length = this.users.length;
+            }.bind(this))
+        }
     },
-    template:'<div class="panel panel-default"><div class="panel-heading">Käyttäjät <span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}</span></div><div class="panel-body  panel700">'+
+    template:
+        '<div>'+
+            '<div class="panel panel-default"><div class="panel-heading">Käyttäjät <span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}  <a class="btn btn-xs btn-success" v-on:click="updateUsers()">Päivitä</a></span></div><div class="panel-body  panel700">'+
                     '<div class="panel-group" v-for="user in users">'+
                         '<div class="panel panel-primary">'+
                             '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="user.hashId">'+
@@ -354,7 +433,8 @@ Vue.component('users',{
                             '</div>'+
                         '</div>'+
                     '<div>'+              
-            '</div></div>'
+            '</div></div>'+
+        '</div>'
 });
 
 Vue.component('orders-dropdown',{
