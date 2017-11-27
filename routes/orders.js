@@ -13,16 +13,40 @@ const Order_User  = require('../models/order_user.js')
 
 //SEND ORDER LISTING TO ADMIN PAGE
 router.get('/',auth.admin, function(req, res, next) {
-    Order
+  let orders;
+
+  Order
+    .query()
+    .then((cbOrders) => {
+      orders = cbOrders;
+      console.log('CB ORDERS:',cbOrders)
+
+      return Order_User
       .query()
-      .then((orders) => {
-        res.send(orders)
+    })
+    .then((cbLinks) => {
+      let orderIds = _.map(cbLinks,'orderId')
+      console.log('ORDER IDS: ', orderIds)
+
+      _.forEach(orders,order => {
+        console.log('ORDER LOOP')
+        let artistsPicked = 0;
+        _.forEach(orderIds,(id)=>{
+          console.log('ID LOOP')
+          if(id == order.id) artistsPicked ++
+        })
+        order.artistsPicked = artistsPicked;
       })
-      .catch(err => {
-        console.log(err)
-        res.sendSatus(500)
-      })
+
+      res.send(orders)
+    })
+    .catch(err => {
+      console.log(err)
+      res.statuss(500)
+    })
 });
+
+
 
 //SEND FREED ORDERS TO ARTIST PAGE
 router.get('/pickups',auth.artist, function(req, res, next) {

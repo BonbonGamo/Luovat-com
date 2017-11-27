@@ -119,7 +119,8 @@ Vue.component('rekry-button',{
             $.post('/artists/activate-user/'+this.userid)
             .then(function(response){
                 console.log(response)
-            })
+                this.$parent.updateUsers(); 
+            }.bind(this))
         },
     },
     template:'<button class="btn btn-success m5 w100" v-on:click="activateUser()">Rekrytoi</button>'
@@ -350,6 +351,9 @@ Vue.component('order',{
                 '<input class="form-control" id="clientName" v-model="order.clientName"></input>'+
                 '<label for="clientCompany">Yritys</label>'+
                 '<input class="form-control" id="clientCompany" v-model="order.clientCompany"></input>'+
+                '<br>'+
+                '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.artistsPicked }}</span> <a href="" class="btn btn-xs btn-success" style="float:right">Näytä kuvaajat</a></p>'+
+                '<br>'+
                 '<label for="clientEmail">Sähköpostiosoite</label>'+
                 '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
                 '<label for="clientPhone">Puhelinnumero</label>'+
