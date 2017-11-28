@@ -42,10 +42,71 @@ router.get('/',auth.admin, function(req, res, next) {
     })
     .catch(err => {
       console.log(err)
-      res.statuss(500)
+      res.status(500)
     })
 });
 
+router.get('/get-eager-by-id/:id',(req,res,next) => {
+  console.log('Get eager'+req.params.id)
+
+  Order
+  .query()
+  .where('id',req.params.id)
+  .first()
+  .then(order => {
+    return order.$relatedQuery('users')  
+  })
+  .then(cbUsers => {
+    let users = [];
+    _.forEach(cbUsers, user => {
+      users.push(_.pick(user,['id','firstName','lastName']))
+    })
+    console.log(users)
+    res.send(users)
+  })
+  .catch(err => {
+    console.log(err)
+    res.status(500)
+  })
+})
+
+router.put('/remove-pickup/:id',auth.artist,(req,res,next) => {
+  let userId = req.session.user.id;
+  let orderId = req.params.id;
+
+  Order_User
+  .query()
+  .patch({orderId:null,userId:null})
+  .where('userId',userId)
+  .andWhere('orderId',orderId)
+  .first()
+  .then((cbOrderUser) => {
+    res.send(200)
+  })
+  .catch(err => {
+    console.log(err)
+    res.send(500)
+  })
+})
+
+router.put('/admin-remove-pickup/:userId/:orderId',auth.admin,(req,res,next) => {
+  let userId = req.params.userId;
+  let orderId = req.params.orderId;
+
+  Order_User
+  .query()
+  .patch({orderId:null,userId:null})
+  .where('userId',userId)
+  .andWhere('orderId',orderId)
+  .first()
+  .then((cbOrderUser)=>{
+    res.send(200)
+  })
+  .catch(err => {
+    console.log(err)
+    res.send(500)
+  })
+})
 
 
 //SEND FREED ORDERS TO ARTIST PAGE

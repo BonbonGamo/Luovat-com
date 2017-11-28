@@ -9,7 +9,6 @@ Vue.component('add-user',{
         postNewUser:function(){
             if(this.firstName.length > 2 && this.lastName.length > 2){
                 $.post('/artists/new',{firstName:this.firstName,lastName:this.lastName},function(response){
-                    console.log(response)
                     alert('Käyttäjä lisätty')
                 }.bind(this))
             }
@@ -38,7 +37,6 @@ Vue.component('add-order',{
     methods:{
         postNewOrder:function(){
             if(this.name.length > 2 && this.email.length > 2){
-                console.log(this.add1)
                 $.post('/orders/new',{
                     name:this.name,
                     email:this.email,
@@ -49,7 +47,6 @@ Vue.component('add-order',{
                     add2:this.add2,
                     add3:this.add3
                 },function(response){
-                    console.log(response)
                     this.name = ""
                     this.email = ""
                     this.message = ""
@@ -66,7 +63,6 @@ Vue.component('add-order',{
     },
     computed:{
         validPhone:function(){
-            console.log(validatePhone(this.phone))
             return validatePhone(this.phone);
         },
         validEmail:function(){
@@ -115,10 +111,8 @@ Vue.component('rekry-button',{
     props:['userid'],
     methods:{
         activateUser:function(){
-            console.log(this.userid)
             $.post('/artists/activate-user/'+this.userid)
             .then(function(response){
-                console.log(response)
                 this.$parent.updateUsers(); 
             }.bind(this))
         },
@@ -198,7 +192,6 @@ Vue.component('user',{
             }
             $.post('/artists/edit',data) 
             .then(function(response){
-                console.log(response)
                 this.$parent.updateUsers()
             })
         },
@@ -207,7 +200,6 @@ Vue.component('user',{
         },
         deleteUser:function(){
             $.post('/artists/delete/'+this.user.id,function(response){
-                console.log(response)
             })
         }
     },
@@ -252,9 +244,9 @@ Vue.component('user',{
 })
 
 Vue.component('order',{
-    props:['order'],
+    props:['order','users'],
     created:function(){
-        console.log(this.order)
+        this.users = [];
         this.order.selectedByUser = false;
         if(this.order.artistSelection) this.order.selectedByUser = true;
     },
@@ -294,11 +286,17 @@ Vue.component('order',{
                 this.order[t] = false
             }
         },
+        showEager:function(){
+            $.get('/orders/get-eager-by-id/'+this.order.id).then(function(response){
+                console.log(response)
+                this.users = response;
+            }.bind(this))
+        },
         freePending:function(){
             $.post('/orders/free-pending/'+this.order.id).then(function(){
                 alert('Tilaus vapautettu')
             })
-            this.$parent.updateOrders()
+            this.$parent.updateOrders() 
         },
         didInvoice20:function(){
             if(!this.order.invoice20Number){
@@ -331,7 +329,7 @@ Vue.component('order',{
         closeOrder:function(){
             if(confirm('Varmista, että asiaks on maksanut koko tilauksen ja kuvaajalle on maksettu palkkio kokonaisuudessaan')){
                 $.post('/close-order/'+this.order.id,function(response){
-                    console.log(response)
+ 
                 })
             }else{
                 alert('Tilausta ei suljettu')
@@ -339,7 +337,6 @@ Vue.component('order',{
         },
         deleteOrder:function(){
             $.post('/orders/delete/'+this.order.id,function(response){
-                console.log(response)
                 this.$parent.updateOrders();
             })
         }
@@ -352,7 +349,10 @@ Vue.component('order',{
                 '<label for="clientCompany">Yritys</label>'+
                 '<input class="form-control" id="clientCompany" v-model="order.clientCompany"></input>'+
                 '<br>'+
-                '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.artistsPicked }}</span> <a href="" class="btn btn-xs btn-success" style="float:right">Näytä kuvaajat</a></p>'+
+                '<div class="well">'+
+                    '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.artistsPicked }}</span> <a v-on:click="showEager()" class="btn btn-xs btn-success" style="float:right">Näytä kuvaajat</a></p>'+
+                    '<p class="m5 monstserrat fw400" v-for="user in users">{{ user.firstName }} {{ user.lastName}} <a class="btn btn-xs btn-danger">Poista</a></p>'+
+                '</div>'+
                 '<br>'+
                 '<label for="clientEmail">Sähköpostiosoite</label>'+
                 '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
@@ -444,7 +444,6 @@ Vue.component('users',{
 Vue.component('orders-dropdown',{
     props:['filter'],
     updated:function(){
-        console.log(this.filter)
     },
     methods:{
         toggleFilter:function(target){
@@ -558,7 +557,6 @@ Vue.component('orders',{
                     this.filteredList.push(object)
                 }
             }.bind(this))
-            console.log('Filtered:',this.filteredList)
         }
     },
     beforeMount:function(){

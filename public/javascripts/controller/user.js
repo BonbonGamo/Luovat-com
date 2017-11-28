@@ -2,10 +2,14 @@ Vue.component('signBtn',{
     props:['order'],
     methods:{
         signOrder:function(){
-            $.post('/orders/pickup',{orderId:this.order.id}).then(function(response){
-                alert(response)
-                this.$parent.updateOrders();
-            }.bind(this))
+            var confirmPickup = confirm('Vahvista, että sitoudut ottamaan työn vastaan.')
+            if(confirmPickup){
+                $.post('/orders/pickup',{orderId:this.order.id}).then(function(response){
+                    alert(response)
+                    this.$parent.updateOrders();
+                }.bind(this))
+            }
+            return;
         }
     },
     template:'<button v-on:click="signOrder()" class="btn btn-success-shallow">Ilmottaudu</button>'

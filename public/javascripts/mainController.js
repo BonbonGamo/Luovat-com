@@ -23,5 +23,14 @@ $(document).ready(function(){
       $('.nav-page-link').css('color','black');
       $('.nav-logo-text').css('color','black');
     }
-  })  
-})
+  });
+  
+$(window).bind('mousewheel', function(event) {
+  if (event.originalEvent.wheelDelta >= 0) {
+    $('#luovat-navbar').show('fast')
+  }
+  else {
+    $('#luovat-navbar').hide('slow')
+  }
+  });
+});
