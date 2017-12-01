@@ -13,31 +13,11 @@ const Order_User  = require('../models/order_user.js')
 
 //SEND ORDER LISTING TO ADMIN PAGE
 router.get('/',auth.admin, function(req, res, next) {
-  let orders;
 
   Order
     .query()
-    .then((cbOrders) => {
-      orders = cbOrders;
-      console.log('CB ORDERS:',cbOrders)
-
-      return Order_User
-      .query()
-    })
-    .then((cbLinks) => {
-      let orderIds = _.map(cbLinks,'orderId')
-      console.log('ORDER IDS: ', orderIds)
-
-      _.forEach(orders,order => {
-        console.log('ORDER LOOP')
-        let artistsPicked = 0;
-        _.forEach(orderIds,(id)=>{
-          console.log('ID LOOP')
-          if(id == order.id) artistsPicked ++
-        })
-        order.artistsPicked = artistsPicked;
-      })
-
+    .eager('users')
+    .then((orders) => {
       res.send(orders)
     })
     .catch(err => {

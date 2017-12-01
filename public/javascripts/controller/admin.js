@@ -243,11 +243,43 @@ Vue.component('user',{
         '</div>'
 })
 
+Vue.component('remove-user',{
+    props:['userid','orderid'],
+    methods:{
+        removeUser:function(){
+            var userId = this.userid;
+            var orderId = this.orderid;
+            var self = this;
+            if(confirm('Oletko varma, että haluat hylätä käyttäjän ilmoittautumisen?')){
+                $.ajax({
+                    url: '/orders/admin-remove-pickup/'+ userId + '/' + orderId,
+                    type: 'PUT',
+                    success: function(response) {
+                      console.log(response)
+                      self.$parent.$parent.updateOrders()
+                    }
+                 });
+            }
+        }
+    },
+    template:'<a class="btn btn-xs btn-danger" v-on:click="removeUser()">Hylkää</a>'
+});
+
+
 Vue.component('order',{
-    props:['order','users'],
-    created:function(){
-        this.users = [];
+    props:['order'],
+    beforeMount:function(){
         this.order.selectedByUser = false;
+        
+        var d = new Date();
+        var n = d.getTime();
+
+        $.each(this.order.users,function(key,user){
+            console.log(key)
+            user.collapseId = user.id + 'collapse' + n;
+            user.hashId = '#' + user.id + 'collapse' + n;
+        });
+        console.log(this.order.users[0])
         if(this.order.artistSelection) this.order.selectedByUser = true;
     },
     methods:{
@@ -285,12 +317,6 @@ Vue.component('order',{
             }else{
                 this.order[t] = false
             }
-        },
-        showEager:function(){
-            $.get('/orders/get-eager-by-id/'+this.order.id).then(function(response){
-                console.log(response)
-                this.users = response;
-            }.bind(this))
         },
         freePending:function(){
             $.post('/orders/free-pending/'+this.order.id).then(function(){
@@ -349,9 +375,13 @@ Vue.component('order',{
                 '<label for="clientCompany">Yritys</label>'+
                 '<input class="form-control" id="clientCompany" v-model="order.clientCompany"></input>'+
                 '<br>'+
-                '<div class="well">'+
-                    '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.artistsPicked }}</span> <a v-on:click="showEager()" class="btn btn-xs btn-success" style="float:right">Näytä kuvaajat</a></p>'+
-                    '<p class="m5 monstserrat fw400" v-for="user in users">{{ user.firstName }} {{ user.lastName}} <a class="btn btn-xs btn-danger">Poista</a></p>'+
+                '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.users.length }}</span></p>'+
+                '<div class="well blue-bg" v-for="user in order.users" data-toggle="collapse" v-bind:data-target="user.hashId">'+
+                    '<p class="m5 monstserrat fw400">{{ user.firstName }} {{ user.lastName}} <remove-user v-bind:orderid="order.id" v-bind:userid="user.id" style="float:right"></remove-user></p>'+
+                    '<div v-bind:id="user.collapseId">'+
+                        '<p>PHONE: {{ user.phone }}</p>'+
+                        '<p>EMAIL: {{ user.email }}</p>'+
+                    '</div>'+
                 '</div>'+
                 '<br>'+
                 '<label for="clientEmail">Sähköpostiosoite</label>'+
@@ -467,6 +497,37 @@ Vue.component('orders-dropdown',{
     '</div>'
 })
 
+Vue.component('orders-filter',{
+    props:['filter'],
+    updated:function(){
+    },
+    methods:{
+        toggleFilter:function(target){
+            this.$parent.updateList(target)
+        }
+    },
+    template:
+    '<div id="filterOptions" class="collapse well bg-blue white">'+
+        '<div class="row">'+
+            '<div class="col-xs-6">'+
+                '<ul>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> 20% laskutettu</button></li>'+
+                '</ul>'+
+            '</div>'+
+            '<div class="col-xs-6">'+
+                '<ul>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
+                '</ul>'+
+            '</div>'+
+        '</div>'+
+    '</div>'
+})
+
 Vue.component('orders',{
     props:['orders','order','length','filter','filteredList','newOrders'],
     methods:{
@@ -576,12 +637,15 @@ Vue.component('orders',{
                 '<div class="col-md-6">'+
                     '<div class="panel panel-default">'+
                         '<div class="panel-heading">'+
-                            '<orders-dropdown v-bind:filter="filter"></orders-dropdown>'+
+                            '<button class="btn btn-xs btn-success" data-toggle="collapse" href="#filterOptions">Näytä valinnat</button>'+
                             '<span class="panel-heading-pull-right">'+
                                 '<p class="montserrat fw200 white" style="font-size:14px    ">{{ newOrders }} {{ orders.length }} tilauksesta</p>'+
                             '</span>'+
                         '</div>'+
                         '<div class="panel-body  panel700">'+
+                            '<div>'+
+                                '<orders-filter v-bind:filter="filter"></orders-filter>'+
+                            '</div>'+
                             '<div class="panel-group" v-for="order in filteredList">'+
                                 '<div class="panel panel-primary">'+
                                     '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="order.hashId">'+

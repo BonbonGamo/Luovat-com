@@ -21,7 +21,7 @@ Vue.component('pass-form',{
     },
     template: 
     '<div class="col-md-4 col-md-offset-4">'+
-        '<div class="well">'+
+        '<div class="well" class="well" style="margin-top:100px;padding:50px;background-image:url('+"'"+'../images/paper-blue.jpg'+"'"+');background-size:cover;border:none;">'+
             '<label for="pass" >Anna salasana <span v-if="pass && checkPass && pass == checkPass && pass.length > 3">OK!</span></label>'+
             '<input class="form-control" id="pass" v-model="pass" type="password">'+
             '<label for="check" >Vahvista salasana</label>'+
