@@ -1,6 +1,6 @@
 
 exports.up = function(knex, Promise) {
-    return knex.Schema.table('luovat_user', function (t) {
+    return knex.schema.table('luovat_user', function (t) {
         t.string('accessToken');
   });
 };

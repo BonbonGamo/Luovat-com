@@ -15,6 +15,7 @@ const index = require('./routes/index');
 const users = require('./routes/users');
 const orders = require('./routes/orders');
 const admin = require('./routes/admin');
+const mobile = require('./routes/mobile');
 
 const timed = require('./scripts/timed')
 const helper = require('./scripts/helper')
@@ -61,6 +62,7 @@ app.use('/', index);
 app.use('/artists', users);
 app.use('/orders', orders);
 app.use('/admin', admin);
+app.use('/mobile', mobile);
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!')

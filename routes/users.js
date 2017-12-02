@@ -219,7 +219,6 @@ router.post('/artist-self-edit', auth.admin,(req,res,next) => {
 })
 
 router.post('/login', (req,res,next) => {
-  console.log('BODY: ',req.body)
   User
     .query()
     .where('email','=',req.body.email)
