@@ -47,25 +47,28 @@
           <div class="gray-curtain"></div>
           <div class="col-md-12 white" style="height:100%"> 
             <div class="centered text-center">
-              <h1 class="montserrat fw700"> 
+              <!-- <h1 class="montserrat fw700"> 
                 LUOVAT.COM
-              </h1>
-              <h2 class="montserrat fw200" style="margin-bottom:15px;text-transform:uppercase;">
+              </h1> -->
+              <h2 class="montserrat fw700" style="margin-bottom:5px;text-transform:uppercase;">
                 Uusi vaivaton tapa tilata videoita
               </h2>
+              <h4 class="montserrat fw700" style="margin-bottom:25px;text-transform:uppercase;">
+                Videot urakkahinnoin edullisesti
+              </h4>
               <a style="color:white;margin-left:0px;" class="btn btn-luovat btn-sm" id="play-sample-video">Näin tilaat</a>
               <a style="color:white;" class="btn btn-luovat btn-sm" href="#order">Tilaa video</a>
               <a style="color:white;" class="btn btn-luovat btn-sm" id="play-rekry-video" href="#rekry">Rekry</a>
             </div>
           </div>
         </div>
-        <div id="company" class="row bg-white" style="height:500px;">
-          <div class="col-md-6 hide1010" style="height:100%">
+        <div id="company" class="row bg-white" style="height:400px;">
+          <div class="col-md-5 hide1010" style="height:100%">
             <div class="container-fluid" style="height:100%">
                 <img src="../images/LuovaUkkeli2.png" width="60%" style="position:absolute;bottom:0px;left:50%;transform:translateX(-50%)">
             </div> 
           </div>
-          <div class="col-md-5  col-sm-12 r-mm" style="height:100%;"> 
+          <div class="col-md-7  col-sm-12 r-mm" style="height:100%;"> 
             <div class="centered text-center">
                <h2 class="green montserrat"> 
                 LUOVAT YRITYKSENÄ
@@ -93,7 +96,7 @@
             </center>
           </div>
         </div> -->
-        <div id="order" class="row bg-blue r-m bg-paper" style="z-index:5">
+        <div id="order" class="row bg-blue r-m _bg-paper" style="z-index:5">
           <order-form></order-form>
         </div>
         <div id="rekry" class="row bg-rekry white" style="height:500px;">
@@ -101,22 +104,22 @@
               <div class="col-md-12 text-center" style="height:100%"> 
                 <div class="gray-curtain" style="height:100%">
                     
-                </div>'
+                </div>
                 <div class="centered">
                     <h6 class="green montserrat"> 
                       LUOVAT.COM
                     </h6>
                     <h2 class="">
-                      HALUATKO MUKAAN LUOVIEN TIIMIIN
+                      HALUATKO KUVAAJAKSI LUOVIEN TIIMIIN
                     </h2>
-                    <p class="opensans">
-                      Etsimme koko ajan uusia kuvaajia Luovien tiimiin<br>
-                    </p>
+                    <h4 class="montserrat fw200" style="margin-bottom:25px;font-size:20px;">
+                      Etsimme jatkuvasti kuvaajia kaikkialta Suomesta<br>
+                    </h4>
                     <a class="btn btn-luovat white" data-toggle="modal" data-target="#rekryInstruction">
                         Hakuohje
                       </a>
                     <a class="btn btn-luovat white" data-toggle="modal" data-target="#rekryModal">
-                      Avaa rekry lomake tästä
+                      Hakulomake
                     </a>
                 </div>
               </div>
@@ -156,9 +159,6 @@
                 <h4 class="modal-title opensans green">TIETOA MEISTÄ</h4>
               </div>
               <div class="modal-body">
-                <center>
-                  <img src="./images/logo.png" style="width:10%">
-                </center>
                 <p class="m20">
                   Videot ovat nykypäivänä yksi tärkeimmistä ja käytetyimmistä markkinoinnin muodoista.
                   Haluamme laskea kynnystä kevyiden videotuotantojen tilaukselle ja tarjota vaivatonta tapaa
@@ -185,15 +185,19 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title opensans green">TIETOA MEISTÄ</h4>
+                <h4 class="modal-title opensans green">REKRY</h4>
               </div>
               <div class="modal-body">
-                <center>
-                  <img src="./images/logo.png" style="width:10%">
-                </center>
-                <p class="m20">
-                  Hae mukaan täyttämällä oheinen hakulomake
-                </p>
+                <p class="m20">Oletko luova ja innokas alan osaaja? Jos videotuotantojen teko kiinnostaa opintojesi tai muiden töiden ohella, hae rohkeasti kuvaajaverkostoomme.<br><br>Kanssamme pääset ohjatusti sekä omatoimisesti kehittymään tuotantojen eri osa-alueissa. Tarjoamme erittäin joustavan sekä motivoivan tavan tienata.<br><br>
+                Pääset tekemään mieluisia keikkoja lähelläsi, kun sinulle sopii. Keikat tulevat esiin keikkakalenteriin, josta voit toivomasi keikat napata.</p>
+                <h6 class="montserrat fw500 m20" style="line-height:20px;">
+                  HAKUPROSESSI:
+                  <li>1. Täytä ja lähetä oheinen lomake</li>
+                  <li>2. Paluuviestinä saat hakuohjeet</li>
+                  <li>3. Lähetä hakemus</li>
+                  <li>4. Haastattelu tai puhelinhaastattelu</li>
+                  <li>5. Saat tunnukset keikkakalenteriin</li>
+                </h6>
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Sulje</button>
@@ -202,7 +206,7 @@
           </div>
         </div>
 
-        <div id="compare" class="modal fade" role="dialog">
+        <div id="compare" class="modal modal-lg fade" role="dialog">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -210,9 +214,6 @@
                   <h4 class="modal-title opensans green">Vertaile paketteja</h4>
                 </div>
                 <div class="modal-body">
-                  <center>
-                    <img src="./images/logo.png" class="m20"style="width:10%">
-                  </center>
                   <table class="table">
                     <tr>
                       <th>Paketti:</th>
@@ -221,10 +222,28 @@
                       <td>LARGE</td>
                     </tr>
                     <tr>
-                      <th>Ominaisuus:</th>
-                      <td>JUU</td>
-                      <td>JAA</td>
-                      <td>JÖÖ</td>
+                      <th>Kuvausta:</th>
+                      <td>1-2 h</td>
+                      <td>3-4 h</td>
+                      <td>5-7 h</td>
+                    </tr>
+                    <tr>
+                      <th>Kalusto:</th>
+                      <td>Kamera, mikki</td>
+                      <td>Kamera, mikki ja valo</td>
+                      <td>Kamera, mikki ja valot</td>
+                    </tr>
+                    <tr>
+                      <th>Editointi:</th>
+                      <td>1,5 pv</td>
+                      <td>2 pv</td>
+                      <td>2,5 pv</td>
+                    </tr>
+                    <tr>
+                      <th>Korjauskierrokset:</th>
+                      <td>1 kpl</td>
+                      <td>2 kpl</td>
+                      <td>3 kpl</td>
                     </tr>
                     <tr>
                       <th>Hinta:</th>
@@ -247,12 +266,9 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title opensans green">REKRY</h4>
+                <h4 class="modal-title opensans green">HAKULOMAKE</h4>
               </div>
               <div class="modal-body">
-                <center>
-                  <img src="./images/logo.png" style="width:10%;margin-bottom:25px;">
-                </center>
                 <rekry-form></rekry-form>
               </div>
             </div>

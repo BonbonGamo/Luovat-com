@@ -104,6 +104,7 @@ Vue.component('order-form',{
                     '<h2 class="opensans">'+
                         'TILAA VIDEOTUOTANTO'+
                     '</h2>'+
+                    '<p>Tilaus	ei	ole	sitova	ja sen	lähettäminen on maksutonta.</p>'+
                     '<p class="opensans">'+
                         '{{ tip }}'+
                     '</p>'+
@@ -147,11 +148,6 @@ Vue.component('order-form',{
             '<div id="ready" class=" hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
                 '<center>'+
                     '<button class="btn btn-lg r-m btn-white" v-on:click="newOrder()">Tee uusi tilaus</button>'+
-                '</center>'+
-            '</div>'+
-            '<div class="col-xs-12" style="margin-top:30px;">'+
-                '<center>'+
-                    '<p>Tilaus	ei	ole	sitova	ja sen	lähettäminen on maksutonta.	Olemme	sinuun	yhteydessä vahvistaaksemme	tilauksen.</p>'+
                 '</center>'+
             '</div>'+
         '</div>'

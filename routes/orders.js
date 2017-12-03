@@ -423,7 +423,7 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,(req,res,next) => {
     })
 })
 
-router.post('/artist-order-ready/:id',auth.admin,(req,res,next) => {
+router.post('/artist-order-ready/:id',auth.artist,(req,res,next) => {
     console.log('READY',req.params.id)
     Order
     .query()
@@ -431,7 +431,7 @@ router.post('/artist-order-ready/:id',auth.admin,(req,res,next) => {
       ready:true
     })
     .then(cbOrder => {
-      console.log(cbOrder)
+      console.log('Order ready:',cbOrder)
       res.sendStatus(200)
     })
     .catch(err => {

@@ -377,10 +377,10 @@ Vue.component('order',{
                 '<br>'+
                 '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.users.length }}</span></p>'+
                 '<div class="well blue-bg" v-for="user in order.users" data-toggle="collapse" v-bind:data-target="user.hashId">'+
-                    '<p class="m5 monstserrat fw400">{{ user.firstName }} {{ user.lastName}} <remove-user v-bind:orderid="order.id" v-bind:userid="user.id" style="float:right"></remove-user></p>'+
-                    '<div v-bind:id="user.collapseId">'+
-                        '<p>PHONE: {{ user.phone }}</p>'+
-                        '<p>EMAIL: {{ user.email }}</p>'+
+                    '<p class="m5 monstserrat fw400"><span class="montserrat fw400 blue" style="font-size:13px;margin-bottom:5px;" v-if="user.id == order.artistSelection" >VALINTA: </span>{{ user.firstName }} {{ user.lastName}} <remove-user v-bind:orderid="order.id" v-bind:userid="user.id" style="float:right"></remove-user></p>'+
+                    '<div class="collapse" v-bind:id="user.collapseId">'+
+                        '<p class="montserrat m10" >PHONE: {{ user.phone }}</p>'+
+                        '<p class="montserrat m10" >EMAIL: {{ user.email }}</p>'+
                     '</div>'+
                 '</div>'+
                 '<br>'+
@@ -422,7 +422,7 @@ Vue.component('order',{
                 '<label for="invoice100Number">100% laskun numero:</label>'+
                 '<input v-bind:disabled="this.order.invoice100" class="form-control m5" id="invoice100Number" v-model="order.invoice100Number"></input>'+
                 '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice100 || !this.order.ready" v-on:click="didInvoice100()" type="text"><strong v-if="this.order.ready">Laskuta 100%</strong><strong v-if="!this.order.ready">Ei saa laskuttaa 100%</strong></button>'+
-                '<p class="m5">Loppulaskutus voidaan tehdä kun kuvaaja on tehnyt työn loppuun!</p>'+
+                '<p class="m5">Loppulaskutus voidaan tehdä kun kuvaaja on tehnyt työn loppuun! {{ this.order.ready }}</p>'+
                 '<br>'+
                 '<button class="btn btn-primary m5   w100" v-on:click="closeOrder()" type="text">Tilaus maksettu kuvaajalle</button>'+
                 '<button class="btn btn-danger m5   w100" v-on:click="deleteOrder()" type="text">Poista</button>'+
@@ -471,31 +471,31 @@ Vue.component('users',{
         '</div>'
 });
 
-Vue.component('orders-dropdown',{
-    props:['filter'],
-    updated:function(){
-    },
-    methods:{
-        toggleFilter:function(target){
-            this.$parent.updateList(target)
-        }
-    },
-    template:
-    '<div class="dropdown">'+
-        'Tilaukset  <button class="btn btn-default btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Näytä '+
-        '<span class="caret"></span></button>'+
-        '<ul class="dropdown-menu">'+
-            '<li class="dropdown-header">Näytä:</li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> 20% laskutettu</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
-            '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
-        '</ul>'+
-    '</div>'
-})
+// Vue.component('orders-dropdown',{
+//     props:['filter'],
+//     updated:function(){
+//     },
+//     methods:{
+//         toggleFilter:function(target){
+//             this.$parent.updateList(target)
+//         }
+//     },
+//     template:
+//     '<div class="dropdown">'+
+//         'Tilaukset  <button class="btn btn-default btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Näytä '+
+//         '<span class="caret"></span></button>'+
+//         '<ul class="dropdown-menu">'+
+//             '<li class="dropdown-header">Näytä:</li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 20% </button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
+//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
+//         '</ul>'+
+//     '</div>'
+// })
 
 Vue.component('orders-filter',{
     props:['filter'],
@@ -513,8 +513,8 @@ Vue.component('orders-filter',{
                 '<ul>'+
                     '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
                     '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> 20% laskutettu</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 20%</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
                 '</ul>'+
             '</div>'+
             '<div class="col-xs-6">'+
@@ -545,14 +545,15 @@ Vue.component('orders',{
                         object.statusClass  = 'fa fa-circle pull-right free-order'
                     };
                     if(object.artistSelection != null) {
-                        object.status = 'Tuotannossa'
+                        object.status = 'Saa laskuttaa 20%'
                         object.statusClass = 'fa fa-circle pull-right prod-order'
                     };
-                    if(object.invoice20) {
-                        object.status = 'Osalaskutettu'
+                    if(object.invoice20 && !object.ready) {
+                        object.status = 'Tuotannossa'
                         object.statusClass = 'fa fa-circle pull-right i20-order'
                     };
-                    if(object.ready){
+                    if(object.ready && object.invoice20){
+                        console.log('READY',object)
                         object.status = 'Saa laskuttaa'
                         object.statusClass = 'fa fa-circle pull-right i100-order'
                     };

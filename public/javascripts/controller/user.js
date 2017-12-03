@@ -134,7 +134,7 @@ Vue.component('orders',{
 Vue.component('edit-order',({
     props:['order','ready'],
     created:function(){
-            this.ready = false;
+            this.ready = this.order.ready;
     },
     methods:{
         increase:function(t){
@@ -223,13 +223,13 @@ Vue.component('edit-order',({
         '</div>'+
         '<div class="col-xs-5">'+
             '<p>Työ on suoritettu loppuun'+
-            '<button class="btn btn-checkbox m5" v-on:click="readyState()">'+
+            '<button v-bind:disabled="ready" class="btn btn-checkbox m5" v-on:click="readyState()">'+
                 '<i v-if="ready" class="fa fa-check" aria-hidden="true"></i>'+
             '</button>'+
             '</p>'+
         '</div>'+
         '<div class="col-xs-3">'+
-            '<button v-bind:disabled="!ready" class="btn btn-success" v-on:click="postReady()">Työ valmis</button>'+
+            '<button v-bind:disabled="order.ready" class="btn btn-success" v-on:click="postReady()">Työ valmis</button>'+
         '</div>'+
     '</div>'
 }))
@@ -246,28 +246,37 @@ Vue.component('button-balance',{
 })
 
 Vue.component('my-orders',{
-    props:['orders','editForm'],
+    props:['orders','oldOrders','newOrders','editForm'],
     beforeMount:function(){
+        var oldOrders = [];
+        var newOrders = [];
         $.get('/orders/get-orders-by-artist').then(function(response){
             $.each(response,function(key,object){
                 if(object.extraHours == null) object.extraHours = 0;
                 object.hashId = '#myorder' + object.id;
                 object.orderId = 'myorder' + object.id;
-                object.moment = moment(object.eventDate,'YYYY-MM-DD').locale('fi').format('LL')
-                if(object.moment.indexOf('Invalid') != -1) object.moment = 'Aikaa ei sovittu'
-                object.artistCut = object.artistCut / 100
+                object.moment = moment(object.eventDate,'YYYY-MM-DD').locale('fi').format('LL');
+                if(object.moment.indexOf('Invalid') != -1) object.moment = 'Aikaa ei sovittu';
+                object.artistCut = object.artistCut / 100;
+                if(object.ready) {
+                    oldOrders.push(object);
+                    return
+                };
+                newOrders.push(object);
             })
             this.orders = response;
+            this.oldOrders = oldOrders;
+            this.newOrders = newOrders;
             console.log(response)
         }.bind(this))
     },
      template:'<div class="row">'+
                 '<div class="col-md-12">'+
-                    '<h2 class="montserrat m20 darkblue">Omat keikat</h2>'+
+                    '<h2 class="montserrat m20 darkblue">Työn alla:</h2>'+
                     '<div class="panel-group">'+
-                        '<div  class="panel m5 panel-primary" v-for="order in orders">'+
+                        '<div  class="panel m5 panel-primary" v-for="order in newOrders">'+
                             '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading" style="margin:0px;">'+
-                                //'<span class="badge plaster black" style="text-transform:uppercase;">{{ order.eventSize }}</span>'+
+                                '<span class="badge plaster black" style="text-transform:uppercase;">{{ order.eventSize }}</span>'+
                                 '{{ order.clientName }}'+
                                 '<p style="float:right;margin-right:10px">'+
                                     '<i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }} <br>  '+
@@ -299,6 +308,43 @@ Vue.component('my-orders',{
                                     '<p><b>Lisätilaukset</b></p>'+
                                 '</div>'+
                                 '<edit-order v-bind:order="order"></edit-order>'+
+                            '</div>'+
+                        '</div>'+
+                    '</div>'+
+                    '<h2 class="montserrat m20 darkblue">Tehdyt keikat</h2>'+
+                    '<div class="panel-group">'+
+                        '<div  class="panel m5 panel-primary" v-for="order in oldOrders">'+
+                            '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading" style="margin:0px;">'+
+                                '<span class="badge plaster black" style="text-transform:uppercase;">{{ order.eventSize }}</span>'+
+                                '{{ order.clientName }}'+
+                                '<p style="float:right;margin-right:10px">'+
+                                    '<i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }} <br>  '+
+                                    '<i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.eventCity }}'+
+                                '</p>'+
+                            '</div>'+
+                            '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
+                                '<div class="col-xs-6">'+
+                                    '<p><b>Asiakas</b></p>'+
+                                    '<p>{{ order.clientName }}</p>'+
+                                    '<p><b>Sähköposti</b></p>'+
+                                    '<p>{{ order.clientEmail }}</p>'+
+                                    '<p><b>Paikka</b></p>'+
+                                    '<p>{{ order.eventCity }}</p>'+
+                                '</div>'+
+                                '<div class="col-xs-6">'+
+                                    '<p><b>Yritys</b></p>'+
+                                    '<p>{{ order.clientCompany }}</p>'+
+                                    '<p><b>Puhelinnumero</b></p>'+
+                                    '<p>{{ order.clientPhone }}</p>'+
+                                    '<p><b>Päivä</b></p>'+
+                                    '<p>{{ order.eventDate }}</p>'+
+                                    '<p><b>Tulo</b></p>'+
+                                    '<p>{{ order.artistCut }} €</p>'+
+                                '</div>'+
+                                '<div class="col-xs-12 p15">'+
+                                    '<p><b>Viesti</b></p>'+
+                                    '<p>{{ order.clientMessage }}</p>'+
+                                '</div>'+
                             '</div>'+
                         '</div>'+
                     '</div>'+

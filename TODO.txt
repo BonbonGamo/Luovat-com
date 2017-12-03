@@ -14,6 +14,8 @@ TODO:
     
     ARTIST
     -POSTMARK
+    -Uudet Tilaukset
+        -Hylkää keikka
     -Tilaukset, johon ilmottauduttu //DONE
         *Status
     -Aktiiviset Tilaukset           
