@@ -120,9 +120,9 @@ Vue.component('order-form',{
                 '<center>'+
                     '<h3 class="montserrat fw700 white">1/2 Tilaajan tiedot </h3>'+
                 '</center>'+
-                '<input class="form-control m20 order-form-input darkblue" placeholder="Nimesi" v-model="formData.name"></input>'+
-                '<input class="form-control m20 order-form-input darkblue" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email">'+
-                '<textarea rows="10" class="form-control m20 order-form-input-area darkblue" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea>'+
+                '<div class="asteriks"><input class="form-control m20 order-form-input darkblue" placeholder="Nimesi" v-model="formData.name"></input></div>'+
+                '<div class="asteriks"><input class="form-control m20 order-form-input darkblue" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email"></div>'+
+                '<div class="asteriks"><textarea rows="10" class="form-control m20 order-form-input-area darkblue" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea></div>'+
                 '<center>'+
                     '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="askAdditional()">Seuraava</button>'+
                 '</center>'+

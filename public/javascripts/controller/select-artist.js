@@ -17,10 +17,18 @@ Vue.component('select-artist',{
         this.colwidth = 'col-md-' + (12 / users.length)
         console.log(this.colwidth)
     },
+    methods:{
+        selectRandom:function(){
+            $.get(users[Math.floor((Math.random() * users.length) + 0)].link)
+        },
+    },
     template:'<div>'+
                 '<div v-for="user in users">'+
                     '<artist-window v-bind:user="user" v-bind:colwidth="colwidth"></artist-window>'+
                 '</div>'+
+                '<center>'+
+                    '<button class="btn btn-lg btn-success m20">Kuka tahansa kuvaaja käy</button>'+
+                '</center>'+
             '</div>'
 })
 

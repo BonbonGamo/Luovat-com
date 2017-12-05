@@ -22,6 +22,7 @@
 @import url('https://fonts.googleapis.com/css?family=Amatic+SC:400,700');
 @import url('https://fonts.googleapis.com/css?family=Plaster');
 @import url('https://fonts.googleapis.com/css?family=Montserrat:100,300,400,700,800,900');
+@import url('https://fonts.googleapis.com/css?family=Patua+One');
 
 
 @opensans: 'Open Sans Condensed', sans-serif;
@@ -30,6 +31,7 @@
 @montserrat:'Amatic SC', cursive;
 @plaster:'Plaster', cursive;
 @montserrat: 'Montserrat', sans-serif !important;
+@asterisk: 'Patua One', cursive;
 
 
 .roboto{
@@ -104,6 +106,23 @@ body, html, #mainApp {
     height: 100%;
     width:100%;
 }
+tr{
+    color:white !important;
+    font-family: @montserrat !important;
+    padding:4px !important;
+    >th{
+        font-weight: 700 !important;
+        background: @darkblue !important;
+        border:4px solid @white;
+        border-top-left-radius: 5px !important;
+        border-bottom-left-radius: 5px !important;
+    };
+    >td{
+        font-weight: 200 !important;
+        background: @blue !important;
+        border:4px solid @white;
+    };
+}
 .artist-main{
     margin-top:80px;
     border-radius: 10px;
@@ -112,6 +131,8 @@ body, html, #mainApp {
 input, textarea, .form-control {
     border: none !important;
     background: transparent !important;
+    box-shadow: 1px 1px 1px @darkblue !important;
+    resize: none;
 }
 .btn-display{
     background: transparent;
@@ -719,7 +740,16 @@ input, textarea, .form-control {
         background: transparent !important;
     }
 }
-
+.asteriks:before{
+    content:'*';
+    color:@white;
+    position: absolute;
+    font-size: 35px;
+    font-family: @asterisk;
+    left:10px;
+    transform: translateY(-2px);
+    text-shadow: 1px 1px 1px @darkblue; 
+}
 .nav-some-link{
     color:@blue;
     font-size: 16px !important;
