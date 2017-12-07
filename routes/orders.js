@@ -7,6 +7,7 @@ const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
 const helper  = require('../scripts/helper.js');
 const session = require('express-session');
+const moment  = require('moment')
 
 const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
@@ -57,7 +58,10 @@ router.put('/remove-pickup/:id',auth.artist,(req,res,next) => {
 
   Order_User
   .query()
-  .patch({orderId:null,userId:null})
+  .patch({
+    orderId:null,
+    userId:null
+  })
   .where('userId',userId)
   .andWhere('orderId',orderId)
   .first()
@@ -214,13 +218,12 @@ router.post('/artist-edit-order',auth.artist, (req,res,next) => {
 
 //USER PICKS UP A ORDER
 router.post('/pickup',auth.artist,function(req,res,next){
-  let id,eager;
+  let id,eager,order;
   Order
     .query()
     .where('id',req.body.orderId)
     .first()
     .then(cbOrder => {
-      console.log('Original order',cbOrder)
       return Order
       .query()
       .patchAndFetchById(cbOrder.id,{
@@ -228,12 +231,26 @@ router.post('/pickup',auth.artist,function(req,res,next){
       })
     })
     .then(cbOrder => {
-      console.log('ADDED ONE EAGER',cbOrder)
+      order = cbOrder;
+      console.log('ORDER:',order)
       return cbOrder.$relatedQuery('users').relate(req.session.user.id);
     })
     .then(() => {
+      if(order.eager >= 3){
+        console.log('3 EAGER')
+        return emailer.artistSelection([order])
+      }else{
+        console.log('NO EAGER')
+        return emailer.artistSelection([])
+      }
+    })
+    .then((postmarkResponse) => {
+      console.log(postmarkResponse)
       res.sendStatus(200)
-    });
+    })
+    .catch(err => {
+      res.sendStatus(500)
+    })  
 })
 
 router.get('/artist-options/:id/:token',function(req,res,next){
@@ -368,10 +385,12 @@ router.post('/new',(req,res,next) => {
 
 router.post('/free-pending/:id',auth.admin,(req,res,next) => {
   let order;
+
   Order
   .query()
   .patchAndFetchById(req.params.id,{
-    pending:false
+    pending:false,
+    pendingFreedAt:moment().format('LLLL')
   })
   .then( cbOrder => {
     order = cbOrder
@@ -386,7 +405,7 @@ router.post('/free-pending/:id',auth.admin,(req,res,next) => {
     res.sendStatus(200)
   })
   .catch(err => {
-    console.log(err.stack)
+    console.log(err)
     res.sendStatus(500)
   })
 })

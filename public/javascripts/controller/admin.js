@@ -202,6 +202,7 @@ Vue.component('user',{
             $.get(this.user.changePasswordLink)
             .then(function(response){
                 console.log(response)
+                alert('Salasana lähetetty')
                 this.user.passwordSent = true;
             })
         },
@@ -420,7 +421,7 @@ Vue.component('order',{
                 '<p style="width:100%">Komissio <strong><span style="float:right">{{ order.showComission || 0 }} €</span></strong></p>'+
                 '<button class="btn btn-success m5  w100" v-on:click="postForm()">Tallenna tilauksen tiedot</button>'+
                 '<br>'+
-                '<button class="btn btn-success m5  w100" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
+                '<button class="btn btn-success m5  w100" v-if="order.pending" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
                 '<label for="invoice20Number">20% laskun numero</label>'+
                 '<input v-bind:disabled="this.order.invoice20" class="form-control m5" id="invoice20Number" v-model="order.invoice20Number"></input>'+
                 '<button class="btn btn-primary m5  w100" v-bind:disabled="this.order.invoice20 || !this.order.selectedByUser" v-on:click="didInvoice20()" type="text"><strong v-if="this.order.selectedByUser">Laskuta 20%</strong><strong v-if="!this.order.selectedByUser">Ei saa laskuttaa 20%</strong></button>'+

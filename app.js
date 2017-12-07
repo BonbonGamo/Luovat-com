@@ -40,6 +40,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node', express.static(__dirname + '/node_modules/'))
 
 helper.checkUpdate()
+helper.checkForOrdersToRelease()
 
 var sessionStore;
 

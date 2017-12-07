@@ -7,6 +7,7 @@ const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
 const session = require('express-session');
 const moment  = require('moment')
+const constants = require('./constants.js')
 
 const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
@@ -64,7 +65,7 @@ module.exports = {
         let hasOneOrMore = [];
         let hasNone = [];
         let forRelease = [];
-        let fourDaysAgo = moment().subtract(4, 'days').format('LLLL');
+        let orderWaitLimit = moment().subtract(constants.orderWaitDays, 'days').format('LLLL');
 
         Order
         .query()
@@ -87,8 +88,7 @@ module.exports = {
                 }
             })
             _.forEach(hasOneOrMore, (order, key) => {
-                console.log(order.updated_at)
-                if(moment(order.updated_at).isBefore(fourDaysAgo)){
+                if(order.pendingFreedAt && moment(order.pendingFreedAt,'LLLL').isBefore(orderWaitLimit)){
                     forRelease.push(order)
                 }
             })
@@ -104,7 +104,13 @@ module.exports = {
         User
         .query()
         .then(users => {
-            console.log(users)
+            console.log(users[0])
+            return Order
+            .query()
+        })
+        .then(orders => {
+            console.log(orders[0])
+
         })
     }
 }

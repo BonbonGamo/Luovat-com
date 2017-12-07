@@ -23,5 +23,8 @@ module.exports = {
     //POSTMARK AND EMAIL SETTINGS
     emailFrom:'info@luovat.com',
 
+    //SYSTEM SETTINGS
+    //HOW LONG FREED ORDER WITH EAGER ARTISTS CAN WAIT UNTIL THE SELECT ARTIST FORM IS SENT
+    orderWaitDays:3,
 }
 
