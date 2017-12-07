@@ -250,7 +250,27 @@ router.post('/login', (req,res,next) => {
     })
 })
 
-router.get('/change-password/:token',(req,res,next) => {
+router.get('/send-password-change-link/:id', auth.admin, (req,res,next) => {
+  console.log('change pass ID:',req.params.id)
+
+  User
+  .query()
+  .findById(req.params.id)
+  .then(cbUser => {
+    console.log('Send password change to: ',cbUser.fisrName)
+    return emailer.changePassword(cbUser.email,cbUser)
+  })
+  .then(postmarkResponse => {
+    console.log(postmarkResponse)
+    res.send(200);
+  })
+  .catch(err => {
+    console.log(err);
+    res.send(500);
+  })
+})
+
+router.get('/change-password/:token', (req,res,next) => {
   User
     .query()
     .where('passwordChangeToken','=',req.params.token)

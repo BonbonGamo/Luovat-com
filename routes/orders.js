@@ -5,9 +5,10 @@ const uniqid  = require('uniqid');
 const emailer = require('../scripts/emailer.js');
 const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
-const helper    = require('../scripts/helper.js');
+const helper  = require('../scripts/helper.js');
 const session = require('express-session');
 
+const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
 const Order_User  = require('../models/order_user.js')
 
@@ -318,11 +319,11 @@ router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
     })
 })
 
-router.post('/new',function(req,res,next){
-  var add1 = (req.body.add1 == 'true')
-  var add2 = (req.body.add2 == 'true')
-  var add3 = (req.body.add3 == 'true')
-  
+router.post('/new',(req,res,next) => {
+  let add1 = (req.body.add1 == 'true')
+  let add2 = (req.body.add2 == 'true')
+  let add3 = (req.body.add3 == 'true')
+
   Order
     .query()
     .insert({
@@ -348,31 +349,46 @@ router.post('/new',function(req,res,next){
       invoice100:false,
       closed:false,
     })
-    .then((newOrder) => {
-      helper.updateOrderTotal(newOrder.id)
+    .then(newOrder => {
+      return helper.updateOrderTotal(newOrder.id)
     })
-    .then(function(_newOrder){
+    .then(cbOrderWithRevenue => {
+      
+      return emailer.orderConfirmation(cbOrderWithRevenue)
+    })
+    .then(postmarkResponse => {
+      console.log(postmarkResponse)
       res.sendStatus(200)
     })
     .catch(err => {
       console.log(err)
+      res.sendStatus(500)
     })
 })
 
 router.post('/free-pending/:id',auth.admin,(req,res,next) => {
-    Order
+  let order;
+  Order
+  .query()
+  .patchAndFetchById(req.params.id,{
+    pending:false
+  })
+  .then( cbOrder => {
+    order = cbOrder
+    
+    return User
     .query()
-    .patch({
-      pending:false
-    })
-    .where('id',req.params.id)
-    .then( updated => {
-      res.sendStatus(200)
-    })
-    .catch(err => {
-      console.log(err.stack)
-      res.sendStatus(500)
-    })
+  })
+  .then(cbUsers => {
+    return emailer.newPickups(cbUsers,order)
+  })
+  .then(postmarkResponse => {
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    console.log(err.stack)
+    res.sendStatus(500)
+  })
 })
 
 router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {

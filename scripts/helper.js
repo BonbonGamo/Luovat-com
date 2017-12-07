@@ -6,7 +6,9 @@ const emailer = require('../scripts/emailer.js');
 const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
 const session = require('express-session');
+const moment  = require('moment')
 
+const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
 const Order_User  = require('../models/order_user.js')
 
@@ -42,7 +44,7 @@ module.exports = {
         })
         
     },
-    updateOrderRevenueByInvoiceTotal: function(id,total){
+    updateOrderRevenueByInvoiceTotal: (id,total) => {
         return Order 
         .query()
         .where('id',id)
@@ -56,11 +58,13 @@ module.exports = {
             .patchAndFetchById(cbOrder.id,{revenue:revenue})
         })
     },
-    checkForOrdersToRelease: function(){
+    checkForOrdersToRelease: () => {
         let orders = {};
         let orderIds = [];
         let hasOneOrMore = [];
         let hasNone = [];
+        let forRelease = [];
+        let fourDaysAgo = moment().subtract(4, 'days').format('LLLL');
 
         Order
         .query()
@@ -68,7 +72,7 @@ module.exports = {
         .then(function(cbOrders){
             _.forEach(cbOrders,(order) => {
                 orderIds.push(order.id)
-                orders[order.id] = order
+                orders[JSON.stringify(order.id)] = order
             });
             return Order_User
             .query()
@@ -82,10 +86,25 @@ module.exports = {
                     hasNone.push(orders[order_user.orderId])
                 }
             })
-            console.log(hasNone)
+            _.forEach(hasOneOrMore, (order, key) => {
+                console.log(order.updated_at)
+                if(moment(order.updated_at).isBefore(fourDaysAgo)){
+                    forRelease.push(order)
+                }
+            })
             //TODO: SEND EMAIL TO CLIENT
+            return emailer.artistSelection(forRelease)
         })
+        .then(postmarkResponse => {
+            console.log('POSTMARK: ',postmarkResponse)
+        })
+    },
 
-   
+    checkUpdate: () => {
+        User
+        .query()
+        .then(users => {
+            console.log(users)
+        })
     }
 }

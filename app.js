@@ -17,8 +17,11 @@ const orders = require('./routes/orders');
 const admin = require('./routes/admin');
 const mobile = require('./routes/mobile');
 
-const timed = require('./scripts/timed')
-const helper = require('./scripts/helper')
+const timed = require('./scripts/timed');
+const helper = require('./scripts/helper');
+
+//TEST POSTMARK
+//require('./scripts/emailer').testPostmark();
 
 const app = express();
 
@@ -35,6 +38,8 @@ app.use(cookieParser());
 app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node', express.static(__dirname + '/node_modules/'))
+
+helper.checkUpdate()
 
 var sessionStore;
 

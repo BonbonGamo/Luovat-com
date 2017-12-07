@@ -176,6 +176,9 @@ Vue.component('rekry',{
 
 Vue.component('user',{
     props:['user'],
+    created:function(){
+        this.user.changePasswordLink = configUrl() + '/artists/send-password-change-link/' + this.user.id;
+    },
     methods:{
         postForm:function(){
             var data = {
@@ -196,7 +199,11 @@ Vue.component('user',{
             })
         },
         requestPass:function(){
-            
+            $.get(this.user.changePasswordLink)
+            .then(function(response){
+                console.log(response)
+                this.user.passwordSent = true;
+            })
         },
         deleteUser:function(){
             $.post('/artists/delete/'+this.user.id,function(response){
@@ -234,9 +241,8 @@ Vue.component('user',{
                 '<label>Esittelyvideon salasana</label>'+
                 '<input class="pp-form-control m5" type="text" v-model="user.reelPassword" >'+
                 '<br>'+
-                '<p class="m5">  artists/change-password/{{ user.passwordChangeToken }}</p>'+
                 '<button class="btn btn-success m5 w100" v-on:click="postForm()">Tallenna</button>'+
-                '<button class="btn btn-primary m5 w100" type="text">Lähetä salasana</button>'+
+                '<button v-on:click="requestPass()" class="btn btn-primary m5 w100" type="text">Lähetä salasana <span class="montsrerrat fw100" style="font-size:12px" v-if="user.passwordSent">Lähetetty</span></button>'+
                 '<button class="btn btn-primary m5 w100" type="text">Lähetä tiedot</button>'+
                 '<button class="btn btn-danger m5  w100" v-on:click="deleteUser()" type="text">Poista</button>'+
             '</div>'+

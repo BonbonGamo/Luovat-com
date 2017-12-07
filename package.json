@@ -21,6 +21,7 @@
     "knex": "^0.13.0",
     "less-middleware": "~2.2.0",
     "lodash": "^4.17.4",
+    "moment": "^2.19.3",
     "morgan": "~1.8.1",
     "objection": "^0.8.8",
     "pg": "^6.4.2",

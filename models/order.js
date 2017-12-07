@@ -31,6 +31,7 @@ class Order extends Model{
             clientEmail: {type: 'string'},
             clientMessage:{type:'string'},
             clientPhone:{type:'string'},
+            clientToken:{type:'string'},
             eager:{type:'number'},
             eagerMax:{type:'number'},
             eagerExpires:{type:'string'},
