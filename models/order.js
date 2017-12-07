@@ -50,6 +50,7 @@ class Order extends Model{
             discountPercent:{type:'number'},
             pending:{type:'boolean'},
             pendingFreedBy:{type:'string'},
+            pendingFreedAt:{type:'string'},
             invoice20:{type:'boolean'},
             invoice20MadeBy:{type:'string'},
             invoice20Number:{type:'string'},
