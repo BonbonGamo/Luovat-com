@@ -65,7 +65,7 @@ module.exports = {
         let hasOneOrMore = [];
         let hasNone = [];
         let forRelease = [];
-        let orderWaitLimit = moment().subtract(constants.orderWaitDays, 'days').format('LLLL');
+        let orderWaitLimit = moment().subtract(constants.orderWaitDays, 'days').format();
 
         Order
         .query()
@@ -88,7 +88,9 @@ module.exports = {
                 }
             })
             _.forEach(hasOneOrMore, (order, key) => {
-                if(order.pendingFreedAt && moment(order.pendingFreedAt,'LLLL').isBefore(orderWaitLimit)){
+                console.log('ORDER PENDING FREED AT:',order.pendingFreedAt)
+                console.log('ORDER WAIT LIMIT: ',orderWaitLimit)
+                if(order.pendingFreedAt != null && order.pendingFreedAt && moment(order.pendingFreedAt,'LLLL').isBefore(orderWaitLimit)){
                     forRelease.push(order)
                 }
             })

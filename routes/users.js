@@ -87,6 +87,9 @@ router.get('/inject-super-user',(req,res,next) => {
 })
 
 router.post('/new',(req,res,next) => {
+  if(!req.body.firstName || !req.body.lastName || req.body.rekryMessage){
+    throw new Error(500,'Missing fields')
+  }
   User 
     .query()
     .insert({
@@ -98,12 +101,16 @@ router.post('/new',(req,res,next) => {
       rekryMessage:req.body.rekryMessage ? req.body.rekryMessage : '',
       passwordChangeToken:uniqid()
     })
-    .then((newUser) => {
-      console.log(newUser)
+    .then(newUser => {
+      emailer.rekryReply(newUser)
+    })
+    .then(postmarkResponse => {
+      console.log(postmarkResponse)
       res.sendStatus(200)
     })
     .catch(err => {
       console.log(err)
+      res.send(500,err)
     })
 })
 
@@ -112,8 +119,12 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
   .query()
   .patchAndFetchById(req.params.id,{activeUser:true})
   .then((cbUser) => {
-    res.sendStatus(200)
     //TODO: Lähetä käyttäjälle salasanalinkki
+    return emailer.changePassword(cbUser.email,cbUser)
+  })
+  .then(postmarkResponse => {
+    console.log(postmarkResponse)
+    res.sendStatus(200)
   })
   .catch(err => {
     res.sendStatus(500)
@@ -251,11 +262,9 @@ router.post('/login', (req,res,next) => {
 })
 
 router.get('/send-password-change-link/:id', auth.admin, (req,res,next) => {
-  console.log('change pass ID:',req.params.id)
-
   User
   .query()
-  .findById(req.params.id)
+  .patchAndFetchById(req.params.id,{passwordChangeToken:uniqid()})
   .then(cbUser => {
     console.log('Send password change to: ',cbUser.fisrName)
     return emailer.changePassword(cbUser.email,cbUser)
@@ -287,11 +296,10 @@ router.get('/change-password/:token', (req,res,next) => {
 })
 
 router.post('/change-password',(req,res,next) => {
-  console.log(req.body)
   User
     .query()
     .patch(
-      {password:bcrypt.hashSync(req.body.password)}
+      {password:bcrypt.hashSync(req.body.password),passwordChangeToken:uniqid()}
     )
     .where('passwordChangeToken','=',req.body.token)
     .then(changed => res.sendStatus(200))

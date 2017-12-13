@@ -9,6 +9,7 @@ const templates = {
     newPickups:         4157841,
     orderConfirmation:  4169302,
     artistSelection:    4170043,
+    rekryReply:         4219041,
 };
 
 let composeMail = (template,to,message) => {
@@ -121,6 +122,19 @@ module.exports = {
                     reject(err.message)
                 } else {
                     console.log('TEST', data)
+                    resolve(data)
+                }
+            })
+        })
+    },
+
+    rekryReply: user => {
+        let mail = composeMail('rekryReply',user.email,{user_name:user.firstName + ' ' + user.lastName})
+        return new Promise((resolve,reject) => {
+            client.sendEmailWithTemplate(mail, (err,data) => {
+                if(err){
+                    reject(err.message)
+                } else {
                     resolve(data)
                 }
             })

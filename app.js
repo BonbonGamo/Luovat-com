@@ -39,9 +39,6 @@ app.use(lessMiddleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/node', express.static(__dirname + '/node_modules/'))
 
-helper.checkUpdate()
-helper.checkForOrdersToRelease()
-
 var sessionStore;
 
 if(!constants.redis){
@@ -77,6 +74,7 @@ app.listen(3000, function () {
 //LAUNCH TIMED EVENTS
 timed()
 
+helper.checkForOrdersToRelease();
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

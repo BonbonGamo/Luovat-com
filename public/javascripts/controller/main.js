@@ -1,6 +1,6 @@
 //VUE COMPONENTS
 Vue.component('order-form',{
-    props:['formData','errorMsg','showErrors','date','tip'],
+    props:['formData','errorMsg','showErrors','date','tip','validateName','validateEmail','validateMessage'],
     created:function(){
         this.formData = {
             name:'',
@@ -13,9 +13,14 @@ Vue.component('order-form',{
             add2:false,
             add3:false
         }
-        this.errorMsg = '';
-        this.showErrors = false;
-        this.tip = ''
+        this.errorMsg = {
+            name:false,
+            email:false,
+            message:false
+        }
+        this.validateName = false;
+        this.validateEmail = false;
+        this.validateMessage = false;
     },
     methods:{
         validForm:function(){
@@ -28,21 +33,6 @@ Vue.component('order-form',{
         },
         packageImageSrc:function(){
             return './images/luovat_'+this.formData.size+'.png'
-        },
-        addErrorMsg:function(msg){
-            this.errorMsg =  this.errorMsg + msg;
-        },
-        whyDisabled:function(){
-            var o = this.formData;
-            this.errorMsg  = "";
-            if(!o.name && o.name.length < 3 && !o.company && o.company.length < 3) this.addErrorMsg('Anna oma nimesi tai yrityksen nimi. ')
-            if(!o.message) this.addErrorMsg('Kerro viestissä, minkä laisen videon haluaisit tehdä. ')
-            if(!validateEmail(o.email) && !validatePhone(o.phone)) this.addErrorMsg('Lisää sähköposti tai puhelinumero yhteydenottoa varten. ')
-            if(this.errorMsg.length > 0){
-                this.showErrors = true
-            }else{
-                this.showErrors = false
-            }    
         },
         postOrder:function(){
             if(this.formData.name.length > 2 && this.formData.email.length > 2){
@@ -88,10 +78,21 @@ Vue.component('order-form',{
             $('#askFirst').fadeIn()
         },
         askAdditional:function(){
-            if(!this.formData.message || !this.formData.name || this.formData.name.length < 3 || !this.formData.email || !validateEmail(this.formData.email)){
-                alert('Täyty tilaajan tiedot oikein')
+            if(this.formData.name.length < 3){
+                this.validateName = true;
                 return;
             }
+            this.validateName = false;
+            if(!validateEmail(this.formData.email)){
+                this.validateEmail = true;
+                return;
+            }
+            this.validateEmail = false;
+            if(this.formData.message.length < 10){
+                this.validateMessage = true;
+                return;
+            }
+            this.validateMessage = false;
             this.tip = 'Hienoa '+ this.formData.name+'! Voit täyttää vielä valitsemasi lisätiedot tästä tai lähettää tilauksen sellaisenaan. Olet valinnut ' + this.formData.size.toUpperCase() + '-kokoisen paketin. Olemme ensisijaisesti yhteydessä sähköpostiosoitteeseen ' + this.formData.email
             $('.hide-order-form').hide()
             $('#ask-additional').fadeIn()
@@ -116,13 +117,22 @@ Vue.component('order-form',{
                 '<order-size small="M" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
                 '<order-size small="L" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
             '</div>'+
-            '<div id="askFirst" class="hide-order-form blue col-sm-6 col-sm-offset-3"style="display:none;">'+
+            '<div id="askFirst" class="hide-order-form col-sm-6 col-sm-offset-3"style="display:none;">'+
                 '<center>'+
                     '<h3 class="montserrat fw700 white">1/2 Tilaajan tiedot </h3>'+
                 '</center>'+
-                '<div class="asteriks"><input class="form-control m20 order-form-input darkblue" placeholder="Nimesi" v-model="formData.name"></input></div>'+
-                '<div class="asteriks"><input class="form-control m20 order-form-input darkblue" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email"></div>'+
-                '<div class="asteriks"><textarea rows="10" class="form-control m20 order-form-input-area darkblue" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea></div>'+
+                '<transition name="bounce" class="text-center">'+
+                    '<p class="white" style="margin-bottom:0px;" v-if="validateName">Anna oikea nimesi</p>'+
+                '</transition>'+
+                '<div class="asteriks"><input id="inpName" class="form-control m20 order-form-input darkblue" placeholder="Nimesi" v-model="formData.name"></input></div>'+
+                '<transition name="bounce" class="text-center">'+
+                    '<p class="white" style="margin-bottom:0px;" v-if="validateEmail">Kirjoita sähköpostiosoite oikein</p>'+
+                '</transition>'+
+                '<div class="asteriks"><input id="inpEmail" class="form-control m20 order-form-input darkblue" placeholder="Sähköpostiosoitteesi" type="email" v-model="formData.email"></div>'+
+                '<transition name="bounce" class="text-center">'+
+                    '<p class="white" style="margin-bottom:0px;" v-if="validateMessage">Viesti voisi olla hieman pidempi</p>'+
+                '</transition>'+
+                '<div class="asteriks"><textarea id="inpMsg" rows="10" class="form-control m20 order-form-input-area darkblue" placeholder="Kerro meille videotarpeestasi" v-model="formData.message"></textarea></div>'+
                 '<center>'+
                     '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="askAdditional()">Seuraava</button>'+
                 '</center>'+
@@ -204,9 +214,21 @@ Vue.component('rekry-button',{
 })
 
 Vue.component('rekry-form',{
-    props:['form'],
+    props:['form','errMsgEmail','errMsgPhone'],
     created:function(){
         this.resetForm()
+        this.errMsgEmail = {
+            show:false,
+            text:''
+        };
+        this.errMsgPhone = {
+            show:false,
+            text:''
+        };
+        this.errMsgNames = {
+            show:false,
+            text:''
+        };
     },
     methods:{
         resetForm:function(){
@@ -219,12 +241,27 @@ Vue.component('rekry-form',{
             }
         },
         postForm:function(){
-            console.log(this.form)
-            var emptyField = false;
-            $.each(this.form, function(key,value){
-                if(!value || value.length < 2) emptyField = true;
-            })
-            if(emptyField)  alert('Täytä kaikki kentät');
+            if(!this.form.firstName || !this.form.lastName || this.form.firstName.length < 3 || this.form.lastName.length < 3){
+                console.log('names',this.form)
+                this.errMsgNames.show = false;
+                this.errMsgNames.text = 'Anna etunimi ja sukunimi'
+                this.errMsgNames.show = true;
+            }
+            
+            if(!validatePhone(this.form.phone)){
+                this.errMsgPhone.show = false;
+                this.errMsgPhone.text = 'Puhelinnumero ei kelpaa'
+                this.errMsgPhone.show = true;
+            }
+            if(!validateEmail(this.form.email)){
+                this.errMsgEmail.show = false;
+                this.errMsgEmail.text = 'Sähköpostiosoite ei kelpaa'
+                this.errMsgEmail.show = true;
+            };
+            if(this.errMsgNames.show || this.errMsgEmail.show || this.errMsgPhone.show ){
+                return;
+            }
+
             $.post('/artists/new',this.form)
             .then(function(response){
                 console.log(response)
@@ -232,25 +269,41 @@ Vue.component('rekry-form',{
                 alert('Hakemus vastaanotettu')
                 $('#rekryModal').modal('hide')
             }.bind(this))
+            .fail(function(err){
+                console.log('ERR',err)
+                if(err.responseJSON.detail.indexOf('already exists') != -1){
+                    this.errMsgEmail.show = false;
+                    this.errMsgEmail.text = 'Valitettavasti sähköposti on jo käytössä. Käytä toista sähköpostiosoitetta'
+                    this.errMsgEmail.show = true;
+                }
+            }.bind(this))
         }
     },
     template:
         '<div class="row">'+
-            '<div class="col-md-6">'+
+            '<div class="col-md-12">'+
                 '<div class="form-group">'+
+                    '<transition name="bounce" class="text-center">'+
+                        '<p v-if="errMsgNames.show">{{ errMsgNames.text }}</p>'+
+                    '</transition>'+
                     '<input class="order-form-input-area form-control" type="text" placeholder="Etunimi" id="firstName" v-model="form.firstName"></input><br>'+
                     '<input class="order-form-input-area form-control" type="text" placeholder="Sukunimi" id="lastName" v-model="form.lastName"></input>'+
                 '</div>'+
             '</div>'+
-            '<div class="col-md-6">'+
+            '<div class="col-md-12">'+
                 '<div class="form-group">'+
+                    '<transition name="bounce" class="text-center">'+
+                        '<p v-if="errMsgPhone.show">{{ errMsgPhone.text }}</p>'+
+                    '</transition>'+
                     '<input class="order-form-input-area form-control" placeholder="Puhelinnumero" type="text" id="phone" v-model="form.phone"></input><br>'+
+                    '<transition name="bounce" class="text-center">'+
+                        '<p v-if="errMsgEmail.show">{{ errMsgEmail.text }}</p>'+
+                    '</transition>'+
                     '<input class="order-form-input-area form-control" placeholder="Sähköposti" type="text" id="email" v-model="form.email"></input>'+
                 '</div>'+
             '</div>'+
             '<div class="col-md-12">'+
                 '<div class="form-group">'+
-                    '<label class="green" for="message" >Vapaa viesti luoville</label>'+
                     '<textarea rows="5" class="order-form-input-area form-control" placeholder="Kerro itsestäsi. Miksi sinut pitäisi rekrytoida luoviin?" type="text" id="message" v-model="form.rekryMessage"></textarea>'+
                 '</div>'+
             '</div>'+
