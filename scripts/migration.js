@@ -11,7 +11,6 @@ module.exports = () => {
     if(constants.dbLatest && !constants.dbEmpty){
         console.log('Migrating knex latest')
         db.migrate.latest([config]);
-        resolve('OK')
     }
     return new Promise((resolve,reject) => { 
         console.log('Running migrations.')
