@@ -10,7 +10,7 @@ const Order_User  = require('../models/order_user.js')
 module.exports = () => {
     if(constants.dbLatest && !constants.dbEmpty){
         console.log('Migrating knex latest')
-        db.knex.migrate.latest([config]);
+        db.migrate.latest([config]);
         resolve('OK')
     }
     return new Promise((resolve,reject) => { 
