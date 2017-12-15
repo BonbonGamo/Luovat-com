@@ -319,15 +319,27 @@ router.get('/orders-progres',function(req,res,next){
 
 })
 
-router.get('/select-artist/:userId/:token/:orderId',function(req,res,next){
+router.get('/select-artist/:userId/:token/:orderId',(req,res,next) => {
+  let order;
   Order
     .query()
-    .patch({
+    .patchAndFetch({
       artistSelection:parseInt(req.params.userId)
     })
     .where('id',req.params.orderId)
     .andWhere('clientToken',req.params.token)
-    .then((updated) => {
+    .then(cbOrder => {
+      order = cbOrder;
+
+      return User
+      .query()
+      .findById(req.params.userId)
+    })
+    .then(cbUser => {
+      return emailer.artistSelected(cbUser,order)
+    })
+    .then(postmarkResponse => {
+      console.log(postmarkResponse)
       res.redirect('/')
     })
     .catch(err => {

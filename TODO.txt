@@ -1,8 +1,11 @@
 TODO:
-    
+    TESTAUS
+    -Postmark:
+        -ArtistsSelected
+
+
     ADMIN
     -POSTMARK
-    -Tilauksen tietojen muokkaus //DONE
     -Asetukset
         *Hintojen muokkaus
         *Vanhat asetusversiot
@@ -16,18 +19,12 @@ TODO:
     -POSTMARK
     -Uudet Tilaukset
         -Hylkää keikka
-    -Tilaukset, johon ilmottauduttu //DONE
-        *Status
-    -Aktiiviset Tilaukset           
-        *Tilauksen saldo
-    -Tehdyt Tilaukset 
-    -Saldo //DONE
-    -Asetukset //DONE
-        *Omat tiedot
     -Rekry
+        -alaikänen  
 
     ORDERS
-    - 
+    - Palautteen anto kun tilaus valmis
+    -
     
     CLIENT (PH1.2)
     -Asiakasrekisteri

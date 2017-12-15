@@ -27,6 +27,7 @@ class User extends Model{
         required: [],
         properties: {
             id: {type: 'integer'},
+            userToken:{type:'string'},
             activeUser:{type:'boolean'},
             accessToken:{type:'string'},
             firstName: {type: 'string', minLength: 1, maxLength: 255},
@@ -44,7 +45,8 @@ class User extends Model{
             balance:{type: 'number'},
             rekryMessage:{type: 'string'},
             employee:{type:'boolean'},
-            deleted:{type:'boolean'}
+            deleted:{type:'boolean'},
+            minor:{type:'boolean'}
             }     
         };
     }

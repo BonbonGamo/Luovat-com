@@ -88,8 +88,6 @@ module.exports = {
                 }
             })
             _.forEach(hasOneOrMore, (order, key) => {
-                console.log('ORDER PENDING FREED AT:',order.pendingFreedAt)
-                console.log('ORDER WAIT LIMIT: ',orderWaitLimit)
                 if(order.pendingFreedAt != null && order.pendingFreedAt && moment(order.pendingFreedAt,'LLLL').isBefore(orderWaitLimit)){
                     forRelease.push(order)
                 }

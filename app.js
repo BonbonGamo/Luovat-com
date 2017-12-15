@@ -10,6 +10,7 @@ const constants = require('./scripts/constants.js')
 const db = require('./scripts/db.js')
 const session = require('express-session');
 const RedisStore = require('connect-redis')(session);
+const migration = require('./scripts/migration.js')
 
 const index = require('./routes/index');
 const users = require('./routes/users');
@@ -41,6 +42,8 @@ app.use('/node', express.static(__dirname + '/node_modules/'))
 
 var sessionStore;
 
+migration()
+
 if(!constants.redis){
   sessionStore = {
     secret: constants.sessionSecret,
@@ -57,6 +60,7 @@ if(!constants.redis){
     saveUninitialized:false
   }
 }
+
 app.use(session(
   sessionStore
 ));
@@ -74,7 +78,7 @@ app.listen(3000, function () {
 //LAUNCH TIMED EVENTS
 timed()
 
-helper.checkForOrdersToRelease();
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
