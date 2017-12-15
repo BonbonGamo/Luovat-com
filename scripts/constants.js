@@ -11,14 +11,17 @@ module.exports = {
         * heroku host
     -sessionsecret
     -env
-        *environment dev / prod
+        * environment dev / prod
+        * EFFECTS:
+            -email reseavers (if dev then admins[0] else "to field")
+
     ---------------------------------------------------------------------------
     */
 
     port:process.env.PORT,
     host:process.env.HOST,
     sessionSecret:'superSecret',
-    env:'dev',
+    env:'prod',
     
     /*
     ---------------------------------------------------------------------------
@@ -27,12 +30,14 @@ module.exports = {
     -admins:
         * Manage users that can get access to admin page
         * admins[0] is the contact for the dev environment emails
+
     ---------------------------------------------------------------------------
     */
     admins:[
         'petteri@huddle.fi', //index 0 = dev contact for sent emails
         'ville@huddle.fi',
-        'jasu@siitarinen.fi'
+        'jasu@siitarinen.fi',
+        'jan@justvisual.fi'
     ],
     /*
     ---------------------------------------------------------------------------
@@ -48,12 +53,13 @@ module.exports = {
         * Delete all rows from all tables
     -dbLatest
         * Migrate latest knex migration made
+
     ---------------------------------------------------------------------------
     */
     migration:'dev',
     dbConnection:process.env.DATABASE_URL || 'postgres://localhost:5432/luovat',
     redis:process.env.REDIS_URL,
-    dbEmpty:true,
+    dbEmpty:false,
     dbLatest:true,
 
     /*

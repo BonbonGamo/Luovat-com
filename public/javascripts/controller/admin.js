@@ -182,16 +182,17 @@ Vue.component('user',{
     methods:{
         postForm:function(){
             var data = {
-                id:this.user.id,
-                firstName:this.user.firstName,   
-                lastName:this.user.lastName, 
-                email:this.user.email,     
-                phone:this.user.phone,       
-                street:this.user.street,      
-                city:this.user.city,        
-                zipCode:this.user.zipCode,     
-                reelLink:this.user.reelLink,    
-                reelPassword:this.user.reelPassword
+                id:             this.user.id,
+                firstName:      this.user.firstName,   
+                lastName:       this.user.lastName, 
+                email:          this.user.email,     
+                phone:          this.user.phone,       
+                street:         this.user.street,      
+                city:           this.user.city,        
+                zipCode:        this.user.zipCode,     
+                reelLink:       this.user.reelLink,    
+                reelPassword:   this.user.reelPassword,
+                activateUser:   this.user.activateUser
             }
             $.post('/artists/edit',data) 
             .then(function(response){
