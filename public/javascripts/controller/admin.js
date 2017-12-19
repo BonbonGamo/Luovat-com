@@ -278,6 +278,7 @@ Vue.component('order',{
     props:['order'],
     beforeMount:function(){
         this.order.selectedByUser = false;
+        this.order.newSize = this.order.size;
         
         var d = new Date();
         var n = d.getTime();
@@ -326,8 +327,16 @@ Vue.component('order',{
                 this.order[t] = false
             }
         },
+        changeOrderSize:function(){
+            if(this.order.newSize = '') return;
+            $.post('/orders/change-order-size/'+this.order.id+'/'+this.order.size)
+            .then(function(response){
+                console.log(response)
+            })
+        },
         freePending:function(){
-            $.post('/orders/free-pending/'+this.order.id).then(function(){
+            $.post('/orders/free-pending/'+this.order.id)
+            .then(function(){
                 alert('Tilaus vapautettu')
             })
             this.$parent.updateOrders() 
@@ -392,6 +401,12 @@ Vue.component('order',{
                     '</div>'+
                 '</div>'+
                 '<br>'+
+                '<label >Muuta tilauksen koko</label>'+
+                '<select v-bind:value="order.eventSize" v-model="order.eventSize" class="form-control">'+
+                    '<option value="s">S</option>'+
+                    '<option value="m">M</option>'+
+                    '<option value="l">L</option>'+
+                '</select>'+
                 '<label for="clientEmail">Sähköpostiosoite</label>'+
                 '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
                 '<label for="clientPhone">Puhelinnumero</label>'+

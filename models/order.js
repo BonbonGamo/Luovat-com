@@ -44,6 +44,7 @@ class Order extends Model{
             additional1:{type: 'boolean'},
             additional2:{type: 'boolean'},
             additional3:{type: 'boolean'},
+            voiceOverPrice:{type:'number'},
             total:{type: 'number'},
             revenue:{type:'number'},
             ready:{type:'boolean'},
@@ -54,9 +55,11 @@ class Order extends Model{
             invoice20:{type:'boolean'},
             invoice20MadeBy:{type:'string'},
             invoice20Number:{type:'string'},
+            invoice20CreatedAt:{type:'string'},
             invoice100:{type:'boolean'},
             invoice100MadeBy:{type:'string'},
             invoice100Number:{type:'string'},
+            invoice100CreatedAt:{type:'string'},
             closed:{type:'boolean'}, //ONLY WHEN PAID TO ARTIST
             closedBy:{type:'string'},
             deleted:{type:'boolean'}

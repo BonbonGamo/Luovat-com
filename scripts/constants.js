@@ -30,6 +30,10 @@ module.exports = {
     -admins:
         * Manage users that can get access to admin page
         * admins[0] is the contact for the dev environment emails
+    -superuser:
+        * The account created when the db tables are cleared. Takes a email
+        * Super user password change token
+            url: /artists/change-password/petteri-on-mestari'
 
     ---------------------------------------------------------------------------
     */
@@ -39,6 +43,10 @@ module.exports = {
         'jasu@siitarinen.fi',
         'jan@justvisual.fi'
     ],
+
+    superUser:'petteri@huddle.fi',
+
+    superUserPwdToken:'petteri-on-mestari',
     /*
     ---------------------------------------------------------------------------
     *************************   DATABASE SETTINGS   ***************************

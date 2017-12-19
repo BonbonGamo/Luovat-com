@@ -17,6 +17,9 @@ TODO:
     -Käyttäjähallinta
         -Uusi käyttäjä ei päivitä listoja
         -Muokkaus palauttaa uusiin
+    -Vaihda tilauksen koko
+        -Lisää admin sivulle nappi tilauksen koon muuttamiseen
+        -Lisää artistisivulle nappi, josta voi tilata tilauksen koon muuttamisen
     
     ARTIST
     -POSTMARK

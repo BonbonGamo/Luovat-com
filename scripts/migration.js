@@ -37,8 +37,20 @@ module.exports = () => {
                 console.log(deleted,' users deleted')
                 console.log('Migrating knex latest')
                 db.migrate.latest([config]);
+
+                return User
+                .query()
+                .insert({
+                  activeUser:true,
+                  firstName:'Petteri',
+                  lastName:'Ponkamo',
+                  email:'petteri@huddle.fi',
+                  passwordChangeToken:'petteri-on-mestari'
+                })
             })
-            .then(resolve('OK'))
+            .then((superuser) => {
+                resolve('OK')
+            })
             .catch(err => {
                 reject(err)
             })

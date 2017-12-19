@@ -11,6 +11,7 @@ const templates = {
     artistSelection:    4170043,
     artistSelected:     4243101,
     rekryReply:         4219041,
+    adminEventReady:    4272301,
 };
 
 let composeMail = (template,to,message) => {
@@ -110,6 +111,36 @@ module.exports = {
         })
     },
 
+    adminOrderReady: (user,order) => {
+        let mails = [];
+        _.forEach(constants.admins, admin => {
+            mails.push(composeMail('adminEventReady',admin,{
+                "user_name"         : user.firstName + ' ' + user.lastName,
+                "order_company"     : order.clientCompany,
+                "order_clientName"  : order.clientName,
+                "order_clientEmail" : order.clientEmail,
+                "order_clientPhone" : order.clientPhone,
+                "order_eventCity"   : order.eventCity,
+                "order_eventDate"   : order.eventDate,
+                "order_size"        : order.eventSize,
+                "order_description" : order.clientMessage,
+                "order_subs"        : order.additional1 ? 'Kyllä' : 'Ei' ,
+                "order_air"         : order.additional2 ? 'Kyllä' : 'Ei',
+                "order_voice"       : order.additional3 ? 'Kyllä' : 'Ei',
+                "order_price"       : ((order.total)*0.7)/100.00,
+            }))
+        })
+        return new Promise((resolve,reject) => {
+            client.sendEmailBatch(mails, (err,data) => {
+                if(err){
+                    reject(err.message)
+                }else{
+                    resolve(data)
+                }   
+            })
+        })
+    },
+
     orderConfirmation: (order) => {
         console.log(order)
         let mail = composeMail('orderConfirmation',order.clientEmail,{
@@ -132,23 +163,6 @@ module.exports = {
                 if(err){
                     reject(err.message)
                 }else{
-                    resolve(data)
-                }
-            })
-        })
-    },
-
-    testPostmark:() => {
-        let mail = composeMail('test','petteri@huddle.fi',{'testVariable':'TESTI TOIMII','testVariable2':'TESTI TOIMII'})
-        console.log('MAIL:',mail)
-        console.log('POSTMARK TEST:')
-        return new Promise((resolve,reject) => {
-            client.sendEmailWithTemplate(mail, (err,data) => {
-                if(err){
-                    console.log('TEST ERR:',err)
-                    reject(err.message)
-                } else {
-                    console.log('TEST', data)
                     resolve(data)
                 }
             })

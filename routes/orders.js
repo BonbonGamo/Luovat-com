@@ -7,7 +7,7 @@ const _       = require('lodash');
 const auth    = require('../scripts/auth.js');
 const helper  = require('../scripts/helper.js');
 const session = require('express-session');
-const moment  = require('moment')
+const moment  = require('moment');
 
 const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
@@ -191,7 +191,8 @@ router.post('/admin-edit-order',auth.admin,function(req,res,next){
       console.log(err)
       res.send(400,err)
     })
-})
+});
+
 router.post('/artist-edit-order',auth.artist, (req,res,next) => {
   console.log('EDIT:',req.body.id)
   Order
@@ -217,7 +218,7 @@ router.post('/artist-edit-order',auth.artist, (req,res,next) => {
 })
 
 //USER PICKS UP A ORDER
-router.post('/pickup',auth.artist,function(req,res,next){
+router.post('/pickup',auth.artist,(req,res,next) => {
   let id,eager,order;
   Order
     .query()
@@ -429,11 +430,13 @@ router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
     .patchAndFetchById(req.params.id,{
       invoice20Number:req.params.invoiceNumber,
       invoice20:true,
-      invoice20MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName
+      invoice20MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName,
+      invoice20CreatedAt:moment().format('LLLL')
     })
     .then( (cbOrder) => {
       var total = (cbOrder.total / 100) * 20;
       helper.updateOrderRevenueByInvoiceTotal(cbOrder.id,total)
+      
     })
     .then( cbOrder => {
       res.sendStatus(200)
@@ -455,7 +458,8 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,(req,res,next) => {
     .patchAndFetchById(req.params.id,{
       invoice100Number:req.params.invoiceNumber,
       invoice100:true,
-      invoice100MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName
+      invoice100MadeBy:req.session.user.firstName + ' ' + req.session.user.lastName,
+      invoice100CreatedAt:moment().format('LLLL')
     })
     .then(cbOrder => {
       var total = cbOrder.total - cbOrder.revenue;
@@ -471,7 +475,7 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,(req,res,next) => {
 })
 
 router.post('/artist-order-ready/:id',auth.artist,(req,res,next) => {
-    console.log('READY',req.params.id)
+    if(!req.session.user) throw new Error('Unauthorized')
     Order
     .query()
     .patchAndFetchById(req.params.id,{
@@ -479,6 +483,9 @@ router.post('/artist-order-ready/:id',auth.artist,(req,res,next) => {
     })
     .then(cbOrder => {
       console.log('Order ready:',cbOrder)
+      return emailer.adminOrderReady(req.session.user,cbOrder)
+    })
+    .then(postmarkResponse => {
       res.sendStatus(200)
     })
     .catch(err => {
@@ -509,7 +516,7 @@ router.post('/delete/:id',(req,res,next) => {
     )
     .where('id',req.params.id)
     .then(deleted => {
-      console.log('User deleted');
+      console.log('Order deleted');
       res.sendStatus(200)
     })
     .catch(err => {

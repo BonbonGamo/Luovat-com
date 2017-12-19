@@ -31,7 +31,7 @@ module.exports = {
             if(cbOrder.extraHours) rows.extraHours = cbOrder.extraHours * 5000;
             if(cbOrder.additional1) rows.add1 = 5000;
             if(cbOrder.additional2) rows.add2 = 10000;
-            if(cbOrder.additional3) rows.add3 = 10000;
+            if(cbOrder.additional3) rows.add3 = cbOrder.voiceOverPrice ? cbOrder.voiceOverPrice : 10000;
             _.forEach(rows,function(row){
                 sum = sum + row;
             })
