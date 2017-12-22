@@ -285,6 +285,7 @@ router.get('/change-password/:token', (req,res,next) => {
     .query()
     .where('passwordChangeToken','=',req.params.token)
     .then((user) => {
+      console.log('USER:',user,' TOKEN: ',req.params.token)
       if(!user || user.passwordChangeToken != req.params.token) throw new Error(404,'No user found');
       res.render('changePass',{
         title:'Vaihda salasana',
