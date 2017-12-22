@@ -284,6 +284,7 @@ router.get('/change-password/:token', (req,res,next) => {
   User
     .query()
     .where('passwordChangeToken','=',req.params.token)
+    .first()
     .then((user) => {
       console.log('USER:',user,' TOKEN: ',req.params.token)
       if(!user || user.passwordChangeToken != req.params.token) throw new Error(404,'No user found');
