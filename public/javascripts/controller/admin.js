@@ -3,15 +3,66 @@
 //       invoice100
 //       close
 
+Vue.component('user-main',{
+    props:['users','rekry'],
+    created:function(){
+        this.updateUsers();
+        this.updateRekry();
+    },
+    template:
+    '<div>'+
+        '<div class="col-md-6 col-lg-6">'+
+            '<users v-bind:users="users" v-bind:length="users.length" ></users>'+
+        '</div>'+
+        '<div class="col-md-6 col-lg-6">'+
+            '<rekry v-bind:users="rekry" v-bind:length="rekry.length"></rekry>'+
+            '<add-user></add-user>'+
+        '</div>'+
+    '</div>',
+    methods:{
+        updateUsers:function(){
+            console.log('UPDT main')
+            $.get('/artists/all').then(function(response){
+                var users = [];
+                $.each(response,function(key,object){
+                    object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
+                    if(object.activeUser){
+                        users.push(object)
+                    }
+                    return;
+                })
+                this.users = users;
+            }.bind(this))
+        },
+        updateRekry:function(){
+            $.get('/artists/rekry')
+            .then(function(response){
+                $.each(response,function(key,object){
+                    object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
+                    if(object.activeUser){
+                        users.push(object)
+                    }
+                    return;
+                })
+                this.rekry = response;
+            }.bind(this))
+        }
+    }
+})
+
 Vue.component('add-user',{
-    props:['firstName','lastName','message'],
+    props:['firstName','lastName','email'],
     methods:{
         postNewUser:function(){
             if(this.firstName.length > 2 && this.lastName.length > 2){
-                $.post('/artists/new',{firstName:this.firstName,lastName:this.lastName},function(response){
+                $.post('/artists/new',{firstName:this.firstName,lastName:this.lastName,email:this.email},function(response){
                     alert('Käyttäjä lisätty')
+                    this.$parent.updateRekry();
                 }.bind(this))
             }
+        },
+        validEmail:function(){
+            return validateEmail();
         }
     },
     template:'<div class="panel panel-default">'+
@@ -21,6 +72,8 @@ Vue.component('add-user',{
                     '<input class="form-control" id="fn" type="text" v-model="firstName">'+
                     '<label for="ln" >Sukunimi: <span v-if="lastName && lastName.length > 2"> OK! </span></label>'+
                     '<input class="form-control" id="ln" type="text" v-model="lastName">'+
+                    '<label for="em" >Sähköposti: <span v-if="email && this.validEmail()"> OK! </span></label>'+
+                    '<input class="form-control" id="em" type="email" v-model="email">'+
                     '<br>'+
                     '<button class="btn btn-success" v-on:click="postNewUser()">Luo käyttäjä</button>'+
                 '</div>'+
@@ -106,7 +159,6 @@ Vue.component('add-order',{
             '</div>'
 })
 
-
 Vue.component('rekry-button',{
     props:['userid'],
     methods:{
@@ -122,23 +174,10 @@ Vue.component('rekry-button',{
 
 Vue.component('rekry',{
     props:['users','length'],
-    created:function(){
-        this.loadUsers();
-    },
     methods:{
-        loadUsers:function(){
-            $.get('/artists/rekry')
-            .then(function(response){
-                $.each(response,function(key,object){
-                    object.hashId = '#' + object.id     //MAKE "#id" + "" for bootstrap
-                    if(object.activeUser){
-                        users.push(object)
-                    }
-                    return;
-                })
-                this.length = response.length;
-                this.users = response;
-            }.bind(this))
+        updateUsers:function(){
+            this.$parent.updateUsers();
+            this.$parent.updateRekry();
         }
     },
     template:
@@ -179,7 +218,6 @@ Vue.component('user',{
     created:function(){
         if(!this.user.userLevel) this.user.userLevel = 's';
         this.user.changePasswordLink = configUrl() + '/artists/send-password-change-link/' + this.user.id;
-        console.log(this.user)
     },
     methods:{
         postForm:function(){
@@ -280,7 +318,6 @@ Vue.component('remove-user',{
     },
     template:'<a class="btn btn-xs btn-danger" v-on:click="removeUser()">Hylkää</a>'
 });
-
 
 Vue.component('order',{
     props:['order'],
@@ -464,9 +501,9 @@ Vue.component('order',{
 })
 
 Vue.component('users',{
-    props:['users','user','rekry','length'],
+    props:['users','length'], //USER & REKRY REMOVED 
     beforeMount:function(){
-        this.updateUsers()
+        //this.updateUsers()
     },
     methods:{
         updateUsers:function(){
@@ -501,32 +538,6 @@ Vue.component('users',{
             '</div></div>'+
         '</div>'
 });
-
-// Vue.component('orders-dropdown',{
-//     props:['filter'],
-//     updated:function(){
-//     },
-//     methods:{
-//         toggleFilter:function(target){
-//             this.$parent.updateList(target)
-//         }
-//     },
-//     template:
-//     '<div class="dropdown">'+
-//         'Tilaukset  <button class="btn btn-default btn-primary btn-xs dropdown-toggle" type="button" data-toggle="dropdown">Näytä '+
-//         '<span class="caret"></span></button>'+
-//         '<ul class="dropdown-menu">'+
-//             '<li class="dropdown-header">Näytä:</li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 20% </button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
-//             '<li><button style="text-align:left" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
-//         '</ul>'+
-//     '</div>'
-// })
 
 Vue.component('orders-filter',{
     props:['filter'],

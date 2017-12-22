@@ -90,6 +90,7 @@ router.post('/new',(req,res,next) => {
   if(!req.body.firstName || !req.body.lastName || req.body.rekryMessage){
     throw new Error(500,'Missing fields')
   }
+  console.log(req.body)
   User 
     .query()
     .insert({
@@ -120,6 +121,7 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
   .patchAndFetchById(req.params.id,{activeUser:true})
   .then((cbUser) => {
     //TODO: Lähetä käyttäjälle salasanalinkki
+    if(!cbUser.email || cbUser.email.length < 1) return;
     return emailer.changePassword(cbUser.email,cbUser)
   })
   .then(postmarkResponse => {
