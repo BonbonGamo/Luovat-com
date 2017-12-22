@@ -27,6 +27,7 @@ class User extends Model{
         required: [],
         properties: {
             id: {type: 'integer'},
+            userLevel:{type: 'string'},
             userToken:{type:'string'},
             activeUser:{type:'boolean'},
             accessToken:{type:'string'},

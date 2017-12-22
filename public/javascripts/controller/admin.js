@@ -177,7 +177,9 @@ Vue.component('rekry',{
 Vue.component('user',{
     props:['user'],
     created:function(){
+        if(!this.user.userLevel) this.user.userLevel = 's';
         this.user.changePasswordLink = configUrl() + '/artists/send-password-change-link/' + this.user.id;
+        console.log(this.user)
     },
     methods:{
         postForm:function(){
@@ -192,7 +194,8 @@ Vue.component('user',{
                 zipCode:        this.user.zipCode,     
                 reelLink:       this.user.reelLink,    
                 reelPassword:   this.user.reelPassword,
-                activateUser:   this.user.activateUser
+                activateUser:   this.user.activeUser,
+                userLevel:      this.user.userLevel
             }
             $.post('/artists/edit',data) 
             .then(function(response){
@@ -223,6 +226,11 @@ Vue.component('user',{
                 '<label>Aktiivinen</label>'+
                 '<p class="pp-form-control m5"><span v-if="user.activeUser">Kyllä</span><span v-if="!user.activeUser">Ei</span></p>'+
                 '<br>'+
+                '<select v-bind:value="user.userLevel" v-model="user.userLevel" class="pp-form-control">'+
+                    '<option value="s">S</option>'+
+                    '<option value="m">M</option>'+
+                    '<option value="l">L</option>'+
+                '</select>'+
                 '<label>Sähköposti</label>'+
                 '<input class="pp-form-control m5" type="text" v-model="user.email"        >'+
                 '<label>Puhelin</label>'+

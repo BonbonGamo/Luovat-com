@@ -178,7 +178,7 @@ router.post('/edit', auth.admin,(req,res,next) =>{
   User
     .query()
     .patch({
-      activeUser:   o.activeUser ? o.activeUser : false,
+      activeUser:   o.activeUser,// ? o.activeUser : false,
       firstName:    o.firstName,
       lastName:     o.lastName,
       email:        o.email,
@@ -189,11 +189,12 @@ router.post('/edit', auth.admin,(req,res,next) =>{
       payment:      o.payment,
       reelLink:     o.reelLink,
       reelPassword: o.reelPassword,
-      employee:     o.employee
+      employee:     o.employee,
+      userLevel:    o.userLevel
     })
     .findById(o.id)
     .then( updated => {
-      console.log('User updated')
+      console.log('User updated',updated)
       res.sendStatus(200)
     })
     .catch(err => {
