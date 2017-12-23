@@ -22,6 +22,7 @@
               <ul style="padding:5px">
                   <li class="side-nav-list"><a data-toggle="pill" class="side-navigation-element darkblue montserrat fw400"  href="#users">Käyttäjät</i></a></li>
                   <li class="side-nav-list"><a data-toggle="pill" class=" side-navigation-element darkblue montserrat fw400"  href="#orders">Tilaukset</i></a></li>
+                  <li class="side-nav-list"><a data-toggle="pill" class=" side-navigation-element darkblue montserrat fw400"  href="#campaigns">Kampanjat</i></a></li>
                   <li class="side-nav-list"><a href="/artists" class="darkblue montserrat side-navigation-element fw400" >Oma sivu</i></a></li>
                   <li class="side-nav-list"><a href="/logout" class="darkblue montserrat side-navigation-element fw400" >Kirjaudu ulos</i></a></li>
               <ul>
@@ -37,6 +38,9 @@
             <div id="orders" class="tab-pane fade">
               <orders></orders>
             </div>
+            <div id="campaigns" class="tab-pane fade">
+              <campaigns-main></campaigns-main>
+            </div>
           </div>
         </div>
       </div>
@@ -44,5 +48,13 @@
     <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>
     <script type="text/javascript" src="/javascripts/vueComponents.js"></script>
     <script type="text/javascript" src="/javascripts/controller/admin.js"></script>
+    <script type="text/javascript" src="/javascripts/controller/orders.js"></script>
+    <script type="text/javascript" src="/javascripts/controller/users.js"></script>
+    <script type="text/javascript" src="/javascripts/controller/campaigns.js"></script>
+    <script>
+      new Vue({
+        el: '#admin'
+      })  
+    </script>
   </body>
 </html>
