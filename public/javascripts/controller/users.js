@@ -21,7 +21,7 @@ Vue.component('rekry',{
     },
     template:
     '<div class="panel panel-default">'+
-        '<div class="panel-heading">Rekry<span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}  <a class="btn btn-xs btn-success" v-on:click="loadUsers()">Päivitä</a></span></div><div class="panel-body  panel700">'+
+        '<div class="panel-heading">Rekry<span class="panel-heading-pull-right"><i class="fa fa-user-o" aria-hidden="true"></i> {{ length }}  <a class="btn btn-xs btn-success" v-on:click="loadUsers()">Päivitä</a></span></div><div class="panel-body  panel350">'+
             '<div class="panel-group" v-for="user in users">'+
                 '<div class="panel panel-primary">'+
                     '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="user.hashId">'+

@@ -5,9 +5,10 @@ const constants = require('../scripts/constants.js');
 const config = require('../knexfile.js');
 const env = constants.migration;  
 const knex = require('knex')(config[env]);
+
 Model.knex(knex);
 
-class Order extends Model{
+class Campaign extends Model{
     static get tableName() {
         return 'luovat_campaign';
     }
@@ -32,4 +33,4 @@ class Order extends Model{
     }
 
 }
-module.exports = Order;
+module.exports = Campaign;

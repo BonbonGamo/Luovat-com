@@ -11,8 +11,9 @@ Vue.component('campaigns-main',{
                     o.hashId = '#collapse' + o.id
                     o.collapseId = 'collapse' + o.id
                 })
+                console.log(campaigns)
                 this.campaigns = campaigns;
-            })
+            }.bind(this))
         }
     },
     template:
@@ -29,7 +30,7 @@ Vue.component('campaigns-main',{
 Vue.component('campaigns',{
     props:['campaigns'],
     template:
-    '<div class="panel">'+
+    '<div class="panel  panel700">'+
         '<div class="panel-heading">'+
             'Kampanjat'+
         '</div>'+
@@ -40,8 +41,36 @@ Vue.component('campaigns',{
                         '{{ campaign.campaignName }}'+
                     '</div>'+
                     '<div v-bind:id="campaign.collapseId" class="panel-body collapse">'+
-                        '<label for="" ></label>'+
-                        '<input id="" />'+
+                        '<div class="row">'+
+                            '<div class="col-xs-6">'+
+                                '<label>Nimi:</label>'+
+                                '<input type="text" class="form-control m10" v-model="campaign.campaignName"></input>'+
+                                '<label>Kampanjakoodi:</label>'+
+                                '<input type="text" class="form-control m10" v-model="campaign.campaignCode"></input>'+
+                                '<label>Alkaa:</label>'+
+                                '<input type="date" class="form-control m10" v-model="campaign.starts"></input>'+
+                                '<label>Loppuu:</label>'+
+                                '<input type="date" class="form-control m10" v-model="campaign.ends"></input>'+
+                                '<label>Ale %:</label>'+
+                                '<input type="number" min="0" max="100" class="form-control m10" v-model="campaign.percent"></input>'+
+                            '</div>'+
+                            '<div class="col-xs-6">'+
+                                '<div class="form-group m10">'+
+                                    '<label>Tekijä:</label>'+
+                                    '<p>{{ campaign.madeBy}}</p>'+
+                                '</div>'+
+                                '<div class="form-group m10">'+
+                                    '<label>Viimeksi muokannut:</label>'+
+                                    '<p>{{ campaign.editedBy}}</p>'+
+                                '</div>'+
+                                '<div class="form-group m10">'+
+                                    '<label>Aktiivinen:</label>'+
+                                    '<p>{{ campaign.isActive}}</p>'+
+                                '</div>'+
+                                '<button class="btn btn-success form-control m10">Tallenna muutokset</button>'+
+                                '<button class="btn btn-success form-control m10">Uusi kopioiden</button>'+
+                            '</div>'+
+                        '</div>'+
                     '</div>'+
                 '</div>'+
             '</div>'+
