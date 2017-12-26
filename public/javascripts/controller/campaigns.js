@@ -67,7 +67,7 @@ Vue.component('campaigns',{
                                     '<label>Aktiivinen:</label>'+
                                     '<p>{{ campaign.isActive}}</p>'+
                                 '</div>'+
-                                '<button class="btn btn-success form-control m10">Tallenna muutokset</button>'+
+                                '<button class="btn btn-success form-control m10">Tallenna</button>'+
                                 '<button class="btn btn-success form-control m10">Uusi kopioiden</button>'+
                             '</div>'+
                         '</div>'+
