@@ -1,7 +1,7 @@
 
 exports.up = function(knex, Promise) {
     return knex.schema.table('luovat_order', function (t) {
-        t.string('pendingFreedAt');
+        // t.string('pendingFreedAt');
   });
 };
 
