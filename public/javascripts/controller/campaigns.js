@@ -11,7 +11,6 @@ Vue.component('campaigns-main',{
                     o.hashId = '#collapse' + o.id
                     o.collapseId = 'collapse' + o.id
                 })
-                console.log(campaigns)
                 this.campaigns = campaigns;
             }.bind(this))
         }
@@ -22,13 +21,18 @@ Vue.component('campaigns-main',{
             '<campaigns v-bind:campaigns="campaigns" ></campaigns>'+
         '</div>'+
         '<div class="col-md-6">'+
-            '<new-campaign></new-campaign>'+
+            '<new-campaign percent="20"></new-campaign>'+
         '</div>'+
     '</div>'
 })
 
 Vue.component('campaigns',{
     props:['campaigns'],
+    methods:{
+        updateCampaigns:function(){
+            this.$parent.updateCampaigns();
+        }
+    },
     template:
     '<div class="panel  panel700">'+
         '<div class="panel-heading">'+
@@ -36,62 +40,81 @@ Vue.component('campaigns',{
         '</div>'+
         '<div class="panel-body">'+
             '<div class="panel-group">'+
-                '<div class="panel" v-for="campaign in campaigns">'+
-                    '<div class="panel-heading" data-toggle="collapse" v-bind:data-target="campaign.hashId">'+
-                        '{{ campaign.campaignName }}'+
-                    '</div>'+
-                    '<div v-bind:id="campaign.collapseId" class="panel-body collapse">'+
-                        '<div class="row">'+
-                            '<div class="col-xs-6">'+
-                                '<label>Nimi:</label>'+
-                                '<input type="text" class="form-control m10" v-model="campaign.campaignName"></input>'+
-                                '<label>Kampanjakoodi:</label>'+
-                                '<input type="text" class="form-control m10" v-model="campaign.campaignCode"></input>'+
-                                '<label>Alkaa:</label>'+
-                                '<input type="date" class="form-control m10" v-model="campaign.starts"></input>'+
-                                '<label>Loppuu:</label>'+
-                                '<input type="date" class="form-control m10" v-model="campaign.ends"></input>'+
-                                '<label>Ale %:</label>'+
-                                '<input type="number" min="0" max="100" class="form-control m10" v-model="campaign.percent"></input>'+
-                            '</div>'+
-                            '<div class="col-xs-6">'+
-                                '<div class="form-group m10">'+
-                                    '<label>Tekijä:</label>'+
-                                    '<p>{{ campaign.madeBy}}</p>'+
-                                '</div>'+
-                                '<div class="form-group m10">'+
-                                    '<label>Viimeksi muokannut:</label>'+
-                                    '<p>{{ campaign.editedBy}}</p>'+
-                                '</div>'+
-                                '<div class="form-group m10">'+
-                                    '<label>Aktiivinen:</label>'+
-                                    '<p>{{ campaign.isActive}}</p>'+
-                                '</div>'+
-                                '<button class="btn btn-success form-control m10">Tallenna</button>'+
-                                '<button class="btn btn-success form-control m10">Uusi kopioiden</button>'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>'+
-                '</div>'+
+                '<campaign v-for="campaign in campaigns" v-bind:campaign="campaign"></campaign>'+
             '</div>'+
         '</div>'+
     '</div>'
 })
 
-Vue.component('new-campaign',{
+Vue.component('campaign',{
     props:['campaign'],
-    created:function(){
-        this.campaign = {
-            campaignName:'',
-            campaignCode:'',
-            starts:'',
-            ends:'',
-            percent:20
+    methods:{
+        postEdit:function(){
+            $.post('/campaigns/edit',this.campaign)
+            .then(function(response){
+                this.$parent.updateCampaigns();
+                alert('OK')
+            })
+        },
+        activate:function(){
+            $.post('/campaigns/toggle-active/' + this.campaign.id + '/' + this.campaign.isActive)
+            .then(function(response){
+                this.$parent.updateCampaigns();
+                alert('OK')
+            })
         }
     },
+    template:
+    '<div class="panel">'+
+        '<div class="panel-heading" data-toggle="collapse" v-bind:data-target="campaign.hashId">'+
+            '{{ campaign.campaignName }}'+
+        '</div>'+
+        '<div v-bind:id="campaign.collapseId" class="panel-body collapse">'+
+            '<div class="row">'+
+                '<div class="col-xs-6">'+
+                    '<label>Nimi:</label>'+
+                    '<input type="text" class="form-control m10" v-model="campaign.campaignName"></input>'+
+                    '<label>Kampanjakoodi:</label>'+
+                    '<input type="text" class="form-control m10" v-model="campaign.campaignCode"></input>'+
+                    '<label>Alkaa:</label>'+
+                    '<input type="date" id="startId" class="form-control m10" v-model="campaign.starts"></input>'+
+                    '<label>Loppuu:</label>'+
+                    '<input type="date" class="form-control m10" v-model="campaign.ends"></input>'+
+                    '<label>Ale %:</label>'+
+                    '<input type="number" min="0" max="100" class="form-control m10" v-model="campaign.percent"></input>'+
+                '</div>'+
+                '<div class="col-xs-6">'+
+                    '<div class="form-group m10">'+
+                        '<label>Tekijä:</label>'+
+                        '<p>{{ campaign.madeBy}}</p>'+
+                    '</div>'+
+                    '<div class="form-group m10">'+
+                        '<label>Viimeksi muokannut:</label>'+
+                        '<p>{{ campaign.editedBy}}</p>'+
+                    '</div>'+
+                    '<div class="form-group m10">'+
+                        '<label>Valinnat:</label>'+
+                        '<button class="btn btn-xs btn-success m5" style="min-width:90%" v-on:click="activate()"><span v-if="campaign.isActive">Poista käytöstä</span><span v-if="!campaign.isActive">Muuta aktiiviseksi</span></button>'+
+                        '<button class="btn btn-xs btn-success m5" style="min-width:90%" v-on:click="postEdit()" >Tallenna</button>'+
+                        '<button class="btn btn-xs btn-success m5" style="min-width:90%" disabled="true">Uusi kopioiden</button>'+
+                    '</div>'+
+                '</div>'+
+            '</div>'+
+        '</div>'+
+    '</div>',
+})
+
+Vue.component('new-campaign',{
+    props:['campaignName','campaignCode','starts','ends','percent'],
     methods:{
         newCampaign:function(){
-            $.post('/campaigns/new',this.campaign)
+            $.post('/campaigns/new',{
+                campaignName:this.campaignName,
+                campaignCode:this.campaignCode,
+                start:this.starts,
+                ends:this.ends,
+                percent:this.percent
+            })
             .then(function(response){
                 this.$parent.updateCampaigns();
             })
@@ -104,16 +127,22 @@ Vue.component('new-campaign',{
         '</div>'+
         '<div class="panel-body">'+
             '<div class="form-group">'+
+
                 '<label for="nm">Nimi:</label>'+
-                '<input class="form-control" type="text" id="nm" v-model="campaign.campaignName" placeholder="Nimi"/>'+
+                '<input class="form-control" type="text" id="nm" v-model="campaignName" placeholder="Nimi"/>'+
+
                 '<label for="cd">Koodi:</label>'+
-                '<input class="form-control" type="text" id="cd" v-model="campaign.campaignCode" placeholder="Kampanjakoodi"/>'+
+                '<input class="form-control" type="text" id="cd" v-model="campaignCode" placeholder="Kampanjakoodi"/>'+
+
                 '<label for="str">Alkaa:</label>'+
-                '<input class="form-control" type="date" id="str" v-model="campaign.starts" placeholder="Alkaa"/>'+
+                '<input class="form-control" type="date" id="str" v-model="starts" placeholder="Alkaa"/>'+
+
                 '<label for="end">Loppuu:</label>'+
-                '<input class="form-control" type="date" id="end" v-model="campaign.ends" placeholder="Loppuu"/>'+
+                '<input class="form-control" type="date" id="end"  max="document.getElmentById('+"'str'"+')" v-model="ends" placeholder="Loppuu"/>'+
+
                 '<label for="per">Ale %:</label>'+
-                '<input class="form-control" type="number" min="0" max="100"  id="per" v-model="campaign.percent" placeholder="Alkaa"/>'+
+                '<input class="form-control" type="number" min="0" max="100"  id="per" v-model="percent" placeholder=""/>'+
+
                 '<br>'+
                 '<button class="btn btn-success form-control" v-on:click="newCampaign()">Lisää kampanja</button>'+
             '</div>'+

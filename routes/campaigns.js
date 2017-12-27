@@ -49,20 +49,38 @@ router.post('/new', auth.admin, (req,res,next) => {
     })
 })
 
-router.post('/edit',auth.admin, (req,res,next) => {
+router.post('/edit', auth.admin, (req,res,next) => {
+    console.log(req.body,'USER: ', req.session.user.firstName + ' ' + req.session.user.lastName,)
+
     Campaign
     .query()
-    .patchAndFetchById(req.body.id,{
+    .patchAndFetchById(parseInt(req.body.id),{
         campaignName:req.body.campaignName,
         campaignCode:req.body.campaignCode,
-        isActive:req.body.isActive,
         starts:req.body.starts,
         ends:req.body.ends,
-        editedBy:req.sessions.user.firstName + ' ' +req.session.user.lastName,
-        condition: req.body.condition || '',
-        percent: req.body.percent
+        editedBy:req.session.user.firstName + ' ' + req.session.user.lastName,
+        percent: parseInt(req.body.percent)
     })
     .then(cbCampaign => {
+        res.send(200)
+    })
+    .catch(err => {
+        console.log(err)
+        res.send(500)
+    })
+})
+
+router.post('/toggle-active/:id/:active', auth.admin, (req,res,next) => {
+    let active = req.params.active == 'true' ? false : true;
+    console.log(active)
+    Campaign
+    .query()
+    .patchAndFetchById(req.params.id,{
+        isActive:active
+    })
+    .then(cbCampaign => {
+        console.log(cbCampaign)
         res.send(200)
     })
     .catch(err => {

@@ -12,32 +12,55 @@ const constants = require('./constants.js')
 const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
 const Order_User  = require('../models/order_user.js')
+const Campaign    = require('../models/campaign.js')
 
 module.exports = {
     updateOrderTotal: function(id){
         console.log('Update order total')
-        var orderId = id;
+        let order;
         return Order
         .query()
-        .where('id',orderId)
+        .where('id',id)
         .first()
         .then(function(cbOrder){
+            order = cbOrder
+            if(!order.campaignCode) order.campaignCode = '';
+
+
+            //LISÄÄ TILAUKSELLE KAMPANJAKOODI KENTTÄ
+            return Campaign
+            .query()
+            .where('campaignCode',order.campaignCode)
+            .first()
+        })
+        .then(cbCampaign => {
+            let discountFactor = 1;
+
+            if(cbCampaign){
+                discountFactor = (100 - cbCampaign.percent) / 100;
+            }
+            console.log('DISCOUNT: ', discountFactor)
+
             var sum = 0;
             var rows = {}
-            if(!cbOrder.eventSize) throw new err('Package not selected');
-            if(cbOrder.eventSize == 's') rows.package = 79000;
-            if(cbOrder.eventSize == 'm') rows.package = 99000;
-            if(cbOrder.eventSize == 'l') rows.package = 139000;
-            if(cbOrder.extraHours) rows.extraHours = cbOrder.extraHours * 5000;
-            if(cbOrder.additional1) rows.add1 = 5000;
-            if(cbOrder.additional2) rows.add2 = 10000;
-            if(cbOrder.additional3) rows.add3 = cbOrder.voiceOverPrice ? cbOrder.voiceOverPrice : 10000;
+            if(!order.eventSize) throw new err('Package not selected');
+            if(order.eventSize == 's') rows.package = 79000;
+            if(order.eventSize == 'm') rows.package = 99000;
+            if(order.eventSize == 'l') rows.package = 139000;
+            if(order.extraHours) rows.extraHours = order.extraHours * 5000;
+            if(order.additional1) rows.add1 = 5000;
+            if(order.additional2) rows.add2 = 10000;
+            if(order.additional3) rows.add3 = order.voiceOverPrice ? order.voiceOverPrice : 10000;
+
             _.forEach(rows,function(row){
                 sum = sum + row;
             })
-            sum = sum * ((100 - cbOrder.discountPercent)/100);
 
-            console.log(sum)
+            console.log('Summa: ',sum)
+
+            sum = sum * discountFactor;
+
+            console.log('Alennus: ',discountFactor,'Alennettu hinta: ',sum)
 
             return Order
             .query()
