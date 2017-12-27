@@ -26,6 +26,7 @@ class Order extends Model{
         required: [],
         properties: {
             id: {type: 'integer'},
+            campaignCode:{type:'string'},
             clientName: {type: 'string'},
             clientCompany: {type:'string'},
             clientEmail: {type: 'string'},

@@ -26,7 +26,7 @@ module.exports = {
             order = cbOrder
             if(!order.campaignCode) order.campaignCode = '';
 
-
+            console.log('TILAUS: ',cbOrder)
             //LISÄÄ TILAUKSELLE KAMPANJAKOODI KENTTÄ
             return Campaign
             .query()
@@ -34,15 +34,23 @@ module.exports = {
             .first()
         })
         .then(cbCampaign => {
+            console.log('KAMPANJA: ',cbCampaign)
+
+            let data = {};
             let discountFactor = 1;
+            let sum = 0;
+            let rows = {}
+
+            data.discountPercent = order.discountPercent;
 
             if(cbCampaign){
-                discountFactor = (100 - cbCampaign.percent) / 100;
+                data.discountPercent = cbCampaign.percent;
             }
+
+            discountFactor = (100 - data.discountPercent) / 100;
+
             console.log('DISCOUNT: ', discountFactor)
 
-            var sum = 0;
-            var rows = {}
             if(!order.eventSize) throw new err('Package not selected');
             if(order.eventSize == 's') rows.package = 79000;
             if(order.eventSize == 'm') rows.package = 99000;
@@ -58,13 +66,13 @@ module.exports = {
 
             console.log('Summa: ',sum)
 
-            sum = sum * discountFactor;
+            data.total = sum * discountFactor;
 
-            console.log('Alennus: ',discountFactor,'Alennettu hinta: ',sum)
+            console.log('Alennus: ',discountFactor,'Alennettu hinta: ',data.total)
 
             return Order
             .query()
-            .patchAndFetchById(cbOrder.id, {total:sum})
+            .patchAndFetchById(order.id, data)
         })
         
     },

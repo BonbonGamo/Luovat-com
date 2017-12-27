@@ -32,15 +32,15 @@ Vue.component('rekry',{
                             '<div>'+
                                 '<p type="hidden" name="id" v-bind:value="user.id"                  ></p>'+
                                 '<label>Etunimi</label>'+
-                                '<p class="pp-form-control m5" > {{ user.firstName }}</p>'+
+                                '<p class="form-control m5" > {{ user.firstName }}</p>'+
                                 '<label>Sukunimi</label>'+
-                                '<p class="pp-form-control m5" > {{ user.lastName  }}</p>'+
+                                '<p class="form-control m5" > {{ user.lastName  }}</p>'+
                                 '<label>Sähköposti</label>'+
-                                '<p class="pp-form-control m5" > {{ user.email     }}</p>'+
+                                '<p class="form-control m5" > {{ user.email     }}</p>'+
                                 '<label>Puhelin</label>'+
-                                '<p class="pp-form-control m5" > {{ user.phone     }}</p>'+
+                                '<p class="form-control m5" > {{ user.phone     }}</p>'+
                                 '<label>Viesti</label>'+
-                                '<p class="pp-form-control m5" > {{ user.rekryMessage     }}</p>'+
+                                '<p class="form-control m5" > {{ user.rekryMessage     }}</p>'+
                                 '<br>'+
                                 '<rekry-button v-bind:userid="user.id"></rekry-button>'+
                             '</div>'+
@@ -97,36 +97,36 @@ Vue.component('user',{
             '<div>'+
                 '<input type="hidden" name="id" v-bind:value="user.id"                  >'+
                 '<label>Etunimi</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.firstName"    >'+
+                '<input class="form-control m5" type="text" v-model="user.firstName"    >'+
                 '<label>Sukunimi</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.lastName"     >'+
+                '<input class="form-control m5" type="text" v-model="user.lastName"     >'+
                 '<label>Aktiivinen</label>'+
-                '<p class="pp-form-control m5"><span v-if="user.activeUser">Kyllä</span><span v-if="!user.activeUser">Ei</span></p>'+
+                '<p class="form-control m5"><span v-if="user.activeUser">Kyllä</span><span v-if="!user.activeUser">Ei</span></p>'+
                 '<br>'+
-                '<select v-bind:value="user.userLevel" v-model="user.userLevel" class="pp-form-control">'+
+                '<select v-bind:value="user.userLevel" v-model="user.userLevel" class="form-control">'+
                     '<option value="s">S</option>'+
                     '<option value="m">M</option>'+
                     '<option value="l">L</option>'+
                 '</select>'+
                 '<label>Sähköposti</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.email"        >'+
+                '<input class="form-control m5" type="text" v-model="user.email"        >'+
                 '<label>Puhelin</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.phone"        >'+
+                '<input class="form-control m5" type="text" v-model="user.phone"        >'+
                 '<br>'+
                 '<label>Katuosoite</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.street"       >'+
+                '<input class="form-control m5" type="text" v-model="user.street"       >'+
                 '<label>Postitoimipaikka</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.city"         >'+
+                '<input class="form-control m5" type="text" v-model="user.city"         >'+
                 '<label>Postinumero</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.zipCode"      >'+
+                '<input class="form-control m5" type="text" v-model="user.zipCode"      >'+
                 '<br>'+
                 '<label>Maksutapa</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.payment"     >'+
+                '<input class="form-control m5" type="text" v-model="user.payment"     >'+
                 '<br>'+
                 '<label>Esittelyvideon Vimeo osoite</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.reelLink"     >'+
+                '<input class="form-control m5" type="text" v-model="user.reelLink"     >'+
                 '<label>Esittelyvideon salasana</label>'+
-                '<input class="pp-form-control m5" type="text" v-model="user.reelPassword" >'+
+                '<input class="form-control m5" type="text" v-model="user.reelPassword" >'+
                 '<br>'+
                 '<button class="btn btn-success m5 w100" v-on:click="postForm()">Tallenna</button>'+
                 '<button v-on:click="requestPass()" class="btn btn-primary m5 w100" type="text">Lähetä salasana <span class="montsrerrat fw100" style="font-size:12px" v-if="user.passwordSent">Lähetetty</span></button>'+

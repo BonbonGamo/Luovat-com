@@ -156,6 +156,7 @@ module.exports = {
                 "order_air"         : order.additional2 ? 'Kyllä' : 'Ei',
                 "order_voice"       : order.additional3 ? 'Kyllä' : 'Ei',
                 "order_price"       : (order.total)/100.00,
+                "order_discount"    : order.discountPercent || 0,
                 "order_vat"         : (order.total + order.total * 24 / 100)/100.00
         })
         return new Promise((resolve,reject) => {

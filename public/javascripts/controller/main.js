@@ -47,7 +47,8 @@ Vue.component('order-form',{
                     size:this.formData.size,
                     add1:this.formData.add1,
                     add2:this.formData.add2,
-                    add3:this.formData.add3
+                    add3:this.formData.add3,
+                    campaignCode:this.formData.campaignCode
                 },function(response){
                     this.formData.name = "";
                     this.formData.company = "";
@@ -60,6 +61,7 @@ Vue.component('order-form',{
                     this.formData.add1 = "";
                     this.formData.add2 = "";
                     this.formData.add3 = "";
+                    this.formData.campaignCode = "";
                     this.tip = 'Olemme nyt vastaanottaneet tilauksen ja voitte poistua sivulta. Jos sinulle kuitenkin jäi vielä kysyttävää voit olla yhteydessä meihin osoitteessa info@luovat.com'
                     $('.hide-order-form').hide()
                     $('#ready').fadeIn()
@@ -151,6 +153,7 @@ Vue.component('order-form',{
                 '<input type="checkbox" id="a2" v-model="formData.add2"><br>'+
                 '<label class="white m10" for="a3" >  Voice over +100 - 300€ </label>'+
                 '<input type="checkbox" id="a3" v-model="formData.add3"><br><br>'+
+                '<input class="form-control m20 order-form-input-area darkblue" placeholder="Kampanjakoodi" type="text" v-model="formData.campaignCode"></input>'+ 
                 '<center>'+
                     '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="postOrder()">Lähetä tilaus</button>'+
                 '</center>'+

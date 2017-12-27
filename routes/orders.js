@@ -172,6 +172,7 @@ router.post('/admin-edit-order',auth.admin,function(req,res,next){
     eventDate:        req.body.eventDate,
     eventSize:        req.body.eventSize,
     eventDescription: req.body.eventDescription,
+    campaignCode:     req.body.campaignCode,
     extraHours:       parseInt(req.body.extraHours),
     additional1:      req.body.additional1 == 'true' ? true : false,
     additional2:      req.body.additional2 == 'true' ? true : false,
@@ -354,6 +355,8 @@ router.post('/new',(req,res,next) => {
   let add2 = (req.body.add2 == 'true')
   let add3 = (req.body.add3 == 'true')
 
+  console.log('campaignCode: '+req.body.campaignCode )
+
   Order
     .query()
     .insert({
@@ -371,6 +374,7 @@ router.post('/new',(req,res,next) => {
       eagerMax:3,
       ready:false,
       discountPercent:0,
+      campaignCode:req.body.campaignCode || '',
       additional1:add1,
       additional2:add2,
       additional3:add3,

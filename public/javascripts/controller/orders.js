@@ -98,6 +98,7 @@ Vue.component('order',{
         postForm:function(){
             var data = {
                 id:               this.order.id,
+                campaignCode:     this.order.campaignCode,
                 clientName:       this.order.clientName,
                 clientCompany:    this.order.clientCompany,
                 clientEmail:      this.order.clientEmail,
@@ -233,6 +234,11 @@ Vue.component('order',{
                 '<button id="additional3" class="btn btn-checkbox" style="float:right" v-on:click="boolean('+"'additional3'"+')">'+
                     '<i v-if="order.additional3" class="fa fa-check" aria-hidden="true"></i>'+
                 '</button><br>'+
+                '<br>'+
+                '<label for="campaignCode">Kampanjakoodi</label>'+
+                '<input class="form-control" id="campaignCode" placeholder="Kampanjakoodi" v-model="order.campaignCode"/>'+
+                '<label for="discountPercent">Alennus</label>'+
+                '<p id="discountPercent">{{ order.discountPercent }} %</p>'+
                 '<br>'+
                 '<p style="width:100%">Lisätyöt: <strong><span style="float:right">{{ order.extraHours || 0 }} tuntia</span></strong></p>'+
                 '<p style="width:100%">Tilauksen arvo <strong><span style="float:right">{{ order.showTotal || 0 }} €</span></strong></p>'+
