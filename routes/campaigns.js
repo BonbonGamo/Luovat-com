@@ -26,6 +26,21 @@ router.get('/', auth.admin, (req,res,next) => {
     })
 })
 
+router.get('/check/:code',(req,res,next) => {
+    Campaign
+    .query()
+    .where('campaignCode',req.params.code)
+    .first()
+    .then( cbCampaign => {
+        if(!cbCampaign) throw new Error ('Not found')
+        res.send(cbCampaign.percent)
+    })
+    .catch(err => {
+        res.send(500)
+    })
+
+})
+
 router.post('/new', auth.admin, (req,res,next) => {
     Campaign
     .query()

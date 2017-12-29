@@ -5,7 +5,7 @@ Vue.component('signBtn',{
             var confirmPickup = confirm('Vahvista, että sitoudut ottamaan työn vastaan.')
             if(confirmPickup){
                 $.post('/orders/pickup',{orderId:this.order.id}).then(function(response){
-                    alert(response)
+                    toastr.success(response)
                     this.$parent.updateOrders();
                 }.bind(this))
             }
@@ -29,10 +29,10 @@ Vue.component('edit-artist',{
         },
         postEdit:function(){
             $.post('/artists/artist-self-edit',this.user).then(function(userEdited){
-                alert('Tiedot muutettu')
+                toastr.success('Tiedot muutettu')
             }.bind(this))
             .fail(function(response){
-                alert('Jotain meni pieleen')
+                toastr.warning('Jotain meni pieleen')
             })
         }
     },
@@ -169,16 +169,16 @@ Vue.component('edit-order',({
             }).then(function(response){
                 console.log(response)
                 if(response == 'OK'){
-                    alert('Tilaus muutettu')
+                    toastr.success('Tilaus muutettu')
                     return;
                 }
-                alert('Virhe tapahtui')
+                toastr.warning('Virhe tapahtui')
             })
         },
         postReady:function(){
             $.post('/orders/artist-order-ready/'+this.order.id)
             .then(function(response){
-                alert('Tilaus lähetetty laskutettavaksi')
+                toastr.success('Tilaus lähetetty laskutettavaksi')
             })
         }
     },

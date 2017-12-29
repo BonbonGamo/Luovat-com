@@ -12,6 +12,7 @@ const moment  = require('moment');
 const User        = require('../models/user.js')
 const Order       = require('../models/order.js')
 const Order_User  = require('../models/order_user.js')
+const Campaign    = require('../models/campaign.js')
 
 //SEND ORDER LISTING TO ADMIN PAGE
 router.get('/',auth.admin, function(req, res, next) {
@@ -354,10 +355,19 @@ router.post('/new',(req,res,next) => {
   let add1 = (req.body.add1 == 'true')
   let add2 = (req.body.add2 == 'true')
   let add3 = (req.body.add3 == 'true')
+  let campaignCode;
 
-  console.log('campaignCode: '+req.body.campaignCode )
-
-  Order
+  Campaign
+  .query()
+  .where('campaignCode',req.body.campaignCode || '')
+  .first()
+  .then(cbCampaign => {
+    console.log('FOUND CAMPAIGN:',cbCampaign,' SEARCH VALUE: ',req.body.campaignCode)
+    campaignCode = req.body.campaignCode;
+    if(!cbCampaign) campaignCode = '';
+    console.log('USING: ',campaignCode)
+    
+    return Order
     .query()
     .insert({
       clientName:req.body.name,
@@ -374,7 +384,7 @@ router.post('/new',(req,res,next) => {
       eagerMax:3,
       ready:false,
       discountPercent:0,
-      campaignCode:req.body.campaignCode || '',
+      campaignCode:campaignCode || '',
       additional1:add1,
       additional2:add2,
       additional3:add3,
@@ -383,21 +393,22 @@ router.post('/new',(req,res,next) => {
       invoice100:false,
       closed:false,
     })
-    .then(newOrder => {
-      return helper.updateOrderTotal(newOrder.id)
-    })
-    .then(cbOrderWithRevenue => {
-      
-      return emailer.orderConfirmation(cbOrderWithRevenue)
-    })
-    .then(postmarkResponse => {
-      console.log(postmarkResponse)
-      res.sendStatus(200)
-    })
-    .catch(err => {
-      console.log(err)
-      res.sendStatus(500)
-    })
+  })
+  .then(newOrder => {
+    return helper.updateOrderTotal(newOrder.id)
+  })
+  .then(cbOrderWithRevenue => {
+    
+    return emailer.orderConfirmation(cbOrderWithRevenue)
+  })
+  .then(postmarkResponse => {
+    console.log(postmarkResponse)
+    res.sendStatus(200)
+  })
+  .catch(err => {
+    console.log(err)
+    res.sendStatus(500)
+  })
 })
 
 router.post('/free-pending/:id',auth.admin,(req,res,next) => {

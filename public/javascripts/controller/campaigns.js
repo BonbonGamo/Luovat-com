@@ -53,14 +53,14 @@ Vue.component('campaign',{
             $.post('/campaigns/edit',this.campaign)
             .then(function(response){
                 this.$parent.updateCampaigns();
-                alert('OK')
+                toastr.success('Tilaus päivitetty')
             })
         },
         activate:function(){
             $.post('/campaigns/toggle-active/' + this.campaign.id + '/' + this.campaign.isActive)
             .then(function(response){
                 this.$parent.updateCampaigns();
-                alert('OK')
+                toastr.success('Tilaus aktivoitu')
             })
         }
     },

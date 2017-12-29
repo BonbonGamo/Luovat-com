@@ -26,7 +26,7 @@ Vue.component('add-order',{
                     this.add1 = ""
                     this.add2 = ""
                     this.add3 = ""
-                    alert('Tilaus lisätty')
+                    toastr.success('Tilaus lisätty')
                     this.$parent.updateOrders();
                 }.bind(this))
             }
@@ -141,45 +141,46 @@ Vue.component('order',{
         freePending:function(){
             $.post('/orders/free-pending/'+this.order.id)
             .then(function(){
-                alert('Tilaus vapautettu')
+                toastr.success('Tilaus vapautettu')
             })
             this.$parent.updateOrders() 
         },
         didInvoice20:function(){
             if(!this.order.invoice20Number){
-                alert('Anna laskulle numero')
+                toastr.warning('Anna laskulle numero')
                 return;
             }
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
                  $.post('/orders/invoice20/'+this.order.id+'/'+this.order.invoice20Number).then(function(response){
-                    alert('Laskutuksen status muutettu')
+                    toastr.success('Laskutuksen status muutettu')
                 })
             }else{
-                alert('Laskutuksen statusta ei muutettu')
+                toastr.info('Laskutuksen statusta ei muutettu')
             }
             this.$parent.updateOrders();
         },
         didInvoice100:function(){
             if(!this.order.invoice100Number){
-                alert('Anna laskulle numero')
+                toastr.warning('Anna laskulle numero')
                 return;
             }
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
                 $.post('/orders/invoice100/'+this.order.id+'/'+this.order.invoice100Number).then(function(response){
-                    alert('Laskutuksen status muutettu')
+                    toastr.success('Laskutuksen status muutettu')
                 })
             }else{
-                alert('Laskutuksen statusta ei muutettu')
+                toastr.info('Laskutuksen statusta ei muutettu')
             }
             this.$parent.updateOrders();
         },
         closeOrder:function(){
             if(confirm('Varmista, että asiaks on maksanut koko tilauksen ja kuvaajalle on maksettu palkkio kokonaisuudessaan')){
-                $.post('/close-order/'+this.order.id,function(response){
- 
+                $.post('/close-order/'+this.order.id)
+                .then(function(response){
+                    toastr.success('Tilaus suljettu')
                 })
             }else{
-                alert('Tilausta ei suljettu')
+                toastr.warn('Tilausta ei suljettu')
             }
         },
         deleteOrder:function(){

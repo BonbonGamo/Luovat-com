@@ -76,14 +76,16 @@ Vue.component('user',{
             }
             $.post('/artists/edit',data) 
             .then(function(response){
+                console.log(response)
                 this.$parent.updateUsers()
+                toastr.success('Käyttäjä päivitetty')
             })
         },
         requestPass:function(){
             $.get(this.user.changePasswordLink)
             .then(function(response){
                 console.log(response)
-                alert('Salasana lähetetty')
+                toastr.success('Salasana lähetetty')
                 this.user.passwordSent = true;
             })
         },
@@ -210,7 +212,7 @@ Vue.component('add-user',{
         postNewUser:function(){
             if(this.firstName.length > 2 && this.lastName.length > 2){
                 $.post('/artists/new',{firstName:this.firstName,lastName:this.lastName,email:this.email},function(response){
-                    alert('Käyttäjä lisätty')
+                    toastr.success('Käyttäjä lisätty')
                     this.$parent.updateRekry();
                 }.bind(this))
             }

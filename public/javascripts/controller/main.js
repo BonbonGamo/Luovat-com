@@ -67,6 +67,7 @@ Vue.component('order-form',{
                     $('#ready').fadeIn()
                 }.bind(this))
             }
+            toastr.success('Olemme nyt vastaanottaneet tilauksen ja voitte poistua sivulta. Jos sinulle kuitenkin jäi vielä kysyttävää voit olla yhteydessä meihin osoitteessa info@luovat.com')
         },
         newOrder:function(){
             this.tip = ''
@@ -269,12 +270,12 @@ Vue.component('rekry-form',{
             .then(function(response){
                 console.log(response)
                 this.resetForm()
-                alert('Hakemus vastaanotettu')
+                toastr.success('Kiitos! Olemme vastaanottaneet hakemuksenne.')
                 $('#rekryModal').modal('hide')
             }.bind(this))
             .fail(function(err){
                 console.log('ERR',err)
-                if(err.responseJSON.detail.indexOf('already exists') != -1){
+                if(err.responseJSON && err.responseJSON.detail.indexOf('already exists') != -1){
                     this.errMsgEmail.show = false;
                     this.errMsgEmail.text = 'Valitettavasti sähköposti on jo käytössä. Käytä toista sähköpostiosoitetta'
                     this.errMsgEmail.show = true;
