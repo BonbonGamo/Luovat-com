@@ -1,3 +1,4 @@
+
 Vue.component('add-order',{
     props:['name','email','message','phone','size','add1','add2','add3'],
     created:function(){
@@ -281,18 +282,18 @@ Vue.component('orders-filter',{
     template:
     '<div id="filterOptions" class="collapse well bg-blue white">'+
         '<div class="row">'+
-            '<div class="col-xs-6">'+
-                '<ul>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'newOrder'+"'"+')"    ><i v-if="this.filter.newOrder" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pickups'+"'"+')"     ><i v-if="this.filter.pickups" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'production'+"'"+')"  ><i v-if="this.filter.production" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 20%</button></li>'+
+            '<div class="col-xs-6" style="padding-left:5px;">'+
+                '<ul style="padding-left:2px">'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'pending'+"'"+')"    ><i v-if="this.filter.pending" class="fa fa-check" aria-hidden="true"></i> Uudet tilaukset</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'freed'+"'"+')"     ><i v-if="this.filter.freed" class="fa fa-check" aria-hidden="true"></i> Vapautettu kuvaajille</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'inProduction'+"'"+')"  ><i v-if="this.filter.inProduction" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 20%</button></li>'+
                     '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice20'+"'"+')"   ><i v-if="this.filter.invoice20" class="fa fa-check" aria-hidden="true"></i> Tuotannossa</button></li>'+
                 '</ul>'+
             '</div>'+
-            '<div class="col-xs-6">'+
-                '<ul>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'ready'+"'"+')"   ><i v-if="this.filter.ready" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa</button></li>'+
-                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"  ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
+            '<div class="col-xs-6" style="padding-left:5px;">'+
+                '<ul style="padding-left:2px">'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoice100'+"'"+')"   ><i v-if="this.filter.invoice100" class="fa fa-check" aria-hidden="true"></i> Saa laskuttaa 100%</button></li>'+
+                    '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'invoiceMade'+"'"+')"  ><i v-if="this.filter.invoiceMade" class="fa fa-check" aria-hidden="true"></i> 100% laskutettu</button></li>'+
                     '<li style="padding:0px;"><button style="text-align:left;margin:0px" class="btn btn-link form-control" v-on:click="toggleFilter('+"'"+'closed'+"'"+')"      ><i v-if="this.filter.closed" class="fa fa-check" aria-hidden="true"></i> Suljettu</button></li>'+
                 '</ul>'+
             '</div>'+
@@ -304,47 +305,75 @@ Vue.component('orders',{
     props:['orders','order','length','filter','filteredList','newOrders'],
     methods:{
         updateOrders:function(){
-            var newOrders = 0;
-            $.get('/orders').then(function(response){
-                $.each(response,function(key,object){
-                    if(object.pending){
-                        object.status = 'Uusi tilaus'
-                        object.statusClass  = 'fa fa-circle pull-right new-order'
-                        newOrders++;
-                    };
-                    if(!object.pending){
-                        object.status = 'Vapaututettu kuvaajille'
-                        object.statusClass  = 'fa fa-circle pull-right free-order'
-                    };
-                    if(object.artistSelection != null) {
-                        object.status = 'Saa laskuttaa 20%'
-                        object.statusClass = 'fa fa-circle pull-right prod-order'
-                    };
-                    if(object.invoice20 && !object.ready) {
-                        object.status = 'Tuotannossa'
-                        object.statusClass = 'fa fa-circle pull-right i20-order'
-                    };
-                    if(object.ready && object.invoice20){
-                        object.status = 'Saa laskuttaa'
-                        object.statusClass = 'fa fa-circle pull-right i100-order'
-                    };
-                    if(object.invoice100 && !object.closed){
-                        object.status = 'Laskutettu'
-                        object.statusClass = 'fa fa-circle pull-right i100-order'
-                    };
-                    if(object.closed){
-                        object.status = 'Suljettu'
-                        object.statusClass = 'fa fa-circle pull-right closed-order'
-                    };
-                    object.hashId = '#order' + object.id;    //MAKE "#id" + "" for bootstrap
-                    object.orderId = 'order' + object.id;
-                    object.pickArtistLink = configUrl() + '/orders/artist-options/'+ object.id + '/' + object.clientToken;
-                    object.showTotal = parseInt(object.total) / 100;
-                    object.showComission = object.showTotal * 0.3;
-                    object.showRevenue = object.revenue / 100;
+            var  newOrders = 0;
+            var orders;
+
+            $.get('/orders')
+            .then(function(orders){
+                //LATAA TILAUKSET
+                this.length = orders.length
+                var sorted = {
+                    pending     :[],
+                    freed       :[],
+                    invoice20   :[],
+                    inProduction:[],
+                    invoice100  :[],
+                    invoiceMade :[],
+                    closed      :[]    
+                }
+                console.log('ORDERS:',orders.length)
+                $.each(orders,function(k,o){
+                    if(o.pending) newOrders++
+                    o.hashId = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
+                    o.orderId = 'order' + o.id;
+                    o.pickArtistLink = configUrl() + '/orders/artist-options/'+ o.id + '/' + o.clientToken;
+                    o.showTotal = parseInt(o.total) / 100;
+                    o.showComission = o.showTotal * 0.3;
+                    o.showRevenue = o.revenue / 100;
+
+                    if(o.closed){
+                        o.status = 'Suljettu'
+                        sorted.closed.push(o)
+                        return;
+                    }
+
+                    if(o.invoice100){
+                        o.status = 'Laskutettu'
+                        sorted.invoiceMade.push(o)
+                        return
+                    }
+                    
+                    if(o.ready){
+                        o.status = 'Laskuta 100%'
+                        sorted.invoice100.push(o)
+                        return
+                    }
+                    
+                    if(o.invoice20){
+                        
+                        o.status = 'Tuotannossa'
+                        sorted.inProduction.push(o)
+                        return
+                    }
+                    
+                    if(o.artistSelection != null){
+                        o.status = 'Laskuta 20%'
+                        sorted.invoice20.push(o)
+                        return
+                    }
+                    
+                    if(!o.pending){
+                        o.status = 'Vapautettu kuvaajille'
+                        sorted.freed.push(o)
+                        return
+                    }
+                    
+                    o.status = 'Uusi tilaus'
+                    sorted.pending.push(o)
+                    return
+
                 })
-                this.orders = response;
-                this.length = 0;
+                this.orders = sorted;
                 if(newOrders == 0){
                     this.newOrders = "Ei uusia";
                 }else if(newOrders == 1){
@@ -352,57 +381,144 @@ Vue.component('orders',{
                 }else{
                     this.newOrders = newOrders + " uutta";
                 }
-                if(this.orders && this.orders.length > 0) this.length = this.orders.length;
-                this.filterList()
+                this.showFiltered();
             }.bind(this))
         },
-        updateList:function(selection){
-            if(!this.filter[selection]){
-                this.filter[selection] = true;
+        updateList:function(target){
+            if(!this.filter[target]){
+                this.filter[target] = true;
             }else{
-                this.filter[selection] = false
+                this.filter[target] = false
             }
-            this.filterList()
+            console.log('SUODATIN: ',this.filter)
+            this.showFiltered();
         },
-        filterList:function(){
+        showFiltered:function(){
+            //NÄYTÄ TILAUKSET IKKUNASSA
             this.filteredList = [];
-            var f = this.filter
-            $.each(this.orders, function(key,object){
-                if(f.newOrder && object.pending && !object.closed){
-                    this.filteredList.push(object)
-                }
-                if(f.pickups && !object.pending && !object.closed && object.artistSelection == null){
-                    this.filteredList.push(object)
-                }
-                if(f.production && object.artistSelection != null  && !object.closed){
-                    this.filteredList.push(object)
-                }
-                if(f.invoice20 && object.invoice20 && !object.closed && !object.ready){
-                    this.filteredList.push(object)
-                }
-                if(f.ready && object.ready && !object.invoice100){
-                    this.filteredList.push(object)
-                }
-                if(f.invoice100 && object.invoice100 && !object.closed){
-                    this.filteredList.push(object)
-                }
-                if(f.closed && object.closed){
-                    this.filteredList.push(object)
+            var filteredList = [];
+            var targets = [
+                'pending',
+                'freed',
+                'production',
+                'invoice20',
+                'invoiceMade',
+                'invoice100',
+                'closed'
+            ]
+            $.each(targets,function(k,t){
+                if(this.filter[t]){
+                    $.each(this.orders[t],function(key,o){
+                        filteredList.push(o)
+                    })
                 }
             }.bind(this))
+
+            this.filteredList = filteredList;
+            console.log('LISTA ',this.fileteredList)
         }
+        // updateOrders:function(){
+        //     var newOrders = 0;
+        //     $.get('/orders').then(function(response){
+        //         $.each(response,function(key,object){
+        //             if(object.pending){
+        //                 object.status = 'Uusi tilaus'
+        //                 object.statusClass  = 'fa fa-circle pull-right new-order'
+        //                 newOrders++;
+        //             };
+        //             if(!object.pending){
+        //                 object.status = 'Vapaututettu kuvaajille'
+        //                 object.statusClass  = 'fa fa-circle pull-right free-order'
+        //             };
+        //             if(object.artistSelection != null && !object.invoice20) {
+        //                 console.log('20%',object)
+        //                 object.status = 'Saa laskuttaa 20%'
+        //                 object.statusClass = 'fa fa-circle pull-right prod-order'
+        //             };
+        //             if(object.invoice20 && !object.ready && !object.invoice100) {
+        //                 object.status = 'Tuotannossa'
+        //                 object.statusClass = 'fa fa-circle pull-right i20-order'
+        //             };
+        //             if(object.ready && object.invoice20 && !object.invoice100){
+        //                 console.log('100%',object)
+        //                 object.status = 'Saa laskuttaa 100%'
+        //                 object.statusClass = 'fa fa-circle pull-right i100-order'
+        //             };
+        //             if(object.invoice100 && !object.closed){
+        //                 object.status = 'Laskutettu'
+        //                 object.statusClass = 'fa fa-circle pull-right i100-order'
+        //             };
+        //             if(object.closed){
+        //                 object.status = 'Suljettu'
+        //                 object.statusClass = 'fa fa-circle pull-right closed-order'
+        //             };
+        //             object.hashId = '#order' + object.id;    //MAKE "#id" + "" for bootstrap
+        //             object.orderId = 'order' + object.id;
+        //             object.pickArtistLink = configUrl() + '/orders/artist-options/'+ object.id + '/' + object.clientToken;
+        //             object.showTotal = parseInt(object.total) / 100;
+        //             object.showComission = object.showTotal * 0.3;
+        //             object.showRevenue = object.revenue / 100;
+        //         })
+        //         this.orders = response;
+        //         this.length = 0;
+        //         if(newOrders == 0){
+        //             this.newOrders = "Ei uusia";
+        //         }else if(newOrders == 1){
+        //             this.newOrders = newOrders + " uusi";
+        //         }else{
+        //             this.newOrders = newOrders + " uutta";
+        //         }
+        //         if(this.orders && this.orders.length > 0) this.length = this.orders.length;
+        //         this.filterList()
+        //     }.bind(this))
+        // },
+        // updateList:function(selection){
+        //     if(!this.filter[selection]){
+        //         this.filter[selection] = true;
+        //     }else{
+        //         this.filter[selection] = false
+        //     }
+        //     this.filterList()
+        // },
+        // filterList:function(){
+        //     this.filteredList = [];
+        //     var f = this.filter
+        //     $.each(this.orders, function(key,object){
+        //         if(f.newOrder && object.pending && !object.closed){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.pickups && !object.pending && !object.closed && object.artistSelection == null){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.production && object.artistSelection != null  && !object.closed){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.invoice20 && object.invoice20 && !object.closed && !object.ready){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.ready && object.ready && !object.invoice100){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.invoice100 && object.invoice100 && !object.closed){
+        //             this.filteredList.push(object)
+        //         }
+        //         if(f.closed && object.closed){
+        //             this.filteredList.push(object)
+        //         }
+        //     }.bind(this))
+        // }
     },
     beforeMount:function(){
         this.filter = {
-            newOrder:true,
-            pickups:false,
-            production:false,
+            pending:true,
+            freed:false,
+            inProduction:false,
             invoice20:false,
-            ready:false,
+            invoiceMade:false,
             invoice100:false,
             closed:false
         }
-
+        this.fileteredList = []
         this.updateOrders();
     },
     template:'<div class="row">'+
@@ -422,7 +538,7 @@ Vue.component('orders',{
                                 '<div class="panel panel-primary">'+
                                     '<div class="panel-heading pp-pointer" data-toggle="collapse" v-bind:data-target="order.hashId">'+
                                         '{{ order.clientName }}'+
-                                        '<i v-bind:class="order.statusClass" aria-hidden="true"></i>  <i class="pull-right">{{ order.status }}</i>'+
+                                        '<i v-bind:class="order.statusClass" aria-hidden="true"></i>  <i class="pull-right" style="font-size:10px;"> {{ order.status }}</i>'+
                                     '</div>'+
                                     '<div v-bind:id="order.orderId" class="collapse">'+
                                         '<order v-bind:order="order"></order>'+
