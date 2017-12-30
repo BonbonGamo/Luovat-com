@@ -129,6 +129,7 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
     res.sendStatus(200)
   })
   .catch(err => {
+    console.log('ACTIVATE USER: ',err)
     res.sendStatus(500)
   })
 })

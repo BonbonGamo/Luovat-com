@@ -142,8 +142,8 @@ Vue.component('order',{
             $.post('/orders/free-pending/'+this.order.id)
             .then(function(){
                 toastr.success('Tilaus vapautettu')
-            })
-            this.$parent.updateOrders() 
+                this.$parent.updateOrders() 
+            }.bind(this))
         },
         didInvoice20:function(){
             if(!this.order.invoice20Number){

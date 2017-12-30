@@ -76,9 +76,8 @@ Vue.component('user',{
             }
             $.post('/artists/edit',data) 
             .then(function(response){
-                console.log(response)
-                this.$parent.updateUsers()
                 toastr.success('Käyttäjä päivitetty')
+                this.$parent.updateUsers()
             })
         },
         requestPass:function(){

@@ -324,15 +324,16 @@ router.get('/orders-progres',function(req,res,next){
 
 router.get('/select-artist/:userId/:token/:orderId',(req,res,next) => {
   let order;
+  console.log(req.params.userId)
   Order
     .query()
-    .patchAndFetch({
+    .patchAndFetchById(req.params.orderId,{
       artistSelection:parseInt(req.params.userId)
     })
-    .where('id',req.params.orderId)
-    .andWhere('clientToken',req.params.token)
     .then(cbOrder => {
       order = cbOrder;
+
+      if(order.clientToken != req.params.token) throw new Error('Not found');
 
       return User
       .query()
