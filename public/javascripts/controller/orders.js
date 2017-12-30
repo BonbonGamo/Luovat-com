@@ -136,7 +136,8 @@ Vue.component('order',{
             $.post('/orders/change-order-size/'+this.order.id+'/'+this.order.size)
             .then(function(response){
                 console.log(response)
-            })
+                this.$parent.updateOrders() 
+            }.bind(this))
         },
         freePending:function(){
             $.post('/orders/free-pending/'+this.order.id)
@@ -153,11 +154,11 @@ Vue.component('order',{
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
                  $.post('/orders/invoice20/'+this.order.id+'/'+this.order.invoice20Number).then(function(response){
                     toastr.success('Laskutuksen status muutettu')
-                })
+                    this.$parent.updateOrders();
+                }.bind(this))
             }else{
                 toastr.info('Laskutuksen statusta ei muutettu')
             }
-            this.$parent.updateOrders();
         },
         didInvoice100:function(){
             if(!this.order.invoice100Number){
@@ -167,25 +168,28 @@ Vue.component('order',{
             if(confirm('Oletko varmasti tehnyt ja lähettänyt laskun?')){
                 $.post('/orders/invoice100/'+this.order.id+'/'+this.order.invoice100Number).then(function(response){
                     toastr.success('Laskutuksen status muutettu')
-                })
+                    this.$parent.updateOrders();
+                }.bind(this))
             }else{
                 toastr.info('Laskutuksen statusta ei muutettu')
             }
-            this.$parent.updateOrders();
         },
         closeOrder:function(){
             if(confirm('Varmista, että asiaks on maksanut koko tilauksen ja kuvaajalle on maksettu palkkio kokonaisuudessaan')){
                 $.post('/close-order/'+this.order.id)
                 .then(function(response){
                     toastr.success('Tilaus suljettu')
-                })
+                    this.$parent.updateOrders();
+                }.bind(this))
             }else{
                 toastr.warn('Tilausta ei suljettu')
             }
         },
         deleteOrder:function(){
-            $.post('/orders/delete/'+this.order.id,function(response){
+            $.post('/orders/delete/'+this.order.id)
+            .then(function(response){
                 this.$parent.updateOrders();
+                toastr.success('Tilaus poistettu')
             })
         }
     },
@@ -321,11 +325,10 @@ Vue.component('orders',{
                         object.statusClass = 'fa fa-circle pull-right i20-order'
                     };
                     if(object.ready && object.invoice20){
-                        console.log('READY',object)
                         object.status = 'Saa laskuttaa'
                         object.statusClass = 'fa fa-circle pull-right i100-order'
                     };
-                    if(object.invoice100){
+                    if(object.invoice100 && !object.closed){
                         object.status = 'Laskutettu'
                         object.statusClass = 'fa fa-circle pull-right i100-order'
                     };
