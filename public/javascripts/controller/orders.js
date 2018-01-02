@@ -380,7 +380,7 @@ Vue.component('orders',{
                     invoiceMade :[],
                     closed      :[]    
                 }
-                console.log('ORDERS:',this.length)
+                console.log('ORDERS:',orders.length)
                 $.each(orders,function(k,o){
                     if(o.pending) newOrders++
                     o.hashId = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
@@ -409,6 +409,7 @@ Vue.component('orders',{
                     }
                     
                     if(o.invoice20){
+                        
                         o.status = 'Tuotannossa'
                         sorted.inProduction.push(o)
                         return
@@ -495,7 +496,7 @@ Vue.component('orders',{
                         '<div class="panel-heading">'+
                             '<button class="btn btn-xs btn-success" data-toggle="collapse" href="#filterOptions">Näytä valinnat</button>'+
                             '<span class="panel-heading-pull-right">'+
-                                '<p class="montserrat fw200 white" style="font-size:14px    ">{{ newOrders }} {{ length }} tilauksesta</p>'+
+                                '<p class="montserrat fw200 white" style="font-size:14px    ">{{ newOrders }} {{ orders.length }} tilauksesta</p>'+
                             '</span>'+
                         '</div>'+
                         '<div class="panel-body  panel700">'+
