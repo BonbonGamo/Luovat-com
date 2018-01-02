@@ -5,7 +5,12 @@ Vue.component('signBtn',{
             var confirmPickup = confirm('Vahvista, että sitoudut ottamaan työn vastaan.')
             if(confirmPickup){
                 $.post('/orders/pickup',{orderId:this.order.id}).then(function(response){
-                    toastr.success(response)
+                    if(response != 'OK'){
+                        toastr.warning('Jotain meni pieleen, päivtä sivu ja yritä uudelleen','Ou nou!');
+                        return;
+                    }
+                    toastr.success('Ilmottautuminen onnistui!');
+
                     this.$parent.updateOrders();
                 }.bind(this))
             }
@@ -106,7 +111,7 @@ Vue.component('orders',{
                     '<div class="panel-group">'+
                         '<h2 class="darkblue m5 montserrat m20">Uudet keikat</h2>'+
                         '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                            '<div data-toggle="collapse" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
+                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
                             '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
                                 '<div>'+
                                 '<p><strong>Tilauksen viesti</strong></p>'+
@@ -120,7 +125,7 @@ Vue.component('orders',{
                     '<div class="panel-group">'+
                         '<h2 class="darkblue m5 montserrat m20">Ilmoittautumiset</h2>'+
                         '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
-                            '<div data-toggle="collapse" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
+                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
                             '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
                                 '<p><strong>Tilauksen viesti</strong></p>'+
                                 '<p>{{ eager.message }}</p>'+
