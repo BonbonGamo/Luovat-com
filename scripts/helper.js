@@ -84,12 +84,12 @@ module.exports = {
         .where('id',id)
         .first()
         .then(function(cbOrder){
-            var revenue = cbOrder.revenue || 0;
-            revenue = revenue + total;
-            console.log('REVENUE: ',revenue)
+            var charged = cbOrder.charged || 0;
+            charged = charged + total;
+            console.log('Invoice made for: ',charged)
             return Order
             .query()
-            .patchAndFetchById(cbOrder.id,{revenue:revenue})
+            .patchAndFetchById(cbOrder.id,{charged:charged})
         })
     },
     checkForOrdersToRelease: () => {

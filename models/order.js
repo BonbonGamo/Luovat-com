@@ -65,7 +65,8 @@ class Order extends Model{
             closedBy:{type:'string'},
             deleted:{type:'boolean'},
             artistsCut:{type:'number'},
-            price:{type:'number'}
+            price:{type:'number'},
+            charged:{type:'number'}
          }   
         };
     }

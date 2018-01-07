@@ -248,7 +248,7 @@ Vue.component('order',{
                 '<p style="width:100%">Lisätyöt: <strong><span style="float:right">{{ order.extraHours || 0 }} tuntia</span></strong></p>'+
                 '<br>'+
                 '<p style="width:100%">Tilauksen arvo <strong><span style="float:right">{{ order.showTotal || 0 }} €</span></strong></p>'+
-                '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showMadeRevenue || 0 }} €</span></strong></p>'+
+                '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showCharged || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Komissio <strong><span style="float:right">{{ order.showComission || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Kuvaajalle <strong><span style="float:right">{{ order.showArtistsCut || 0 }} €</span></strong></p>'+
                 '<button class="btn btn-success m5  w100" v-on:click="postForm()">Tallenna tilauksen tiedot</button>'+
@@ -381,7 +381,7 @@ Vue.component('orders',{
                     invoiceMade :[],
                     closed      :[]    
                 }
-                console.log('ORDERS:',orders.length)
+                console.log('ORDERS:',orders)
                 $.each(orders,function(k,o){
                     if(o.pending) newOrders++
                     o.hashId            = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
@@ -391,6 +391,7 @@ Vue.component('orders',{
                     o.showTotal         = o.total ? parseInt(o.total) / 100 : 'ERR';
                     o.showComission     = o.revenue ? parseInt(o.revenue) / 100  : 'ERR';
                     o.showArtistsCut    = o.artistsCut ? o.artistsCut / 100 : 'ERR' ;
+                    o.showCharged       = o.charged ? o.charged / 100 : 0;
 
                     if(o.closed){
                         o.status = 'Suljettu'
@@ -411,7 +412,6 @@ Vue.component('orders',{
                     }
                     
                     if(o.invoice20){
-                        
                         o.status = 'Tuotannossa'
                         sorted.inProduction.push(o)
                         return
@@ -461,7 +461,7 @@ Vue.component('orders',{
             var targets = [
                 'pending',
                 'freed',
-                'production',
+                'inProduction',
                 'invoice20',
                 'invoiceMade',
                 'invoice100',
