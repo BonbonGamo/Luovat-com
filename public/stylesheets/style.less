@@ -142,12 +142,16 @@ input, textarea, .form-control {
     padding:5px;
     border-radius: 20px;
 }
+.bestTip{
+    font-size: 14px !important;
+    color:black !important;
+}
 .btn-play{
-    color:@blue;
+    color:@darkblue;
     font-size:130px;
 }
 .btn-play:hover{
-    color:#285140;
+    color:@blue;
 }
 .bg-beige{
     background: @beige;
@@ -477,24 +481,6 @@ input, textarea, .form-control {
         transform: translateY(-8px)
     }
 }
-.btn-play{
-    height:80px;
-    width: 80px;
-    margin-top: 30px;
-    font-size: 30px !important;
-    border: 4px solid @white !important;
-    border-radius: 200px !important;
-    background: transparent !important;
-}
-.btn-play:hover{
-    height:100px;
-    width: 100px;
-    font-size: 40px !important;
-    color:@blue !important;
-    margin-top: 10px;
-    transform: translateY(10px);
-    border: 15px double @blue!important;
-}
 .btn-luovat{
     background: transparent;
     border: 2px solid @blue !important;
@@ -796,6 +782,20 @@ input, textarea, .form-control {
     border: 1px solid #EEE !important;
 }
 .well-order:hover{
+    box-shadow: 0px 0px 16px rgba(0,0,0,0.65);
+    margin-top:15px;
+    background: #ffffff;
+}
+.well-option{
+    width:100%;
+    margin-top:20px;
+    overflow: hidden;
+    border-radius: 15px !important;
+    cursor: pointer;
+    background: #f7f7f7;
+    border: 1px solid #EEE !important;
+}
+.well-option:hover{
     box-shadow: 0px 0px 16px rgba(0,0,0,0.65);
     margin-top:15px;
     background: #ffffff;

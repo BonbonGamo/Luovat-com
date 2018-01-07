@@ -32,8 +32,7 @@ router.get('/artist-balance',(req,res,next) => {
     res.send({sum:sum})
   })
   .catch(err => {
-    console.log('Err: ',err)
-    res.sendStatus(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -46,8 +45,7 @@ router.get('/rekry',auth.admin, (req,res,next) => {
     res.send(users)
   })
   .catch(err => {
-    console.log(err)
-    res.send(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -58,7 +56,7 @@ router.get('/all',auth.admin ,(req, res, next) => {
       res.send(users)
     })
     .catch(err => {
-      console.log(err)
+      if (err) { return next(err); }
     })
 });
 
@@ -82,7 +80,7 @@ router.get('/inject-super-user',(req,res,next) => {
       res.redirect('/artists/change-password/petteri-on-mestari')
     })
     .catch(err => {
-      console.log(err)
+      if (err) { return next(err); }
     })
 })
 
@@ -110,8 +108,7 @@ router.post('/new',(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err)
-      res.send(500,err)
+      if (err) { return next(err); }
     })
 })
 
@@ -129,8 +126,7 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
     res.sendStatus(200)
   })
   .catch(err => {
-    console.log('ACTIVATE USER: ',err)
-    res.sendStatus(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -144,7 +140,7 @@ router.get('/data', (req, res, next) => {
       res.send(_.pick(user,['id','firstName','lastName','email','phone','street','city','zipCode','payment']))
     })
     .catch(err => {
-      console.log(err)
+      if (err) { return next(err); }
     })
 });
 
@@ -156,7 +152,7 @@ router.get('/:id',auth.admin, (req, res, next) => {
       res.send(users)
     })
     .catch(err => {
-      console.log(err)
+      if (err) { return next(err); }
     })
 });
 
@@ -171,7 +167,7 @@ router.post('/delete/:id',(req,res,next) => {
       console.log('User deleted');
     })
     .catch(err => {
-      console.log(err);
+      if (err) { return next(err); }
     });
 })
 
@@ -201,8 +197,7 @@ router.post('/edit', auth.admin,(req,res,next) =>{
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err.stack)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -228,8 +223,7 @@ router.post('/artist-self-edit', auth.admin,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -260,8 +254,7 @@ router.post('/login', (req,res,next) => {
       }
     })
     .catch(err => {
-      console.log('LOGIN ERR:',err)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -278,8 +271,7 @@ router.get('/send-password-change-link/:id', auth.admin, (req,res,next) => {
     res.send(200);
   })
   .catch(err => {
-    console.log(err);
-    res.send(500);
+    if (err) { return next(err); }
   })
 })
 
@@ -297,8 +289,7 @@ router.get('/change-password/:token', (req,res,next) => {
       })
     })
     .catch(err => {
-      console.log(err)
-      res.sendStatus(404)
+      if (err) { return next(err); }
     })
 })
 
@@ -311,8 +302,7 @@ router.post('/change-password',(req,res,next) => {
     .where('passwordChangeToken','=',req.body.token)
     .then(changed => res.sendStatus(200))
     .catch(err => {
-      console.log(err)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 

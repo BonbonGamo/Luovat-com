@@ -22,7 +22,7 @@ router.get('/', auth.admin, (req,res,next) => {
         res.send(cbCampaigns)
     })
     .catch(err => {
-        res.sendStatus(500)
+        if (err) { return next(err); }
     })
 })
 
@@ -36,7 +36,7 @@ router.get('/check/:code',(req,res,next) => {
         res.send(cbCampaign.percent)
     })
     .catch(err => {
-        res.send(500)
+        if (err) { return next(err); }
     })
 
 })
@@ -60,7 +60,7 @@ router.post('/new', auth.admin, (req,res,next) => {
     })
     .catch(err => {
         console.log(err)
-        res.sendStatus(500)
+        if (err) { return next(err); }
     })
 })
 
@@ -82,7 +82,7 @@ router.post('/edit', auth.admin, (req,res,next) => {
     })
     .catch(err => {
         console.log(err)
-        res.send(500)
+        if (err) { return next(err); }
     })
 })
 
@@ -99,7 +99,7 @@ router.post('/toggle-active/:id/:active', auth.admin, (req,res,next) => {
         res.send(200)
     })
     .catch(err => {
-        res.send(500)
+        if (err) { return next(err); }
     })
 })
 

@@ -3,7 +3,6 @@ TODO:
     -Postmark:
         -ArtistsSelected
 
-
     ADMIN
     -POSTMARK
     -Asetukset
@@ -18,7 +17,6 @@ TODO:
         -Uusi käyttäjä ei päivitä listoja
         -Muokkaus palauttaa uusiin
     -Vaihda tilauksen koko
-        -Lisää admin sivulle nappi tilauksen koon muuttamiseen
         -Lisää artistisivulle nappi, josta voi tilata tilauksen koon muuttamisen
     
     ARTIST
@@ -30,10 +28,14 @@ TODO:
 
     ORDERS
     - Palautteen anto kun tilaus valmis
-    -
     
     CLIENT (PH1.2)
     -Asiakasrekisteri
+    -Kuvaajan valinta sivu!!!!!!!
+
+    KAMPANJA KOODIT!
+    -Kampanjan poisto käytöstä
+    -
     
     MUUTA
     -Tietosuojatarkastelu

@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title><%= title %></title>
+
     <link rel='stylesheet' href='/stylesheets/style.css' />
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -12,22 +13,72 @@
     <script src="https://use.fontawesome.com/3b80c8e746.js"></script>
 
   </head>
-  <body>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="row" id="selectApp">
-                <div class="col-md-10 col-md-offset-1">
-                    <div class="row text-center mud60">
-                        <h4 class="gray" style="margin-bottom:0px;">Kolme kuvaajaa sinulle</h4>
-                        <h1 class="green" style="margin-top:0px;">Valitse sinulle sopiva kuvaaja</h1>
-                    </div>
-                    <div class="row">
-                        <select-artist></select-artist>
-                    </div>
-                </div>
+  
+  <body style="background-image:url(../images/main-bg.jpg);background-size:cover;background-position:bottom;background-repeat:no-repeat;height:100%">
+    <nav class="navbar navbar-inverse navbar-fixed-top" id="luovat-navbar">
+            <div class="container-fluid">
+              <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbarCollapse" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" style="position:fixed"><img class="plaster" style="height:40px;display:inline-block;margin-right:5px;margin-top:-10px" src="./images/logo.png"><span style="color:white;font-size:24px;display:inline-block;padding-top:10px;" class="montserrat nav-logo-text">LUOVAT.COM</span></a>
+              </div>
+              <div class="collapse navbar-collapse" id="navbarCollapse" >       
+                <ul class="nav navbar-nav navbar-right" style="margin:10px;">
+                  <li><span>
+                    <a href="#order" class="nav-page-link"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                    <a href="#rekry" class="nav-page-link"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                    <a href="#company" class="nav-page-link"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                    <a href="#company" class="nav-page-link"><i class="fa fa-vimeo" aria-hidden="true"></i></a>
+                    <a href="/login" class="nav-page-link"><i class="fa fa-key" aria-hidden="true"></i></a>
+                  </span></li>
+                </ul>
+              </div>
             </div>
+          </nav>
+    <div class="row" style="height:100%">
+        <div class="row text-center mud60">
+            
+        </div>
+        <div class="row bg-blue r-m" id="selectApp">
+            <div class="col-md-12 text-center">
+                <h2 class="montserrat fw700 white" style="margin-bottom:5px;text-transform:uppercase;">
+                    Valitse haluamasi kuvaaja
+                </h2>
+                <h4 class="montserrat fw700 white" style="margin-bottom:25px;text-transform:uppercase;">
+                    Voit katsoa kuvaajien työnäytteet ennen valintaa
+                </h4>
+            </div>
+            <select-artist></select-artist>
         </div>
     </div>
+    <div id="footer" class="row bg-black r-m">
+        <div class="col-md-3 col-md-offset-1">
+            <p class="montserrat fw400">LUOVAT.COM</p><br>
+            <p class="montserrat fw100">info@luovat.com</p>
+            <p class="montserrat fw100">0405602141</p>
+            <p class="montserrat fw100">2345667-0</p>
+        </div>
+        <div class="col-md-3 col-md-offset-4">
+            <p style="float:right;">
+                <a href="#order" class="white m10"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                <a href="#rekry" class="white m10"><i class="fa fa-instagram" aria-hidden="true"></i></a>
+                <a href="#company" class="white m10"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                <a href="#company" class="white m10"><i class="fa fa-vimeo" aria-hidden="true"></i></a>  
+            </p>      
+        </div>
+    </div>
+
+    <div id="video-modal" class="modal fade" role="dialog">
+        <div class="centered">
+            <iframe id="video-source" src="" width="1000" height="562" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        </div>
+    </div>
+    
+
     <script type="text/javascript"> var users = <%-JSON.stringify(data)%>;</script>
     <script type="text/javascript" src="/javascripts/moment.js"></script>
     <script type="text/javascript" src="/node/vue/dist/vue.min.js"></script>

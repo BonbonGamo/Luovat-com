@@ -1,4 +1,3 @@
-
 Vue.component('add-order',{
     props:['name','email','message','phone','size','add1','add2','add3'],
     created:function(){
@@ -247,9 +246,11 @@ Vue.component('order',{
                 '<p id="discountPercent">{{ order.discountPercent }} %</p>'+
                 '<br>'+
                 '<p style="width:100%">Lisätyöt: <strong><span style="float:right">{{ order.extraHours || 0 }} tuntia</span></strong></p>'+
+                '<br>'+
                 '<p style="width:100%">Tilauksen arvo <strong><span style="float:right">{{ order.showTotal || 0 }} €</span></strong></p>'+
-                '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showRevenue || 0 }} €</span></strong></p>'+
+                '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showMadeRevenue || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Komissio <strong><span style="float:right">{{ order.showComission || 0 }} €</span></strong></p>'+
+                '<p style="width:100%">Kuvaajalle <strong><span style="float:right">{{ order.showArtistsCut || 0 }} €</span></strong></p>'+
                 '<button class="btn btn-success m5  w100" v-on:click="postForm()">Tallenna tilauksen tiedot</button>'+
                 '<br>'+
                 '<button class="btn btn-success m5  w100" v-if="order.pending" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
@@ -383,12 +384,13 @@ Vue.component('orders',{
                 console.log('ORDERS:',orders.length)
                 $.each(orders,function(k,o){
                     if(o.pending) newOrders++
-                    o.hashId = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
-                    o.orderId = 'order' + o.id;
-                    o.pickArtistLink = configUrl() + '/orders/artist-options/'+ o.id + '/' + o.clientToken;
-                    o.showTotal = parseInt(o.total) / 100;
-                    o.showComission = o.showTotal * 0.3;
-                    o.showRevenue = o.revenue / 100;
+                    o.hashId            = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
+                    o.orderId           = 'order' + o.id;
+                    o.pickArtistLink    = configUrl() + '/orders/artist-options/'+ o.id + '/' + o.clientToken;
+                    o.showPrice         = o.price ? parseInt(o.price) / 100 : 'ERR';
+                    o.showTotal         = o.total ? parseInt(o.total) / 100 : 'ERR';
+                    o.showComission     = o.revenue ? parseInt(o.revenue) / 100  : 'ERR';
+                    o.showArtistsCut    = o.artistsCut ? o.artistsCut / 100 : 'ERR' ;
 
                     if(o.closed){
                         o.status = 'Suljettu'

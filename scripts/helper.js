@@ -34,8 +34,6 @@ module.exports = {
             .first()
         })
         .then(cbCampaign => {
-            console.log('KAMPANJA: ',cbCampaign)
-
             let data = {};
             let discountFactor = 1;
             let sum = 0;
@@ -49,8 +47,7 @@ module.exports = {
 
             discountFactor = (100 - data.discountPercent) / 100;
 
-            console.log('DISCOUNT: ', discountFactor)
-
+            //ADD ORDER ROWS 
             if(!order.eventSize) throw new err('Package not selected');
             if(order.eventSize == 's') rows.package = 79000;
             if(order.eventSize == 'm') rows.package = 99000;
@@ -60,19 +57,24 @@ module.exports = {
             if(order.additional2) rows.add2 = 10000;
             if(order.additional3) rows.add3 = order.voiceOverPrice ? order.voiceOverPrice : 10000;
 
+            //SUM THE ORDER
             _.forEach(rows,function(row){
                 sum = sum + row;
             })
 
-            console.log('Summa: ',sum)
+            data = {
+                price:sum,
+                artistsCut:sum * 0.7,
+                discountPercent:data.discountPercent,
+                total:sum * discountFactor,
+                revenue:(sum * discountFactor) - (sum * 0.7)
+            }
 
-            data.total = sum * discountFactor;
-
-            console.log('Alennus: ',discountFactor,'Alennettu hinta: ',data.total)
+            console.log('order:',data)
 
             return Order
             .query()
-            .patchAndFetchById(order.id, data)
+            .patchAndFetchById(order.id,data)
         })
         
     },

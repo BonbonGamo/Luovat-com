@@ -24,8 +24,7 @@ router.get('/',auth.admin, function(req, res, next) {
       res.send(orders)
     })
     .catch(err => {
-      console.log(err)
-      res.status(500)
+      if (err) { return next(err); }
     })
 });
 
@@ -48,8 +47,7 @@ router.get('/get-eager-by-id/:id',(req,res,next) => {
     res.send(users)
   })
   .catch(err => {
-    console.log(err)
-    res.status(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -70,8 +68,7 @@ router.put('/remove-pickup/:id',auth.artist,(req,res,next) => {
     res.send(200)
   })
   .catch(err => {
-    console.log(err)
-    res.send(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -89,8 +86,7 @@ router.put('/admin-remove-pickup/:userId/:orderId',auth.admin,(req,res,next) => 
     res.send(200)
   })
   .catch(err => {
-    console.log(err)
-    res.send(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -138,10 +134,8 @@ router.get('/pickups',auth.artist, function(req, res, next) {
           res.send(data)
         })
         .catch(err => {
-          console.log(err)
-          res.sendSatus(500)
+          if (err) { return next(err); }
         })
-        //VANHA ORDERS
       })
 });
 
@@ -157,8 +151,7 @@ router.get('/get-orders-by-artist',auth.artist, function(req,res,next){
         res.send(orders)
       })
       .catch(err => {
-        console.log(err)
-        res.sendSatus(500)
+        if (err) { return next(err); }
       })
 })
 
@@ -190,8 +183,7 @@ router.post('/admin-edit-order',auth.admin,function(req,res,next){
       res.send(200)
     })
     .catch(function(err){
-      console.log(err)
-      res.send(400,err)
+      if (err) { return next(err); }
     })
 });
 
@@ -214,8 +206,7 @@ router.post('/artist-edit-order',auth.artist, (req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -252,7 +243,7 @@ router.post('/pickup',auth.artist,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })  
 })
 
@@ -281,9 +272,40 @@ router.get('/artist-options/:id/:token',function(req,res,next){
         })
       }
     })
+    .catch(err => {
+      if (err) { return next(err); }
+    })
 })
 
-router.get('/orders-progres',function(req,res,next){
+router.get('/test-artist-options', auth.admin ,function(req,res,next){
+  let data = [
+    {
+      name:'Jasu S',
+      reelLink:'https://player.vimeo.com/video/159216518?title=0&byline=0&portrait=0',
+      link:'asd',
+      pass:'luovat'
+    },
+    {
+      name:'Jasu S',
+      reelLink:'https://player.vimeo.com/video/223754130?autoplay=1&loop=1&autopause=0',
+      link:'asd',
+      pass:'luovat'
+    },
+    {
+      name:'Jasu S',
+      reelLink:'https://player.vimeo.com/video/223754130?autoplay=1&loop=1&autopause=0',
+      link:'asd',
+      pass:'luovat'
+    }
+  ]
+  res.render('options',{
+    title:'Luovat.com | Valitse kuvaaja',
+    data:data
+  })
+})
+
+
+router.get('/orders-progres', auth.artist ,function(req,res,next){
   var user = req.session.user;
   var ordersIds = [];
   var orders = [];
@@ -317,7 +339,7 @@ router.get('/orders-progres',function(req,res,next){
     res.send(data)
   })
   .catch(err => {
-    console.log(err)
+    if (err) { return next(err); }
   })
 
 })
@@ -347,8 +369,7 @@ router.get('/select-artist/:userId/:token/:orderId',(req,res,next) => {
       res.redirect('/')
     })
     .catch(err => {
-      console.log(err)
-      res.send(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -407,8 +428,7 @@ router.post('/new',(req,res,next) => {
     res.sendStatus(200)
   })
   .catch(err => {
-    console.log(err)
-    res.sendStatus(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -434,8 +454,7 @@ router.post('/free-pending/:id',auth.admin,(req,res,next) => {
     res.sendStatus(200)
   })
   .catch(err => {
-    console.log(err)
-    res.sendStatus(500)
+    if (err) { return next(err); }
   })
 })
 
@@ -458,8 +477,7 @@ router.post('/invoice20/:id/:invoiceNumber',auth.admin,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err.stack)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -485,8 +503,7 @@ router.post('/invoice100/:id/:invoiceNumber',auth.admin,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err.stack)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -505,8 +522,7 @@ router.post('/artist-order-ready/:id',auth.artist,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err.stack)
-      res.sendStatus(500)
+      if (err) { return next(err); }
     })
 })
 
@@ -520,7 +536,7 @@ router.post('/close-order/:id',auth.admin,(req,res,next) => {
       console.log('Closed order: ',cbOrder)
     })
     .catch(err => {
-      console.log(err)
+      if (err) { return next(err); }
     })
 })
 
@@ -536,8 +552,7 @@ router.post('/delete/:id',(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      console.log(err);
-      res.sendSatus(500)
+      if (err) { return next(err); }
     });
 })
 

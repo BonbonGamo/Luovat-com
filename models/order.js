@@ -63,7 +63,9 @@ class Order extends Model{
             invoice100CreatedAt:{type:'string'},
             closed:{type:'boolean'}, //ONLY WHEN PAID TO ARTIST
             closedBy:{type:'string'},
-            deleted:{type:'boolean'}
+            deleted:{type:'boolean'},
+            artistsCut:{type:'number'},
+            price:{type:'number'}
          }   
         };
     }
