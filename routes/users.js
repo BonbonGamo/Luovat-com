@@ -85,7 +85,7 @@ router.get('/inject-super-user',(req,res,next) => {
 })
 
 router.post('/new',(req,res,next) => {
-  if(!req.body.firstName || !req.body.lastName || !req.body.rekryMessage){
+  if(!req.body.firstName || !req.body.lastName){
     throw new Error(500,'Missing fields')
   }
   console.log(req.body)
