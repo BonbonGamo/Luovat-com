@@ -119,7 +119,7 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
   .then((cbUser) => {
     //TODO: Lähetä käyttäjälle salasanalinkki
     if(!cbUser.email || cbUser.email.length < 1) return;
-    return emailer.changePassword(cbUser.email,cbUser)
+    return emailer.newUser(cbUser.email,cbUser)
   })
   .then(postmarkResponse => {
     console.log(postmarkResponse)

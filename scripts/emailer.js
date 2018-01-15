@@ -12,6 +12,7 @@ const templates = {
     artistSelected:     4243101,
     rekryReply:         4219041,
     adminEventReady:    4272301,
+    newUser:            4550701,
 };
 
 let composeMail = (template,to,message) => {
@@ -33,12 +34,25 @@ let composeMail = (template,to,message) => {
 
 module.exports = {
     changePassword:(to,user)=>{
-        let mail = composeMail('changePass',to,{'passUrl':'www.luovat.com/artists/change-password/' + user.passwordChangeToken,'name':user.firstName + ' ' + user.lastName})
+        let mail = composeMail('changePass',to,{'passUrl':'https://www.luovat.com/artists/change-password/' + user.passwordChangeToken,'name':user.firstName + ' ' + user.lastName})
         return new Promise((resolve,reject) => {
             client.sendEmailWithTemplate(mail, (err,data) => {
                 if(err){
                     reject(err.message)
                 }else{
+                    resolve(data)
+                }
+            })
+        })
+    },
+
+    newUser: user => {
+        let mail = composeMail('newUser',user.email,{user_name:user.firstName + ' ' + user.lastName, 'passUrl':'https://www.luovat.com/artists/change-password/' + user.passwordChangeToken})
+        return new Promise((resolve,reject) => {
+            client.sendEmailWithTemplate(mail, (err,data) => {
+                if(err){
+                    reject(err.message)
+                } else {
                     resolve(data)
                 }
             })

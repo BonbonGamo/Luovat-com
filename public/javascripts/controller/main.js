@@ -116,9 +116,9 @@ Vue.component('order-form',{
             '</div>'+
             '<div id="select-size" class="hide-order-form">'+
                 '<div class="col-md-12 text-center m10"><span><a id="play-sample-video" class="btn btn-xs green btn-white">Näin tilaat</a> <a data-toggle="modal" data-target="#compare" class="btn green btn-xs btn-white">Vertaile paketteja</a></span></div>'+
-                '<order-size small="S" caption="SMALL" class="col-md-4" size="s" price="790" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
-                '<order-size small="M" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
-                '<order-size small="L" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
+                '<order-size link="https://player.vimeo.com/video/223740472?autoplay=1&loop=1&autopause=0" small="S" caption="SMALL" class="col-md-4" size="s" price="690" description="Pienin pakettimme sisältää muutaman tunnin kuvauksen sekä yhden päivän jälkituotannon. Paketti soveltuu esimerkiksi haastatteluiden taltiontiin."></order-size>'+
+                '<order-size link="https://player.vimeo.com/video/223740472?autoplay=1&loop=1&autopause=0" small="M" caption="MEDIUM" class="col-md-4" size="m" price="990" description="Keskikokoinen pakettimme mahdollistaa puolen päivän kuvauksen sekä joustavamman jälkituotannon. Paketti soveltuu esimerkiksi tapahtumien taltiointiin."></order-size>'+
+                '<order-size link="https://player.vimeo.com/video/223740472?autoplay=1&loop=1&autopause=0" small="L" caption="LARGE" class="col-md-4" size="l" price="1390" description="Iso pakettimme tarjoaa esituotantoa, kokonaisen kuvauspäivän sekä laajemman jälkituotannon. Kyseinen tuotanto mahdollistaa mm. yritysvideon."></order-size>'+
             '</div>'+
             '<div id="askFirst" class="hide-order-form col-sm-6 col-sm-offset-3"style="display:none;">'+
                 '<center>'+
@@ -161,14 +161,14 @@ Vue.component('order-form',{
             '</div>'+
             '<div id="ready" class=" hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
                 '<center>'+
-                    '<button class="btn btn-lg r-m btn-white" v-on:click="newOrder()">Tee uusi tilaus</button>'+
+                    '<a class="btn btn-lg r-m btn-white" v-on:click="newOrder()">Tee uusi tilaus</a>'+
                 '</center>'+
             '</div>'+
         '</div>'
 });
 
 Vue.component('order-size',{
-    props:['size','img','description','price','caption','small','bgId'],
+    props:['size','img','description','price','caption','small','bgId','link'],
     mounted:function(){
         this.img = '../images/luovat_'+this.size+'.png';
         this.bgId = 'well-'+this.size;
@@ -180,24 +180,30 @@ Vue.component('order-size',{
     methods:{
         openForm:function(size){
             this.$parent.openForm(size)
+        },
+        showVideo:function(){
+            $('#video-source').attr('src',this.link);
+            $("#video-modal").modal();
         }
     },
     template:
     '<div>'+
         '<center>'+
-            '<div class="well-order" v-on:click="openForm(size)">'+
-                '<div class="">'+
-                '<center>'+                 
-                        '<h1 style="font-size:150px;text-transform:uppercase;" class="darkblue plaster">{{ size }}</h1>'+ 
+            '<div class="well-order" >'+
+                '<div class="" v-on:click="openForm(size)">'+
+                    '<center>'+                 
+                        '<h1 style="font-size:150px;text-transform:uppercase;margin-top:0px;" class="darkblue plaster">{{ size }}</h1>'+ 
                         '<h3 class="blue fw400 style="">Valitse <span class="fw900">{{ small }}</span> paketti</h3>'+   
                         '<p class="black opensans" style="font-size:16px;">{{ description }}</p>'+
                         '<p class="black" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
                         '<h3 class="blue fw700 price">{{ price }}€</h3>'+
                     '</center>'+
                 '</div>'+
+                '<center>'+ 
+                    '<button class="btn btn-sm btn-luovat green" style="margin-top:15px" v-bind:link="link" v-on:click="showVideo()">Katso esimerkki {{ size }} paketista</button>'+
+                '</center>'+
             '</div>'+
             '<br>'+
-            //'<button class="btn btn-xs btn-white" data-toggle="modal" data-target="#compare">Vertaile paketteja</button>'+
         '</center>'+
     '</div>'
 })

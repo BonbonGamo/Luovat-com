@@ -1,7 +1,8 @@
 TODO:
-    TESTAUS
+    TEST
     -Postmark:
         -ArtistsSelected
+        -newUser
 
     ADMIN
     -POSTMARK
@@ -51,4 +52,18 @@ TODO:
     - Voiceover     : Sopimuksen mukaan (infonappi: Hinnoittelun perustelu) 
     - Lisätunti     : 50€
     
+
+    - Vihree taustaväri; hankala erottaa tekstiä (Ratkaisu: isompi teksti tai boldaus)
+    - Ilmoittautumiseen näkymään aktiivisesti 0/3, 1/3.... ilmoittautunut. Tai TÄYNNÄ
+    - Kun asiakasa valitsee tekijän, mitä tapahtuu? Suoraan meili valitulle kuvaajalle, kuvaaja jatkaa saamansa ohjeistuksen mukaan tästä. Miten tämä näkyy admineille?
+    - Pystytäänkö me tarkistamaan jostain automaattisesti kuvaajille/asiakkaille lähteneet sähköpostit.
+    - Palautekysely asiakkaalle, joku simppeli? 
+    - 1...5 pistettä kokemuksesta
+    - 1...5 pistettä laadusta
+    - 1...5 pistettä asiakaspalvelusta
+    - Omat keikat: Optiot eikä kellonaika näy "uusi keikka tarjolla" -mailissa, eikä ilmoittautumisvaiheessa "vapaat keikat" -sivulla. Mitä jos ei esim. ole dronea?
+    - Lisäkorjaukierros 50€ per ylimääräinen korjauskierros
+    - Kuvaaja pystyy ohjaamaan asiakkaan ostamaan keikan meiltä -> pakkosyöttömahdollisuus dedikoidulle kuvaajalle saatava admineille mahdolliseksi. 
+    - Tilauksesta kuvaajalle lähtevästä info -meiliimme kopio.
+    - /artists -sivulle asetuksien jälkeen välilehti "info", josta löytyy "Tervetuloa" -teksti uudestaan.
     

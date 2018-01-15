@@ -78,20 +78,31 @@ Vue.component('add-order',{
 })
 
 Vue.component('order',{
-    props:['order'],
+    props:['order','userList','artistSelection','aSDisabled'],
     beforeMount:function(){
         this.order.selectedByUser = false;
         this.order.newSize = this.order.size;
+        this.userList = this.$parent.userList
+        this.aSDisabled = false;
+        this.artistSelection = null;
+
+        if(this.order.artistSelection){
+            $.each(this.userList, function(k,u){
+                if(u.id == this.order.artistSelection) {
+                    this.artistSelection = u.id;
+                    this.aSDisabled = true;
+                }
+            }.bind(this))
+        }
         
         var d = new Date();
         var n = d.getTime();
 
         $.each(this.order.users,function(key,user){
-            console.log(key)
             user.collapseId = user.id + 'collapse' + n;
             user.hashId = '#' + user.id + 'collapse' + n;
         });
-        console.log(this.order.users[0])
+
         if(this.order.artistSelection) this.order.selectedByUser = true;
     },
     methods:{
@@ -196,36 +207,29 @@ Vue.component('order',{
     template:
         '<div class="panel-body">'+
             '<div class="form-group">'+
+                '<h2>Tilaajan tiedot:</h2>'+
                 '<label for="clientName">Asiakas</label>'+
                 '<input class="form-control" id="clientName" v-model="order.clientName"></input>'+
                 '<label for="clientCompany">Yritys</label>'+
                 '<input class="form-control" id="clientCompany" v-model="order.clientCompany"></input>'+
-                '<br>'+
-                '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.users.length }}</span></p>'+
-                '<div class="well blue-bg" v-for="user in order.users" data-toggle="collapse" v-bind:data-target="user.hashId">'+
-                    '<p class="m5 monstserrat fw400"><span class="montserrat fw400 blue" style="font-size:13px;margin-bottom:5px;" v-if="user.id == order.artistSelection" >VALINTA: </span>{{ user.firstName }} {{ user.lastName}} <remove-user v-bind:orderid="order.id" v-bind:userid="user.id" style="float:right"></remove-user></p>'+
-                    '<div class="collapse" v-bind:id="user.collapseId">'+
-                        '<p class="montserrat m10" >PHONE: {{ user.phone }}</p>'+
-                        '<p class="montserrat m10" >EMAIL: {{ user.email }}</p>'+
-                    '</div>'+
-                '</div>'+
-                '<br>'+
-                '<label >Muuta tilauksen koko</label>'+
-                '<select v-bind:value="order.eventSize" v-model="order.eventSize" class="form-control">'+
-                    '<option value="s">S</option>'+
-                    '<option value="m">M</option>'+
-                    '<option value="l">L</option>'+
-                '</select>'+
                 '<label for="clientEmail">Sähköpostiosoite</label>'+
                 '<input class="form-control" id="clientEmail" v-model="order.clientEmail"></input>'+
                 '<label for="clientPhone">Puhelinnumero</label>'+
                 '<input class="form-control" id="clientPhone" v-model="order.clientPhone"></input>'+
+                '<br>'+
+                '<h2>Tilauksen tiedot:</h2>'+
                 '<label for="eventCity">Paikka</label>'+
                 '<input class="form-control" id="eventCity" v-model="order.eventCity"></input>'+
                 '<label for="eventDate">Aika</label>'+
                 '<input class="form-control" id="eventDate" v-model="order.eventDate"></input>'+
                 '<label for="clientMessage">Viesti</label>'+
                 '<textarea rows="5" class="form-control" id="clientMessage" v-model="order.clientMessage"></textarea>'+
+                '<label>Tilauksen koko</label>'+
+                '<select v-bind:value="order.eventSize" v-model="order.eventSize" class="form-control">'+
+                    '<option value="s">S</option>'+
+                    '<option value="m">M</option>'+
+                    '<option value="l">L</option>'+
+                '</select>'+
                 '<br>'+
                 '<label for="additional1">Tekstitys</label>'+
                 '<button id="additional1" class="btn btn-checkbox" style="float:right" v-on:click="boolean('+"'additional1'"+')">'+
@@ -240,17 +244,33 @@ Vue.component('order',{
                     '<i v-if="order.additional3" class="fa fa-check" aria-hidden="true"></i>'+
                 '</button><br>'+
                 '<br>'+
+                '<h2>Kuvaajan tiedot:</h2>'+
+                '<br>'+
+                '<p class="m5 montserrat fw400" style="width:100%">Halukkaita tekijöitä  <span class="badge">{{ order.users.length }}</span></p>'+
+                '<div class="well blue-bg" v-for="user in order.users" data-toggle="collapse" v-bind:data-target="user.hashId">'+
+                    '<p class="m5 monstserrat fw400"><span class="montserrat fw400 blue" style="font-size:13px;margin-bottom:5px;" v-if="user.id == order.artistSelection" >VALINTA: </span>{{ user.firstName }} {{ user.lastName}} <remove-user v-bind:orderid="order.id" v-bind:userid="user.id" style="float:right"></remove-user></p>'+
+                    '<div class="collapse" v-bind:id="user.collapseId">'+
+                        '<p class="montserrat m10" >PHONE: {{ user.phone }}</p>'+
+                        '<p class="montserrat m10" >EMAIL: {{ user.email }}</p>'+
+                    '</div>'+
+                '</div>'+
+                '<label >Määrää kuvaaja tilaukselle</label>'+
+                '<select v-bind:disabled="aSDisabled" v-model="artistSelection" class="form-control">'+
+                    '<option v-for="user in userList" v-bind:value="user.id">{{user.id}} {{user.email}}</option>'+
+                '</select>'+
+                '<br>'+
+                '<h2>Myynti:</h2>'+
                 '<label for="campaignCode">Kampanjakoodi</label>'+
                 '<input class="form-control" id="campaignCode" placeholder="Kampanjakoodi" v-model="order.campaignCode"/>'+
                 '<label for="discountPercent">Alennus</label>'+
                 '<p id="discountPercent">{{ order.discountPercent }} %</p>'+
-                '<br>'+
                 '<p style="width:100%">Lisätyöt: <strong><span style="float:right">{{ order.extraHours || 0 }} tuntia</span></strong></p>'+
-                '<br>'+
                 '<p style="width:100%">Tilauksen arvo <strong><span style="float:right">{{ order.showTotal || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Laskutettu: <strong><span style="float:right">{{ order.showCharged || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Komissio <strong><span style="float:right">{{ order.showComission || 0 }} €</span></strong></p>'+
                 '<p style="width:100%">Kuvaajalle <strong><span style="float:right">{{ order.showArtistsCut || 0 }} €</span></strong></p>'+
+                '<br>'+
+                '<h2>Hallinta:</h2>'+
                 '<button class="btn btn-success m5  w100" v-on:click="postForm()">Tallenna tilauksen tiedot</button>'+
                 '<br>'+
                 '<button class="btn btn-success m5  w100" v-if="order.pending" v-on:click="freePending()">Vapauta kuvaajille</button><br><br>'+
@@ -362,7 +382,7 @@ Vue.component('orders-filter',{
 })
 
 Vue.component('orders',{
-    props:['orders','order','length','filter','filteredList','newOrders'],
+    props:['orders','order','length','filter','filteredList','newOrders','userList'],
     methods:{
         updateOrders:function(){
             var newOrders = 0;
@@ -381,7 +401,6 @@ Vue.component('orders',{
                     invoiceMade :[],
                     closed      :[]    
                 }
-                console.log('ORDERS:',orders)
                 $.each(orders,function(k,o){
                     if(o.pending) newOrders++
                     o.hashId            = '#order' + o.id;    //MAKE "#id" + "" for bootstrap
@@ -451,7 +470,6 @@ Vue.component('orders',{
             }else{
                 this.filter[target] = false
             }
-            console.log('SUODATIN: ',this.filter)
             this.showFiltered();
         },
         showFiltered:function(){
@@ -476,10 +494,22 @@ Vue.component('orders',{
             }.bind(this))
 
             this.filteredList = filteredList;
-            console.log('LISTA ',this.fileteredList)
-        }
+        },
+        getUserList:function(){
+            $.get('/artists/all').then(function(response){
+                var users = [];
+                $.each(response,function(key,o){
+                    if(o.activeUser){
+                        users.push({id:o.id,email:o.email})
+                    }
+                    return;
+                })
+                this.userList = users;
+            }.bind(this))
+        },
     },
     beforeMount:function(){
+        this.getUserList();
         this.filter = {
             pending:true,
             freed:false,
@@ -512,7 +542,7 @@ Vue.component('orders',{
                                         '<i v-bind:class="order.statusClass" aria-hidden="true"></i>  <i class="pull-right" style="font-size:10px;"> {{ order.status }}</i>'+
                                     '</div>'+
                                     '<div v-bind:id="order.orderId" class="collapse">'+
-                                        '<order v-bind:order="order"></order>'+
+                                        '<order v-bind:userlist="userList" v-bind:order="order"></order>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>'+              

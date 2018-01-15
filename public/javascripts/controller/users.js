@@ -160,10 +160,11 @@ Vue.component('remove-user',{
 });
 
 Vue.component('user-main',{
-    props:['users','rekry'],
+    props:['users','rekry','userList'],
     created:function(){
         this.updateUsers();
         this.updateRekry();
+        this.userList = [];
     },
     template:
     '<div>'+
