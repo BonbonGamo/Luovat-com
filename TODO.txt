@@ -14,16 +14,12 @@ TODO:
     -Asetukset
         *Hintojen muokkaus
         *Vanhat asetusversiot
-        *Alekoodit
         *Tilastot
             -Avoin komissio
             -Saatu komissio
             -Tilausten määräs
     -Käyttäjähallinta
         -Uusi käyttäjä ei päivitä listoja
-        -Muokkaus palauttaa uusiin
-    -Vaihda tilauksen koko
-        -Lisää artistisivulle nappi, josta voi tilata tilauksen koon muuttamisen
     
     ARTIST
     -POSTMARK

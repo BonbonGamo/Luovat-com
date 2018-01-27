@@ -131,8 +131,10 @@ Vue.component('order',{
             if(!data.discountPercent) data.discountPercent = 0;
 
 
-            $.post('/orders/admin-edit-order',data).then(function(){
+            $.post('/orders/admin-edit-order',data).then(function(response){
+                console.log('EDIT:',response)
                 this.$parent.updateOrders();
+                toastr.success('Tilauksen tiedot muutettu')
             }.bind(this))
         },
         boolean:function(t){

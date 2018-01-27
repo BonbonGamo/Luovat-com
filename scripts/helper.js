@@ -16,7 +16,6 @@ const Campaign    = require('../models/campaign.js')
 
 module.exports = {
     updateOrderTotal: function(id){
-        console.log('Update order total')
         let order;
         return Order
         .query()
@@ -26,7 +25,6 @@ module.exports = {
             order = cbOrder
             if(!order.campaignCode) order.campaignCode = '';
 
-            console.log('TILAUS: ',cbOrder)
             //LISÄÄ TILAUKSELLE KAMPANJAKOODI KENTTÄ
             return Campaign
             .query()
@@ -41,7 +39,8 @@ module.exports = {
 
             data.discountPercent = order.discountPercent;
 
-            if(cbCampaign){
+            if(cbCampaign && cbCampaign.starts && cbCampaign.ends && moment().isBetween(cbCampaign.starts,cbCampaign.ends)){
+                console.log('Kampanja alku ja loppu',moment().isBetween(cbCampaign.starts,cbCampaign.ends),' ',cbCampaign.starts,cbCampaign.ends)
                 data.discountPercent = cbCampaign.percent;
             }
 

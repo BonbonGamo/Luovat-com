@@ -12,7 +12,6 @@ Vue.component('campaigns-main',{
                     o.collapseId = 'collapse' + o.id
                 })
                 this.campaigns = campaigns;
-                console.log(campaigns)
             }.bind(this))
         }
     },
@@ -51,25 +50,37 @@ Vue.component('campaign',{
     props:['campaign'],
     methods:{
         postEdit:function(){
-            $.post('/campaigns/edit',this.campaign)
-            .then(function(response){
-                this.$parent.updateCampaigns();
-                toastr.success('Tilaus päivitetty')
-            })
+            if(!campaign.starts || !campaign.ends){
+                toastr.warning('Anna kampanjalle alku ja loppu');
+                return;
+            }else if(!campaign.campaignName || !campaign.campaignCode){
+                toastr.warning('Anna kampanjalle nimi ja kampanjakoodi');
+                return;
+            }else if(!campaign.percent){
+                toastr.warning('Anna kampanjalle alennusprosentti');
+                return;
+            }else{
+                $.post('/campaigns/edit',this.campaign)
+                .then(function(response){
+                    this.$parent.updateCampaigns();
+                    toastr.success('Tilaus päivitetty');
+                }.bind(this))
+            }
+            
         },
         activate:function(){
             $.post('/campaigns/toggle-active/' + this.campaign.id + '/' + this.campaign.isActive)
             .then(function(response){
                 this.$parent.updateCampaigns();
                 toastr.success('Tilaus aktivoitu')
-            })
+            }.bind(this))
         },
         deleteCampaign:function(){
             $.get('/campaigns/delete/' + this.campaign.id)
             .then(function(response){
-                console.log(response)
+                this.$parent.updateCampaigns()
                 toastr.success('Kampanja poistettu')
-            })
+            }.bind(this))
         }
     },
     template:
@@ -117,7 +128,12 @@ Vue.component('new-campaign',{
     props:['campaignName','campaignCode','starts','ends','percent'],
     methods:{
         newCampaign:function(){
-            $.post('/campaigns/new',{
+            
+            if( !this.campaignName || !this.campaignCode || !this.starts || !this.ends || !this.percent ){
+                toastr.warning('Täytä kaikki kentät')
+                return
+            }else{
+                $.post('/campaigns/new',{
                 campaignName:this.campaignName,
                 campaignCode:this.campaignCode,
                 start:this.starts,
@@ -126,7 +142,7 @@ Vue.component('new-campaign',{
             })
             .then(function(response){
                 this.$parent.updateCampaigns();
-            })
+            }.bind(this))}
         }
     },
     template:
