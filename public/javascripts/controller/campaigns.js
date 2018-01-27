@@ -12,6 +12,7 @@ Vue.component('campaigns-main',{
                     o.collapseId = 'collapse' + o.id
                 })
                 this.campaigns = campaigns;
+                console.log(campaigns)
             }.bind(this))
         }
     },
@@ -62,6 +63,13 @@ Vue.component('campaign',{
                 this.$parent.updateCampaigns();
                 toastr.success('Tilaus aktivoitu')
             })
+        },
+        deleteCampaign:function(){
+            $.get('/campaigns/delete/' + this.campaign.id)
+            .then(function(response){
+                console.log(response)
+                toastr.success('Kampanja poistettu')
+            })
         }
     },
     template:
@@ -97,6 +105,7 @@ Vue.component('campaign',{
                         '<button class="btn btn-xs btn-success m5" style="min-width:90%" v-on:click="activate()"><span v-if="campaign.isActive">Poista käytöstä</span><span v-if="!campaign.isActive">Muuta aktiiviseksi</span></button>'+
                         '<button class="btn btn-xs btn-success m5" style="min-width:90%" v-on:click="postEdit()" >Tallenna</button>'+
                         '<button class="btn btn-xs btn-success m5" style="min-width:90%" disabled="true">Uusi kopioiden</button>'+
+                        '<button class="btn btn-xs btn-danger m5" style="min-width:90%" v-on:click="deleteCampaign()" >Poista</button>'+
                     '</div>'+
                 '</div>'+
             '</div>'+

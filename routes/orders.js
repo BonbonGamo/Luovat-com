@@ -119,7 +119,12 @@ router.get('/pickups',auth.artist, function(req, res, next) {
                 message:order.clientMessage,
                 date:order.eventDate,
                 city:order.eventCity, 
-                size:order.eventSize
+                size:order.eventSize,
+                eager:order.eager,
+                eagerMax:order.eagerMax,
+                add1:order.additional1,
+                add2:order.additional2,
+                add3:order.additional3
               })
             }else{
               data.open.push({
@@ -127,7 +132,12 @@ router.get('/pickups',auth.artist, function(req, res, next) {
                 message:order.clientMessage,
                 date:order.eventDate,
                 city:order.eventCity, 
-                size:order.eventSize
+                size:order.eventSize,
+                eager:order.eager,
+                eagerMax:order.eagerMax,
+                add1:order.additional1,
+                add2:order.additional2,
+                add3:order.additional3
               })
             }
           })
@@ -331,7 +341,12 @@ router.get('/orders-progres', auth.artist ,function(req,res,next){
           message:order.clientMessage,
           date:order.eventDate,
           city:order.eventCity, 
-          size:order.eventSize
+          size:order.eventSize,
+          eager:order.eager,
+          eagerMax:order.eagerMax,
+          add1:order.additional1,
+          add2:order.additional2,
+          add3:order.additional3
         })
       }
     })

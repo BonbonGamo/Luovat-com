@@ -26,6 +26,16 @@ router.get('/', auth.admin, (req,res,next) => {
     })
 })
 
+router.get('/delete/:id',auth.admin, (req,res,nexr) => {
+    Campaign
+    .query()
+    .delete()
+    .where('id',req.params.id)
+    .then( deleted => {
+        res.sendStatus(200)
+    })
+})
+
 router.get('/check/:code',(req,res,next) => {
     Campaign
     .query()
@@ -33,7 +43,7 @@ router.get('/check/:code',(req,res,next) => {
     .first()
     .then( cbCampaign => {
         if(!cbCampaign) throw new Error ('Not found')
-        res.send(cbCampaign.percent)
+        res.sendStatus(200)
     })
     .catch(err => {
         if (err) { return next(err); }
@@ -102,5 +112,7 @@ router.post('/toggle-active/:id/:active', auth.admin, (req,res,next) => {
         if (err) { return next(err); }
     })
 })
+
+
 
 module.exports = router;

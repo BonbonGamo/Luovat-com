@@ -34,6 +34,21 @@ Vue.component('order-form',{
         packageImageSrc:function(){
             return './images/luovat_'+this.formData.size+'.png'
         },
+        handleOrder:function(){
+            if(this.formData.campaignCode && this.formData.campaignCode.length > 0){
+                $.get('/campaigns/check/' + this.formData.campaignCode)
+                .then(function(response){
+                    console.log(response)
+                    if(response != 'OK'){
+                        toastr.error('Kampanjakoodi','Tarkasta kampanja koodi tai tyhjennä kenttä ennen tilaamista')
+                    }else{
+                        this.postOrder()
+                    }
+                }.bind(this))
+            }else{
+                this.postOrder()
+            }
+        },
         postOrder:function(){
             if(this.formData.name.length > 2 && this.formData.email.length > 2){
                 $.post('/orders/new',{
@@ -105,11 +120,11 @@ Vue.component('order-form',{
         '<div class="col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">'+
             '<div class="col-sm-6 col-sm-offset-3">'+
                 '<center>'+
-                    '<h2 class="opensans">'+
+                    '<h2 class="montserrat fw700">'+
                         'TILAA VIDEOTUOTANTO'+
                     '</h2>'+
                     '<p>Tilaus	ei	ole	sitova	ja sen	lähettäminen on maksutonta.</p>'+
-                    '<p class="opensans">'+
+                    '<p class="montserrat">'+
                         '{{ tip }}'+
                     '</p>'+
                 '</center>'+
@@ -156,7 +171,7 @@ Vue.component('order-form',{
                 '<input type="checkbox" id="a3" v-model="formData.add3"><br><br>'+
                 '<input class="form-control m20 order-form-input-area darkblue" placeholder="Kampanjakoodi" type="text" v-model="formData.campaignCode"></input>'+ 
                 '<center>'+
-                    '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="postOrder()">Lähetä tilaus</button>'+
+                    '<button class="btn btn-sm btn-white" v-on:click="newOrder()">Peruuta</button><button class="btn btn-sm btn-white" v-on:click="handleOrder()">Lähetä tilaus</button>'+
                 '</center>'+
             '</div>'+
             '<div id="ready" class=" hide-order-form col-sm-8 col-sm-offset-2 r-m" style="display:none;">'+
@@ -194,7 +209,7 @@ Vue.component('order-size',{
                     '<center>'+                 
                         '<h1 style="font-size:150px;text-transform:uppercase;margin-top:0px;" class="darkblue plaster">{{ size }}</h1>'+ 
                         '<h3 class="blue fw400 style="">Valitse <span class="fw900">{{ small }}</span> paketti</h3>'+   
-                        '<p class="black opensans" style="font-size:16px;">{{ description }}</p>'+
+                        '<p class="black p-well">{{ description }}</p>'+
                         '<p class="black" style="font-size:10px;transform:translateY(25px)">Hinta alv 0%</p>'+
                         '<h3 class="blue fw700 price">{{ price }}€</h3>'+
                     '</center>'+

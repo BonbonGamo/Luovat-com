@@ -87,9 +87,14 @@ h6{
     font-size: 15px !important;
 }
 p{
-    font-family: @roboto;
-    font-weight: 100;
-    font-size: 16px;
+    font-family: @montserrat;
+    font-weight: 400;
+    font-size: 17px;
+}
+@media (max-width:1010px){
+    p{
+        font-size:15px;
+    }
 }
 li{
     list-style-type: none;
@@ -647,6 +652,14 @@ input, textarea, .form-control {
     margin:9px !important;
     color:@blue !important;
 }
+.p-well{
+    font-size: 16px;
+}
+@media(max-width:1400px){
+    .p-well{
+        font-size:13px;
+    }
+}
 .edit-order{
     >.well{
         min-height:120px;
@@ -780,6 +793,11 @@ input, textarea, .form-control {
     cursor: pointer;
     background: #f7f7f7;
     border: 1px solid #EEE !important;
+}
+@media(max-width:1230px){
+    .well-order{
+        padding:15px;
+    }
 }
 .well-order:hover{
     box-shadow: 0px 0px 16px rgba(0,0,0,0.65);

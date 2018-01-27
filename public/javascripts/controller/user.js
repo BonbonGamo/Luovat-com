@@ -81,6 +81,7 @@ Vue.component('orders',{
         updateOrders:function(){
             $.get('/orders/pickups').then(function(response){
                 $.each(response.open,function(key,object){
+                    if(!object.eager) object.eager = 0; 
                     object.hashId = '#order' + object.id;
                     object.orderId = 'order' + object.id;
                     object.moment = moment(object.date,'YYYY-MM-DD').locale('fi').format('LL')
@@ -89,6 +90,7 @@ Vue.component('orders',{
                     }
                 })
                 this.orders = response.open;
+                console.log('ORDERS:',this.orders)
             }.bind(this))
             $.get('/orders/orders-progres').then(function(response){
                 $.each(response,function(key,object){
@@ -105,17 +107,35 @@ Vue.component('orders',{
     },
     beforeMount:function(){
         this.updateOrders();
+        setInterval(this.updateOrders(), 30000);
     },
     template:'<div class="row">'+
                 '<div class="col-md-12">'+    
                     '<div class="panel-group">'+
                         '<h2 class="darkblue m5 montserrat m20">Uudet keikat</h2>'+
                         '<div  class="panel m5 panel-primary" v-for="order in orders">'+
-                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="order.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ order.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ order.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ order.city }}</p></span></div>'+
+                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="order.hashId" class="panel-heading">'+
+                            '<p style="margin:0px">'+
+                                    '<span class="montserrat fw700" style="font-size:20px">{{ order.eager }} / {{ order.eagerMax }}  </span>'+
+                                    '<span class="white plaster" style="text-transform:uppercase;font-size:30px;margin:0px;">'+
+                                        '{{ order.size }}'+
+                                    '</span>'+
+                                    '<span style="float:right;">'+
+                                        '<i class="fa fa-calendar" aria-hidden="true"></i> '+
+                                        '{{ order.moment }}<br>'+
+                                        '<i class="fa fa-map-marker" aria-hidden="true"></i> '+
+                                        '{{ order.city }}'+                                    
+                                    '</span>'+
+                                '</p>'+
+                            '</div>'+
                             '<div class="panel-body collapse" v-bind:id="order.orderId" >'+
                                 '<div>'+
-                                '<p><strong>Tilauksen viesti</strong></p>'+
-                                '<p>{{ order.message }}</p>'+
+                                    '<p><strong>Tilauksen viesti</strong></p>'+
+                                    '<p>{{ order.message }}</p>'+
+                                    '<p v-if="order.add1 || order.add2 || order.add3"><strong>Vaatimukset</strong></p>'+
+                                    '<p v-if="order.add1">Tekstitys</p>'+
+                                    '<p v-if="order.add2">Ilmakuvaus (drone)</p>'+
+                                    '<p v-if="order.add3">Voice over</p>'+
                                 '</div>'+
                                 '<signBtn style="float:right" v-bind:order="order"></signBtn>'+
                             '</div>'+
@@ -125,10 +145,24 @@ Vue.component('orders',{
                     '<div class="panel-group">'+
                         '<h2 class="darkblue m5 montserrat m20">Ilmoittautumiset</h2>'+
                         '<div  class="panel m5 panel-primary" v-for="eager in eagers">'+
-                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="eager.hashId" class="panel-heading"><p style="margin:0px"><span class="badge plaster black" style="text-transform:uppercase;">{{ eager.size }}</span> <span style="float:right;"><i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}</p></span></div>'+
+                            '<div data-toggle="collapse" style="cursor: pointer;" v-bind:data-target="eager.hashId" class="panel-heading">'+
+                                '<p style="margin:0px">'+
+                                    '<span class="montserrat fw700" style="font-size:20px">{{ eager.eager }} / {{ eager.eagerMax }}  </span>'+
+                                    '<span class="white plaster " style="text-transform:uppercase;font-size:30px;margin:0px;">'+
+                                        '{{ eager.size }}'+
+                                    '</span>'+
+                                    '<span style="float:right;">'+
+                                        '<i class="fa fa-calendar" aria-hidden="true"></i> {{ eager.moment }}  <br><i class="fa fa-map-marker" aria-hidden="true"></i> {{ eager.city }}'+
+                                    '</span>'+
+                                '</p><'+
+                            '/div>'+
                             '<div class="panel-body collapse" v-bind:id="eager.orderId" >'+
                                 '<p><strong>Tilauksen viesti</strong></p>'+
                                 '<p>{{ eager.message }}</p>'+
+                                '<p v-if="eager.add1 || eager.add2 || eager.add3"><strong>Vaatimukset</strong></p>'+
+                                '<p v-if="eager.add1">Tekstitys</p>'+
+                                '<p v-if="eager.add2">Ilmakuvaus (drone)</p>'+
+                                '<p v-if="eager.add3">Voice over</p>'+
                             '</div>'+
                         '</div>'+
                     '</div>'+
