@@ -1,5 +1,6 @@
 'use strict'
 const express = require('express');
+const compression = require('compression')
 const path = require('path');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
