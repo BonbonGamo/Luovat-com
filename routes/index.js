@@ -11,7 +11,7 @@ router.get('/login', (req,res,next) => {
   res.render('login',{title:'Luovat Login'})
 })
 
-app.get('/sitemap.xml', function(req, res) {
+router.get('/sitemap.xml', function(req, res) {
   var sitemap = helper.generateXmlSitemap(); // get the dynamically generated XML sitemap
   res.header('Content-Type', 'text/xml');
   res.send(sitemap);     
