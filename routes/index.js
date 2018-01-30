@@ -19,6 +19,11 @@ router.get('/login', (req,res,next) => {
   res.render('login',{title:'Luovat Login'})
 })
 
+app.get('/robots.txt', function (req, res) {
+  res.type('text/plain');
+  res.send("Sitemap: http://luovat.com/sitemap.xml");
+});
+
 router.get('/sitemap.xml', function(req, res) {
   var sitemap = helper.generateXmlSitemap(); // get the dynamically generated XML sitemap
   res.header('Content-Type', 'text/xml');
