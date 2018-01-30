@@ -148,7 +148,7 @@ module.exports = {
 
     generateXmlSitemap:() => {
         // this is the source of the URLs on your site, in this case we use a simple array, actually it could come from the database
-        var urls = [''];
+        var urls = ['','/videotuotanto'];
         // the root of your website - the protocol and the domain name with a trailing slash
         var root_path = 'https://www.luovat.com/';
         // XML sitemap generation starts here

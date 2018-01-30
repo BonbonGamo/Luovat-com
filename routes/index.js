@@ -7,6 +7,14 @@ router.get('/',(req, res, next) => {
   res.render('index', { title: 'Luovat | Etusivu' });
 });
 
+router.get('/videotuotanto',(req, res, next) => {
+  res.render('videotuotanto', { title: 'Luovat | Etusivu' });
+});
+
+router.get('/mainosvideo',(req, res, next) => {
+  res.render('mainosvideo', { title: 'Luovat | Etusivu' });
+});
+
 router.get('/login', (req,res,next) => {
   res.render('login',{title:'Luovat Login'})
 })
