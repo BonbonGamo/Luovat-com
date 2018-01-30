@@ -19,7 +19,7 @@ router.get('/login', (req,res,next) => {
   res.render('login',{title:'Luovat Login'})
 })
 
-app.get('/robots.txt', function (req, res) {
+router.get('/robots.txt', function (req, res, next) {
   res.type('text/plain');
   res.send("Sitemap: http://luovat.com/sitemap.xml");
 });
