@@ -18,8 +18,6 @@ TODO:
             -Avoin komissio
             -Saatu komissio
             -Tilausten määräs
-    -Käyttäjähallinta
-        -Uusi käyttäjä ei päivitä listoja
     
     ARTIST
     -POSTMARK
@@ -28,31 +26,17 @@ TODO:
     -Rekry
         -alaikänen  
 
-    ORDERS
-    - Palautteen anto kun tilaus valmis
     
     CLIENT (PH1.2)
     -Asiakasrekisteri
-    -Kuvaajan valinta sivu!!!!!!!
-
-    KAMPANJA KOODIT!
-    -Kampanjan aikaraja
     
     MUUTA
     -Tietosuojatarkastelu
+        *Käyttäjä ja asiakastietojen 100% poisto
         *Get requestit ei requestin body
-    -Asiakassivut
-        *Design
-            -Pakolliset ja lisätiedot erikseen
-            -Landing napit: Näin tilaat ja tee tilaus
 
-    HINNOITTELU
-    - Tekstitys     : 50€
-    - Ilmakuvaus    : 100€
-    - Voiceover     : Sopimuksen mukaan (infonappi: Hinnoittelun perustelu) 
-    - Lisätunti     : 50€
+
     
-
     - Kun asiakasa valitsee tekijän, mitä tapahtuu? Suoraan meili valitulle kuvaajalle, kuvaaja jatkaa saamansa ohjeistuksen mukaan tästä. Miten tämä näkyy admineille?
 
     - Lisäkorjaukierros 50€ per ylimääräinen korjauskierros
