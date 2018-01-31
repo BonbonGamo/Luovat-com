@@ -228,6 +228,7 @@ router.post('/pickup',auth.artist,(req,res,next) => {
     .where('id',req.body.orderId)
     .first()
     .then(cbOrder => {
+      if(cbOrder.eager > 2) throw new Error('EVENT FULL')
       return Order
       .query()
       .patchAndFetchById(cbOrder.id,{
@@ -253,7 +254,10 @@ router.post('/pickup',auth.artist,(req,res,next) => {
       res.sendStatus(200)
     })
     .catch(err => {
-      if (err) { return next(err); }
+      if (err){
+        if(err.message == 'EVENT FULL') res.send(304,'Event full')
+        return next(err);
+      }
     })  
 })
 

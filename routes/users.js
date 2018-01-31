@@ -233,6 +233,10 @@ router.post('/login', (req,res,next) => {
     .then((user) => {
       var target;
       console.log('USER',user)
+      if(!user.password) {
+        console.log('No password!')
+        throw new Error('No password');
+      }
       if(user[0] && bcrypt.compareSync(req.body.password, user[0].password)){
         req.session.user = user[0];
         if(user[0].email == 'petteri@huddle.fi'){
@@ -253,6 +257,9 @@ router.post('/login', (req,res,next) => {
       }
     })
     .catch(err => {
+      if(err.message == 'No password'){
+        res.render('login',{title:'Login failed'})
+      }
       if (err) { return next(err); }
     })
 })
