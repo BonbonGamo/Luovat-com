@@ -145,10 +145,10 @@ Vue.component("order-form", {
 }), new Vue({
     el: "#mainApp"
 }), $(document).on("click", "#play-sample-video", function() {
-    console.log("as"), $("#video-source").attr("src", "https://player.vimeo.com/video/223754130?autoplay=1&loop=1&autopause=0"), $("#video-modal").modal()
+    console.log("as"), $("#video-source").attr("src", "https://player.vimeo.com/video/253685652?autoplay=1&loop=1&autopause=0"), $("#video-modal").modal()
 }), $(document).ready(function() {
     $("#play-rekry-video").click(function() {
-        console.log(" asd"), $("#video-source").attr("src", "https://player.vimeo.com/video/223740472?autoplay=1&loop=1&autopause=0"), $("#video-modal").modal()
+        console.log(" asd"), $("#video-source").attr("src", "https://player.vimeo.com/video/253684343?autoplay=1&loop=1&autopause=0"), $("#video-modal").modal()
     }), $("#video-modal").on("hidden.bs.modal", function() {
         $("#video-source").attr("src", "")
     })
