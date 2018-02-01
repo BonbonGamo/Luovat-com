@@ -21,7 +21,12 @@ router.get('/',auth.admin, function(req, res, next) {
     .query()
     .eager('users')
     .then((orders) => {
-      res.send(orders)
+      let activeOrders = [];
+      _.forEach(orders, order => {
+        if(order.deleted != true) activeOrders.push(order)
+      })
+      console.log(activeOrders)
+      res.send(activeOrders)
     })
     .catch(err => {
       if (err) { return next(err); }
