@@ -232,8 +232,8 @@ router.post('/login', (req,res,next) => {
     .where('email','=',req.body.email)
     .then((user) => {
       var target;
-      console.log('USER',user.password)
-      if(user.password == null) {
+      console.log('USER',user[0].password)
+      if(user[0].password == null) {
         console.log('No password!')
         throw new Error(403,'No password');
       }
