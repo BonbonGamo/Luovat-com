@@ -118,7 +118,7 @@ router.post('/activate-user/:id', auth.admin ,(req,res,next) => {
   .patchAndFetchById(req.params.id,{activeUser:true})
   .then((cbUser) => {
     if(!cbUser.email || cbUser.email.length < 1) return;
-    return emailer.newUser(cbUser.email,cbUser)
+    return emailer.newUser(cbUser)
   })
   .then(postmarkResponse => {
     console.log(postmarkResponse)
