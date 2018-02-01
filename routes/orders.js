@@ -97,6 +97,7 @@ router.get('/pickups',auth.artist, function(req, res, next) {
     Order_User
       .query()
       .where('userId',req.session.user.id)
+      .whereNot('deleted',true)
       .then(relations => {
         _.forEach(relations, (relation) => {
           console.log(relation.orderId)
