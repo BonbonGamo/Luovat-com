@@ -56,7 +56,6 @@ Vue.component("order-form", {
             this.formData.size = t
             this.tip = "Valitsit " + this.formData.size.toUpperCase() + "-kokoisen paketin. Tarvitsemme hieman tietoja tilausta varten"
             $(".hide-order-form").hide()
-            console.log('paskaa')
             $("#askFirst").fadeIn()
         },
         askAdditional: function() {
